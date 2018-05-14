@@ -1,0 +1,26 @@
+{
+  "name": "chessboardjsx",
+  "version": "0.0.0",
+  "description": "chessboardjsx is a standalone chessboard built with React and inspired by chessboardjs",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willb335/chessboardjsx.git"
+  },
+  "author": "William .J Bashelor <wbashelor@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/willb335/chessboardjsx/issues"
+  },
+  "homepage": "https://github.com/willb335/chessboardjsx#readme",
+  "dependencies": {
+    "unique-random-array": "1.0.0"
+  }
+}
