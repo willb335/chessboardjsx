@@ -13,7 +13,7 @@
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "validate": "npm-run-all --parallel test lint build",
     "travis-deploy-once": "travis-deploy-once",
-    "semantic-release": "semantic-release",
+    "semantic-release": "semantic-release -d",
     "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "keywords": [],
