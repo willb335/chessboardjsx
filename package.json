@@ -1,6 +1,6 @@
 {
   "name": "chessboardjsx",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "description": "chessboardjsx is a standalone chessboard built with React and inspired by chessboardjs",
   "main": "dist/index.js",
   "scripts": {
