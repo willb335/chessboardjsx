@@ -8,6 +8,7 @@
 
 A chessboard for react inspired by chessboard.js
 
+Check
 
 ## LICENSE
 
