@@ -2,10 +2,10 @@ const uniqueRandomArray = require('unique-random-array');
 const chessGrandmasterNames = require('./grandmaster-names.json');
 
 
-const mainExport = {
+const mainExporter = {
   all: chessGrandmasterNames,
   random: uniqueRandomArray(chessGrandmasterNames),
 };
 
 // export default mainExport;
-module.exports = mainExport; // for CommonJS compatibility
+module.exports = mainExporter; // for CommonJS compatibility
