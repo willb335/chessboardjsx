@@ -1,0 +1,9 @@
+.github/
+
+# editor configs
+.idea/
+.vscode/
+
+
+coverage/
+dist/
