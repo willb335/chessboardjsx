@@ -7,6 +7,14 @@ module.exports = {
     '!**/src/Chessboard/ErrorBoundary.js',
     '!**/src/Chessboard/errorMessages.js'
   ],
+  coverageThreshold: {
+    global: {
+      branches: 45,
+      functions: 50,
+      lines: 50,
+      statements: 50
+    }
+  },
   moduleFileExtensions: ['js', 'json'],
 
   moduleNameMapper: {
