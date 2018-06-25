@@ -1,19 +1,89 @@
+<div align="center" markdown="1">
+
+<img src="./src/img/opposition.png" alt="opposition" width="200">
+<img src="./src/img/ruyLopez.png" alt="ruyLopez" width="200">
+<img src="./src/img/carlsen2016Championship.png" alt="carlsen2016Championship" width="200">
+<img src="./src/img/anandsImmortal.png" alt="anandsImmortal" width="200">
+
+**A chessboard for React inspired by [chessboard.js](https://github.com/oakmac/chessboardjs)**
+
 [![Build Status][build-badge]][build]
 [![Code Coverage][coverage-badge]][coverage]
 [![PRs Welcome][prs-badge]][prs]
 [![version][version-badge]][package]
 [![MIT License][license-badge]][license]
+[![Commitizen friendly][commitzen-badge]][commitzen]
 
-# Chessboard.jsx
+</div>
 
-A chessboard for react inspired by chessboard.js
+## Installation
 
-Check
+This module is distributed via [npm][npm] which is bundled with [node][node] and
+should be installed as one of your project's `dependencies`:
+
+```
+npm install --save chessboardjsx
+```
+
+> This package also depends on `react` and `prop-types`. Please make sure you
+> have those installed as well.
+
+## Usage
+
+* [Props](http://www.espn.com/): get started with Chessboard.jsx
+* [Custom](http://www.espn.com/): customize the board and pieces
+* [With move validation](http://www.espn.com/): how to integrate [chess.js](https://github.com/jhlywa/chess.js)
+* [Integrating with chess engines](http://www.espn.com/): how to integrate with Stockfish, the ~~world's strongest~~ [world's second strongest](https://www.chess.com/news/view/google-s-alphazero-destroys-stockfish-in-100-game-match) chess engine
+
+## Contributing
+
+Please take a look at CONTRIBUTING.md to find out how to contribute.
+
+## What is Chessboard.jsx?
+
+Chessboard.jsx is a React component with a flexible "just a board" API modeled from [chessboard.js](https://github.com/oakmac/chessboardjs). It's compatable with touch as well as standard HTML5 drag and drop.
+
+## What can Chessboard.jsx **not** do?
+
+The scope of Chessboard.jsx is limited to "just a board." This is intentional and
+makes Chessboard.jsx flexible for handling a multitude of chess-related problems.
+
+Specifically, Chessboard.jsx does not understand anything about how the game of
+chess is played: how a knight moves, who's turn is it, is White in check?, etc.
+
+Fortunately, the powerful [chess.js](https://github.com/jhlywa/chess.js) library deals with exactly this sort of
+problem domain and plays nicely with Chessboard.jsx's flexible API.
+
+Here is a list of things that Chessboard.jsx is **not**:
+
+* A chess engine
+* A legal move validator
+* A PGN parser
+
+Chessboard.jsx is designed to work well with any of those things, but the idea
+behind Chessboard.jsx is that the logic that controls the board should be
+independent of those other problems.
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
+<!-- prettier-ignore -->
+| [<img src="https://avatars2.githubusercontent.com/u/10157307?v=4" width="100px;"/><br /><sub><b>Will</b></sub>](https://github.com/willb335)<br />[💻](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Code") [📖](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Documentation") [💡](#example-willb335 "Examples") [⚠️](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Tests") |
+| :---: |
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## LICENSE
 
 MIT
 
+[npm]: https://www.npmjs.com/
+[node]: https://nodejs.org
 [build-badge]: https://img.shields.io/travis/willb335/chessboardjsx.svg?style=flat-square
 [build]: https://travis-ci.org/willb335/chessboardjsx
 [coverage-badge]: https://img.shields.io/codecov/c/github/willb335/chessboardjsx.svg?style=flat-square
@@ -24,3 +94,5 @@ MIT
 [package]: https://www.npmjs.com/package/chessboardjsx
 [license-badge]: https://img.shields.io/npm/l/chessboardjsx.svg?style=flat-square
 [license]: https://github.com/willb335/chessboardjsx/blob/master/LICENSE
+[commitzen-badge]: https://img.shields.io/badge/commitizen-friendly-brightgreen.svg
+[commitzen]: http://commitizen.github.io/cz-cli/

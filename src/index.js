@@ -1,11 +1,6 @@
-const uniqueRandomArray = require('unique-random-array');
-const chessGrandmasterNames = require('./grandmaster-names.json');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
+import Demo from './Demo';
 
-const mainExporter = {
-  all: chessGrandmasterNames,
-  random: uniqueRandomArray(chessGrandmasterNames),
-};
-
-// export default mainExport;
-module.exports = mainExporter; // for CommonJS compatibility
+ReactDOM.render(<Demo />, document.getElementById('root'));

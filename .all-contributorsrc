@@ -1,0 +1,25 @@
+{
+  "projectName": "chessboardjsx",
+  "projectOwner": "willb335",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "willb335",
+      "name": "Will",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/10157307?v=4",
+      "profile": "https://github.com/willb335",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "test"
+      ]
+    }
+  ]
+}
