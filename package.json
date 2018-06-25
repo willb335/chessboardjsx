@@ -2,7 +2,7 @@
   "name": "chessboardjsx",
   "version": "1.0.1",
   "description":
-    "chessboardjsx is a standalone chessboard built with React and inspired by chessboardjs",
+    "Chessboard.jsx is a chessboard for React. Inspired by chessboard.js",
   "main": "dist/chessboard.min.js",
   "scripts": {
     "contributors:add": "all-contributors add",
@@ -13,9 +13,10 @@
     "lint": "eslint src",
     "validate": "npm-run-all --parallel test lint build",
     "travis-deploy-once": "travis-deploy-once",
-    "release": "semantic-release",
+    "semantic-release": "semantic-release -d",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "start": "webpack-dev-server --open --config webpack.dev.js"
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "report-coverage": "cat ./coverage/lcov.info | codecov"
   },
   "keywords": ["react", "chess", "chessboard"],
   "files": ["dist"],

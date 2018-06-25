@@ -3,7 +3,7 @@ language: node_js
 cache:
   directories:
     - node_modules
-node_js: 10
+node_js: '8'
 branches:
   only:
     - master
@@ -11,5 +11,8 @@ notifications:
   email: false
 script:
   - npm run validate
+before_script:
+  - npm prune
 after_success:
-  - npm run release
+  - npm run report-coverage
+  - npm run semantic-release
