@@ -13,7 +13,7 @@
     "lint": "eslint src",
     "validate": "npm-run-all --parallel test lint build",
     "travis-deploy-once": "travis-deploy-once",
-    "semantic-release": "semantic-release -d",
+    "release": "semantic-release",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "start": "webpack-dev-server --open --config webpack.dev.js"
   },
