@@ -14,6 +14,7 @@ const boardStyle = {
 };
 
 class Demo extends Component {
+  state = { keep: true };
   render() {
     return (
       <div style={mainContainer}>
@@ -21,14 +22,17 @@ class Demo extends Component {
         <div style={boardsContainer}>
           <div>
             <div style={board}>
-              <Chessboard
-                id="standard"
-                calcWidth={calcWidth}
-                position="start"
-                animationOnDrop="rubberBand"
-                sparePieces={true}
-                boardStyle={boardStyle}
-              />
+              <div onClick={() => this.setState({ keep: false })}>Hi!!!</div>
+              {this.state.keep && (
+                <Chessboard
+                  id="standard"
+                  calcWidth={calcWidth}
+                  position="start"
+                  animationOnDrop="rubberBand"
+                  sparePieces={true}
+                  boardStyle={boardStyle}
+                />
+              )}
             </div>
             <div style={boardDescriptions}>
               Standard board with spare pieces
