@@ -20,7 +20,9 @@ class Square extends Component {
     onMouseOverSquare: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
     onMouseOutSquare: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
     onHoverSquareStyle: PropTypes.object,
-    selectedSquareStyle: PropTypes.object
+    selectedSquareStyle: PropTypes.object,
+    screenWidth: PropTypes.number,
+    screenHeight: PropTypes.number
   };
 
   componentDidMount() {
@@ -29,6 +31,24 @@ class Square extends Component {
 
     const { x, y } = this[square].getBoundingClientRect();
     setSquareCoordinates(x, y, square);
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      screenWidth,
+      screenHeight,
+      square,
+      setSquareCoordinates
+    } = this.props;
+
+    const didScreenSizeChange =
+      prevProps.screenWidth !== screenWidth ||
+      prevProps.screenHeight !== screenHeight;
+
+    if (didScreenSizeChange) {
+      const { x, y } = this[square].getBoundingClientRect();
+      setSquareCoordinates(x, y, square);
+    }
   }
 
   render() {

@@ -7,7 +7,7 @@ import HumanVsHuman from './integrations/HumanVsHuman';
 import { roughSquare } from './integrations/customRough';
 import RandomFEN from './integrations/RandomFEN';
 
-const calcWidth = screenWidth => (screenWidth < 500 ? 320 : 480);
+const calcWidth = screenWidth => (screenWidth < 500 ? 150 : 480);
 const boardStyle = {
   borderRadius: '5px',
   boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
@@ -91,6 +91,7 @@ class Demo extends Component {
                 {({ position }) => (
                   <Chessboard
                     calcWidth={calcWidth}
+                    // width={320}
                     id="random"
                     orientation="black"
                     position={position}

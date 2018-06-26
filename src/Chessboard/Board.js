@@ -80,10 +80,10 @@ class Board extends Component {
                           onMouseOverSquare={context.onMouseOverSquare}
                           onMouseOutSquare={context.onMouseOutSquare}
                           onHoverSquareStyle={context.onHoverSquareStyle}
-                          selectedSquareStyle={
-                            context.selectedSquareStyle
-                          }
+                          selectedSquareStyle={context.selectedSquareStyle}
                           id={context.id}
+                          screenWidth={context.screenWidth}
+                          screenHeight={context.screenHeight}
                         >
                           {this.hasPiece(context.currentPosition, square) ? (
                             <Fragment>

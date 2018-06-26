@@ -405,7 +405,9 @@ class Chessboard extends Component {
               dropSquare,
               setAnimation: this.setAnimation,
               setTouchState: this.setTouchState,
-              currentPosition
+              currentPosition,
+              screenWidth,
+              screenHeight
             }
           }}
         >
