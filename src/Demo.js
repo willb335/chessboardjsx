@@ -46,9 +46,9 @@ class Demo extends Component {
                   selectedSquares,
                   onDrop,
                   onMouseOverSquare,
-                  onMouseOutSquare,
-                  getPosition,
-                  darkSquareStyle
+                  onMouseOutSquare
+                  // getPosition
+                  // darkSquareStyle
                 }) => (
                   <Chessboard
                     id="humanVsHuman"
@@ -61,8 +61,8 @@ class Demo extends Component {
                     roughSquare={roughSquare}
                     animationOnDrop="rubberBand"
                     boardStyle={boardStyle}
-                    getPosition={getPosition}
-                    darkSquareStyle={darkSquareStyle}
+                    // getPosition={getPosition}
+                    // darkSquareStyle={darkSquareStyle}
                   />
                 )}
               </HumanVsHuman>

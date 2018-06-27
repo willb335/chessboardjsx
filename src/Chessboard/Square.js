@@ -51,10 +51,10 @@ class Square extends Component {
     }
   }
 
-  componentWillUnmount() {
-    const { square } = this.props;
-    this[square].remove();
-  }
+  // componentWillUnmount() {
+  //   const { square } = this.props;
+  //   this[square].remove();
+  // }
 
   render() {
     const {
