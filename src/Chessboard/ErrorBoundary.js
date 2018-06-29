@@ -10,30 +10,15 @@ class ErrorBoundary extends Component {
   componentDidCatch(error) {
     this.setState({ hasError: true });
 
-    console.log(error.message);
+    console.error(error.message);
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column'
-          }}
-        >
-          <div
-            style={{
-              width: 250,
-              height: 250,
-              transform: `rotate(90deg)`
-            }}
-          >
-            {error.whiteKing}
-          </div>
-          <h1>Something went wrong. Check the console</h1>
+        <div style={container}>
+          <div style={whiteKingStyle}>{error.whiteKing}</div>
+          <h1>Something went wrong</h1>
         </div>
       );
     }
@@ -42,3 +27,16 @@ class ErrorBoundary extends Component {
 }
 
 export default ErrorBoundary;
+
+const container = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column'
+};
+
+const whiteKingStyle = {
+  width: 250,
+  height: 250,
+  transform: `rotate(90deg)`
+};

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 
 import Chessboard from './Chessboard';
-import HumanVsRandom from './integrations/HumanVsRandom';
-import RandomVsRandom from './integrations/RandomVsRandom';
+// import HumanVsRandom from './integrations/HumanVsRandom';
+// import RandomVsRandom from './integrations/RandomVsRandom';
 import HumanVsHuman from './integrations/HumanVsHuman';
 import { roughSquare } from './integrations/customRough';
-import RandomFEN from './integrations/RandomFEN';
+// import RandomFEN from './integrations/RandomFEN';
+import wP from './img/kingJames.png';
 
-const calcWidth = screenWidth => (screenWidth < 500 ? 150 : 480);
+// const calcWidth = screenWidth => (screenWidth < 500 ? 150 : 480);
 const boardStyle = {
   borderRadius: '5px',
   boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
@@ -22,17 +23,17 @@ class Demo extends Component {
         <div style={boardsContainer}>
           <div>
             <div style={board}>
-              <div onClick={() => this.setState({ keep: false })}>Hi!!!</div>
-              {this.state.keep && (
-                <Chessboard
-                  id="standard"
-                  calcWidth={calcWidth}
-                  position="start"
-                  animationOnDrop="rubberBand"
-                  sparePieces={true}
-                  boardStyle={boardStyle}
-                />
-              )}
+              <Chessboard
+                id="standard"
+                // calcWidth={calcWidth}
+                width={500}
+                position="start"
+                // animationOnDrop="rubberBand"
+                // sparePieces={true}
+                boardStyle={boardStyle}
+                pieces={{ wP }}
+                orientation="black"
+              />
             </div>
             <div style={boardDescriptions}>
               Standard board with spare pieces
@@ -52,15 +53,17 @@ class Demo extends Component {
                 }) => (
                   <Chessboard
                     id="humanVsHuman"
-                    calcWidth={calcWidth}
+                    width={500}
                     position={position}
                     selectedSquares={selectedSquares}
                     onDrop={onDrop}
                     onMouseOverSquare={onMouseOverSquare}
                     onMouseOutSquare={onMouseOutSquare}
                     roughSquare={roughSquare}
-                    animationOnDrop="rubberBand"
+                    // animationOnDrop="swing"
                     boardStyle={boardStyle}
+                    showNotation={false}
+                    orientation="black"
                     // getPosition={getPosition}
                     // darkSquareStyle={darkSquareStyle}
                   />
@@ -71,7 +74,7 @@ class Demo extends Component {
               With move validation and rough.js
             </div>
           </div>
-          <div>
+          {/* <div>
             <div style={board}>
               <RandomFEN>
                 {({ position }) => (
@@ -88,14 +91,14 @@ class Demo extends Component {
             <div style={boardDescriptions}>
               Random positions set via position prop
             </div>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <div style={board}>
               <RandomVsRandom>
                 {({ position }) => (
                   <Chessboard
-                    calcWidth={calcWidth}
-                    // width={320}
+                    // calcWidth={calcWidth}
+                    width={500}
                     id="random"
                     orientation="black"
                     position={position}
@@ -108,8 +111,8 @@ class Demo extends Component {
             <div>
               <div style={boardDescriptions}>Random vs Random</div>
             </div>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <div style={board}>
               <HumanVsRandom>
                 {({ position, onDrop, getPosition, darkSquareStyle }) => (
@@ -130,7 +133,7 @@ class Demo extends Component {
             <div>
               <div style={boardDescriptions}>Human vs Random</div>
             </div>
-          </div>
+          </div> */}
           {/* <div>
             <div style={board}>
               <Engine>
@@ -146,7 +149,7 @@ class Demo extends Component {
               </Engine>
             </div>
             <div style={boardDescriptions}>Play Stockfish</div>
-          </div> */}
+          </div>*/}
         </div>
       </div>
     );

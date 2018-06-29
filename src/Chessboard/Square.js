@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd';
 
@@ -27,7 +27,7 @@ class Square extends Component {
 
   componentDidMount() {
     const { square, setSquareCoordinates, width, roughSquare } = this.props;
-    roughSquare && roughSquare(this.squareSvg, width / 8);
+    roughSquare && roughSquare(this.roughSquareSvg, width / 8);
 
     const { x, y } = this[square].getBoundingClientRect();
     setSquareCoordinates(x, y, square);
@@ -50,11 +50,6 @@ class Square extends Component {
       setSquareCoordinates(x, y, square);
     }
   }
-
-  // componentWillUnmount() {
-  //   const { square } = this.props;
-  //   this[square].remove();
-  // }
 
   render() {
     const {
@@ -87,21 +82,18 @@ class Square extends Component {
           })}
         >
           {roughSquare ? (
-            <Fragment>
+            <div style={center}>
+              <div style={{ zIndex: 2 }}>{children}</div>
               <svg
-                ref={ref => (this.squareSvg = ref)}
                 style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  position: 'absolute',
                   width: width / 8,
-                  height: width / 8
+                  height: width / 8,
+                  position: 'absolute',
+                  display: 'block'
                 }}
+                ref={ref => (this.roughSquareSvg = ref)}
               />
-
-              {children}
-            </Fragment>
+            </div>
           ) : (
             children
           )}
@@ -140,10 +132,7 @@ const squareStyles = props => {
     ...{
       width: width / 8,
       height: width / 8,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      position: 'relative',
+      ...center,
       ...(squareColor === 'black' ? darkSquareStyle : lightSquareStyle),
       ...(isOver && onHoverSquareStyle)
     }
@@ -158,19 +147,20 @@ const highlightStyles = ({
 }) => {
   return selectedSquares.length && selectedSquares.includes(square)
     ? {
-        ...{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 2,
-          width: width / 14,
-          height: width / 14
-        },
+        ...center,
+        width: width / 14,
+        height: width / 14,
         ...selectedSquareStyle
       }
     : {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
+        ...center,
+        width: width / 8,
+        height: width / 8
       };
+};
+
+const center = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
 };

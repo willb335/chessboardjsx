@@ -45,8 +45,6 @@ class Chessboard extends Component {
     sparePieces: PropTypes.bool,
     /**
      * The width in pixels.  For a responsive width, use calcWidth.
-     * If using animation on drop it is best to make the width divisible by 8. If you choose not to,
-     * you may see some animation bugs in Safari.
      */
     width: PropTypes.number,
     defaultPieces: PropTypes.objectOf(PropTypes.object),
@@ -61,7 +59,9 @@ class Chessboard extends Component {
     animationOnDrop: PropTypes.oneOf(['', 'pulse', 'swing', 'rubberBand']),
     /**
      * The logic to be performed after the drop.  This is where to check if moves are legal with
-     * a library like chess.js
+     * a library like chess.js.
+     *
+     * Signature: function(sourceSquare: string, targetSquare: string) => void
      */
     onDrop: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     /**
@@ -92,12 +92,15 @@ class Chessboard extends Component {
     boardStyle: PropTypes.object,
     /**
      * The id is necessary if more than one board is mounted.
-     * This is needed to identify the correct dropzone for the board.
+     * This is needed to identify the correct dropzone for the piece.
      */
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     /**
      * A function that gives access to the underlying square element.  This
      * allows for more customizations with rough.js.
+     *
+     * Signature: function(node, squareWidth: number) => void
+     * node: the underlying dom node for the square
      */
     roughSquare: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     /**
@@ -111,11 +114,14 @@ class Chessboard extends Component {
     /**
      * A function to call when the mouse is over the square.  It takes one argument, the square
      * that the mouse is over (onMouseOverSquare(square)).  Not compatable with touch devices.
+     *
+     * Signature: function(square: string) => void
      */
     onMouseOverSquare: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     /**
-     * A function to call when the mouse has left the square.  It takes one argument, the square
-     * that the mouse has left (onMouseOverSquare(square)).  Not compatable with touch devices.
+     * A function to call when the mouse has left the square.
+     *
+     * Signature: function() => void
      */
     onMouseOutSquare: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     /**
@@ -129,12 +135,15 @@ class Chessboard extends Component {
      */
     pieces: PropTypes.object,
     /**
-     * A function for responsive width control, returns width.  calcWidth(screenWidth, screenHeight).
-     * If using animation on drop it is best to make the width divisible by 8
+     * A function for responsive width control, returns width.
+     *
+     * Signature: function(screenWidth: number, screenHeight: number) => void
      */
     calcWidth: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     /**
-     * A function that returns the current position object.  getPosition(currentPosition).
+     * A function that returns the current position object.
+     *
+     * Signature: function(currentPosition: object) => void
      */
     getPosition: PropTypes.oneOfType([PropTypes.func, PropTypes.bool])
   };

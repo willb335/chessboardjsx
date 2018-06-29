@@ -6,13 +6,8 @@ import Notation from './Notation';
 import { COLUMNS } from './helpers';
 import Chessboard from './index';
 import PhantomPiece from './PhantomPiece';
-import errorMessages from './errorMessages';
 
 class Board extends Component {
-  componentDidMount() {
-    errorMessages(this.props);
-  }
-
   setSquareCoordinates = (x, y, square) =>
     this.setState({ [square]: { x, y } });
 
@@ -158,14 +153,11 @@ export default Board;
 const boardStyles = width => ({
   width: width,
   height: width,
-  position: 'relative',
-  boxSizing: 'content-box',
   cursor: 'default'
 });
 
 const rowStyles = {
   display: 'flex',
-  alignItems: 'stretch',
   flexWrap: 'nowrap',
   width: '100%'
 };

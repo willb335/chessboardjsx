@@ -1,8 +1,7 @@
 {
   "name": "chessboardjsx",
   "version": "1.0.1",
-  "description":
-    "Chessboard.jsx is a chessboard for React. Inspired by chessboard.js",
+  "description": "Chessboard.jsx is a chessboard for React. Inspired by chessboard.js",
   "main": "dist/chessboard.min.js",
   "scripts": {
     "contributors:add": "all-contributors add",
@@ -18,8 +17,14 @@
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "report-coverage": "cat ./coverage/lcov.info | codecov"
   },
-  "keywords": ["react", "chess", "chessboard"],
-  "files": ["dist"],
+  "keywords": [
+    "react",
+    "chess",
+    "chessboard"
+  ],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/willb335/chessboardjsx.git"
@@ -81,7 +86,7 @@
     "react-docgen": "2.20.1",
     "react-dom": "^16.4.0",
     "react-testing-library": "3.1.6",
-    "rimraf": "2.6.2",
+    "roughjs": "2.2.3",
     "semantic-release": "^15.4.1",
     "style-loader": "0.21.0",
     "travis-deploy-once": "^5.0.0",

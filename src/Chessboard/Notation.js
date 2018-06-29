@@ -1,3 +1,5 @@
+/* eslint react/prop-types: 0 */
+
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
@@ -13,6 +15,7 @@ Notation.propTypes = {
 
 const getRow = (orientation, row) =>
   orientation === 'white' ? row + 1 : row - 1;
+
 const getColumn = (orientation, alpha, col) =>
   orientation === 'black' ? alpha[7 - col] : alpha[col];
 
@@ -28,82 +31,132 @@ function Notation({
   const whiteColor = lightSquareStyle.backgroundColor;
   const blackColor = darkSquareStyle.backgroundColor;
 
-  const isBottomLeftSquare =
-    col === 0 &&
-    ((orientation === 'white' && row === 0) ||
-      (orientation === 'black' && row === 9));
   const isRow = col === 0;
   const isColumn =
     (orientation === 'white' && row === 0) ||
     (orientation === 'black' && row === 9);
+  const isBottomLeftSquare = isRow && isColumn;
 
   if (isBottomLeftSquare) {
-    return (
-      <Fragment>
-        <div
-          data-testid={`bottom-left-${getRow(orientation, row)}`}
-          style={{
-            ...notationStyle,
-            ...{ fontSize: width / 48, color: whiteColor },
-            ...numericStyle(width)
-          }}
-        >
-          {getRow(orientation, row)}
-        </div>
-        <div
-          data-testid={`bottom-left-${getColumn(orientation, alpha, col)}`}
-          style={{
-            ...notationStyle,
-            ...{ fontSize: width / 48, color: whiteColor },
-            ...alphaStyle(width)
-          }}
-        >
-          {getColumn(orientation, alpha, col)}
-        </div>
-      </Fragment>
-    );
+    return renderBottomLeft({
+      orientation,
+      row,
+      width,
+      alpha,
+      col,
+      whiteColor
+    });
+  }
+
+  if (isColumn) {
+    return renderLetters({
+      orientation,
+      row,
+      width,
+      alpha,
+      col,
+      whiteColor,
+      blackColor
+    });
   }
 
   if (isRow) {
-    return (
+    return renderNumbers({
+      orientation,
+      row,
+      width,
+      alpha,
+      col,
+      whiteColor,
+      blackColor,
+      isRow,
+      isBottomLeftSquare
+    });
+  }
+
+  return null;
+}
+
+export default Notation;
+
+function renderBottomLeft({ orientation, row, width, alpha, col, whiteColor }) {
+  return (
+    <Fragment>
       <div
+        data-testid={`bottom-left-${getRow(orientation, row)}`}
         style={{
           ...notationStyle,
-          ...rowStyle({
-            row,
-            width,
-            blackColor,
-            whiteColor,
-            orientation,
-            isBottomLeftSquare,
-            isRow
-          }),
+          ...{ fontSize: width / 48, color: whiteColor },
           ...numericStyle(width)
         }}
       >
         {getRow(orientation, row)}
       </div>
-    );
-  }
-
-  if (isColumn) {
-    return (
       <div
-        data-testid={`column-${getColumn(orientation, alpha, col)}`}
+        data-testid={`bottom-left-${getColumn(orientation, alpha, col)}`}
         style={{
           ...notationStyle,
-          ...columnStyle({ col, width, blackColor, whiteColor }),
+          ...{ fontSize: width / 48, color: whiteColor },
           ...alphaStyle(width)
         }}
       >
         {getColumn(orientation, alpha, col)}
       </div>
-    );
-  }
-  return null;
+    </Fragment>
+  );
 }
 
-export default Notation;
+function renderLetters({
+  orientation,
+  width,
+  alpha,
+  col,
+  whiteColor,
+  blackColor
+}) {
+  return (
+    <div
+      data-testid={`column-${getColumn(orientation, alpha, col)}`}
+      style={{
+        ...notationStyle,
+        ...columnStyle({ col, width, blackColor, whiteColor }),
+        ...alphaStyle(width)
+      }}
+    >
+      {getColumn(orientation, alpha, col)}
+    </div>
+  );
+}
+
+function renderNumbers({
+  orientation,
+  row,
+  width,
+  whiteColor,
+  blackColor,
+  isRow,
+  isBottomLeftSquare
+}) {
+  return (
+    <div
+      style={{
+        ...notationStyle,
+        ...rowStyle({
+          row,
+          width,
+          blackColor,
+          whiteColor,
+          orientation,
+          isBottomLeftSquare,
+          isRow
+        }),
+        ...numericStyle(width)
+      }}
+    >
+      {getRow(orientation, row)}
+    </div>
+  );
+}
 
 const columnStyle = ({ col, width, blackColor, whiteColor }) => ({
   fontSize: width / 48,
@@ -133,18 +186,17 @@ const rowStyle = ({
 };
 
 const alphaStyle = width => ({
-  position: 'absolute',
-  bottom: width / 8 / 40,
-  right: width / 8 / 20
+  alignSelf: 'flex-end',
+  paddingLeft: width / 8 - width / 48
 });
 
 const numericStyle = width => ({
-  position: 'absolute',
-  top: width / 8 / 40,
-  left: width / 8 / 40
+  alignSelf: 'flex-start',
+  paddingRight: width / 8 - width / 48
 });
 
 const notationStyle = {
-  fontFamily: `${'Helvetica Neue'}, Helvetica, Arial, sans-serif`,
-  fontSize: '14px'
+  fontFamily: 'Helvetica Neue',
+  zIndex: 10,
+  position: 'absolute'
 };

@@ -41,7 +41,7 @@ class Piece extends Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('touchstart', this.props.setTouchState);
+    window.removeEventListener('touchstart', this.props.setTouchState);
   }
 
   render() {
@@ -67,7 +67,6 @@ class Piece extends Component {
     return connectDragSource(
       <div
         data-testid={`${piece}-${currentSquare}`}
-        style={pieceStyles(width)}
         className={getClassNames({
           manualDrop,
           currentSquare,
@@ -139,13 +138,6 @@ function collect(connect, monitor) {
 
 export default DragSource(ItemTypes.PIECE, pieceSource, collect)(Piece);
 
-const pieceStyles = width => ({
-  display: 'flex',
-  justifyContent: 'center',
-  width: width / 8,
-  height: width / 8
-});
-
 const getClassNames = ({
   manualDrop,
   currentSquare,
@@ -154,4 +146,3 @@ const getClassNames = ({
 }) => {
   return manualDrop && currentSquare === dropSquare ? animationOnDrop : '';
 };
-// imageFormat === 'png' ? 'default' : isDragging ? 'grabbing' : 'grab'
