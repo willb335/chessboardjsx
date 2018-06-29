@@ -24,7 +24,6 @@ class Piece extends Component {
     sourceSquare: PropTypes.string,
     targetSquare: PropTypes.string,
     waitForTransition: PropTypes.bool,
-    phantomPiece: PropTypes.object,
     manualDrop: PropTypes.bool,
     dropSquare: PropTypes.string,
     setTouchState: PropTypes.func,

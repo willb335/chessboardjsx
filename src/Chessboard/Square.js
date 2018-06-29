@@ -86,8 +86,7 @@ class Square extends Component {
               <div style={{ zIndex: 2 }}>{children}</div>
               <svg
                 style={{
-                  width: width / 8,
-                  height: width / 8,
+                  ...size(width),
                   position: 'absolute',
                   display: 'block'
                 }}
@@ -130,8 +129,7 @@ const squareStyles = props => {
 
   return {
     ...{
-      width: width / 8,
-      height: width / 8,
+      ...size(width),
       ...center,
       ...(squareColor === 'black' ? darkSquareStyle : lightSquareStyle),
       ...(isOver && onHoverSquareStyle)
@@ -148,19 +146,21 @@ const highlightStyles = ({
   return selectedSquares.length && selectedSquares.includes(square)
     ? {
         ...center,
-        width: width / 14,
-        height: width / 14,
+        ...size(width),
         ...selectedSquareStyle
       }
     : {
         ...center,
-        width: width / 8,
-        height: width / 8
+        ...size(width)
       };
 };
 
 const center = {
   display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
+  justifyContent: 'center'
 };
+
+const size = width => ({
+  width: width / 8,
+  height: width / 8
+});

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import Piece from './Piece';
 import Square from './Square';
@@ -81,48 +81,47 @@ class Board extends Component {
                           screenHeight={context.screenHeight}
                         >
                           {this.hasPiece(context.currentPosition, square) ? (
-                            <Fragment>
-                              {this.showPhantom({
-                                square,
-                                targetSquare: context.targetSquare,
-                                phantomPiece: context.phantomPiece
-                              }) && (
-                                <PhantomPiece
-                                  width={context.width}
-                                  phantomPieceValue={
-                                    context.phantomPiece[context.targetSquare]
-                                  }
-                                  defaultPieces={context.defaultPieces}
-                                  pieces={context.pieces}
-                                />
-                              )}
-                              <Piece
-                                dropSquare={context.dropSquare}
-                                defaultPieces={context.defaultPieces}
-                                currentSquare={square}
-                                piece={context.currentPosition[square]}
-                                width={context.width}
-                                setPosition={context.setPosition}
-                                dropOffBoard={context.dropOffBoard}
-                                getSquareCoordinates={this.getSquareCoordinates}
-                                draggable={context.draggable}
-                                onDrop={context.onDrop}
-                                sourceSquare={context.sourceSquare}
-                                targetSquare={context.targetSquare}
-                                animationOnDrop={context.animationOnDrop}
-                                waitForTransition={context.waitForTransition}
-                                phantomPiece={context.phantomPiece}
-                                transitionDuration={context.transitionDuration}
-                                orientation={context.orientation}
-                                manualDrop={context.manualDrop}
-                                id={context.id}
-                                setAnimation={context.setAnimation}
-                                setTouchState={context.setTouchState}
-                                renderPieces={context.renderPieces}
-                                pieces={context.pieces}
-                              />
-                            </Fragment>
+                            <Piece
+                              dropSquare={context.dropSquare}
+                              defaultPieces={context.defaultPieces}
+                              currentSquare={square}
+                              piece={context.currentPosition[square]}
+                              width={context.width}
+                              setPosition={context.setPosition}
+                              dropOffBoard={context.dropOffBoard}
+                              getSquareCoordinates={this.getSquareCoordinates}
+                              draggable={context.draggable}
+                              onDrop={context.onDrop}
+                              sourceSquare={context.sourceSquare}
+                              targetSquare={context.targetSquare}
+                              animationOnDrop={context.animationOnDrop}
+                              waitForTransition={context.waitForTransition}
+                              transitionDuration={context.transitionDuration}
+                              orientation={context.orientation}
+                              manualDrop={context.manualDrop}
+                              id={context.id}
+                              setAnimation={context.setAnimation}
+                              setTouchState={context.setTouchState}
+                              renderPieces={context.renderPieces}
+                              pieces={context.pieces}
+                            />
                           ) : null}
+
+                          {this.showPhantom({
+                            square,
+                            targetSquare: context.targetSquare,
+                            phantomPiece: context.phantomPiece
+                          }) && (
+                            <PhantomPiece
+                              width={context.width}
+                              phantomPieceValue={
+                                context.phantomPiece[context.targetSquare]
+                              }
+                              defaultPieces={context.defaultPieces}
+                              pieces={context.pieces}
+                            />
+                          )}
+
                           {context.showNotation && (
                             <Notation
                               row={row}

@@ -149,7 +149,7 @@ class Chessboard extends Component {
   };
 
   static defaultProps = {
-    width: 480,
+    width: 560,
     calcWidth: false,
     orientation: 'white',
     showNotation: true,
@@ -173,7 +173,7 @@ class Chessboard extends Component {
     onMouseOutSquare: false,
     onHoverSquareStyle: { boxShadow: `inset 0 0 1px 3px yellow` },
     selectedSquareStyle: {
-      background: `radial-gradient(circle, #fffc00, #ffffff)`,
+      background: `radial-gradient(circle, #fffc00 36%, transparent 40%)`,
       borderRadius: `50%`
     },
     getPosition: false
@@ -300,8 +300,7 @@ class Chessboard extends Component {
         };
       }
 
-      /* Check if currentPosition has a piece occupying the target square.
-       This is checked in order for there to be smooth transitions on piece captures */
+      // Check if currentPosition has a piece occupying the target square
       if (currentPosition[targetSquare]) {
         // Temporarily delete the target square from the new position
         delete positionFromProps[targetSquare];

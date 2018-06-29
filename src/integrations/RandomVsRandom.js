@@ -16,7 +16,7 @@ class RandomVsRandom extends Component {
     window.clearTimeout(this.timer());
   }
 
-  timer = () => window.setTimeout(this.makeRandomMove, 1200);
+  timer = () => window.setTimeout(this.makeRandomMove, 1000);
 
   makeRandomMove = () => {
     let possibleMoves = this.game.moves();

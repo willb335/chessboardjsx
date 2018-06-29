@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 
 import Chessboard from './Chessboard';
 // import HumanVsRandom from './integrations/HumanVsRandom';
-// import RandomVsRandom from './integrations/RandomVsRandom';
-import HumanVsHuman from './integrations/HumanVsHuman';
-import { roughSquare } from './integrations/customRough';
+import RandomVsRandom from './integrations/RandomVsRandom';
+// import HumanVsHuman from './integrations/HumanVsHuman';
+// import { roughSquare } from './integrations/customRough';
 // import RandomFEN from './integrations/RandomFEN';
-import wP from './img/kingJames.png';
+// import wP from './img/kingJames.png';
 
 // const calcWidth = screenWidth => (screenWidth < 500 ? 150 : 480);
 const boardStyle = {
@@ -19,7 +19,7 @@ class Demo extends Component {
   render() {
     return (
       <div style={mainContainer}>
-        <div style={title}>Chessboard.jsx</div>
+        {/* <div style={title}>Chessboard.jsx</div>
         <div style={boardsContainer}>
           <div>
             <div style={board}>
@@ -38,42 +38,42 @@ class Demo extends Component {
             <div style={boardDescriptions}>
               Standard board with spare pieces
             </div>
-          </div>
-          <div>
-            <div style={board}>
-              <HumanVsHuman>
-                {({
-                  position,
-                  selectedSquares,
-                  onDrop,
-                  onMouseOverSquare,
-                  onMouseOutSquare
-                  // getPosition
-                  // darkSquareStyle
-                }) => (
-                  <Chessboard
-                    id="humanVsHuman"
-                    width={500}
-                    position={position}
-                    selectedSquares={selectedSquares}
-                    onDrop={onDrop}
-                    onMouseOverSquare={onMouseOverSquare}
-                    onMouseOutSquare={onMouseOutSquare}
-                    roughSquare={roughSquare}
-                    // animationOnDrop="swing"
-                    boardStyle={boardStyle}
-                    showNotation={false}
-                    orientation="black"
-                    // getPosition={getPosition}
-                    // darkSquareStyle={darkSquareStyle}
-                  />
-                )}
-              </HumanVsHuman>
-            </div>
-            <div style={boardDescriptions}>
+          </div> */}
+        <div>
+          {/* <div style={board}>
+            <HumanVsHuman>
+              {({
+                position,
+                selectedSquares,
+                onDrop,
+                onMouseOverSquare,
+                onMouseOutSquare
+                // getPosition
+                // darkSquareStyle
+              }) => (
+                <Chessboard
+                  id="humanVsHuman"
+                  width={500}
+                  position={position}
+                  selectedSquares={selectedSquares}
+                  onDrop={onDrop}
+                  onMouseOverSquare={onMouseOverSquare}
+                  onMouseOutSquare={onMouseOutSquare}
+                  // roughSquare={roughSquare}
+                  animationOnDrop="swing"
+                  boardStyle={boardStyle}
+                  showNotation={true}
+                  orientation="black"
+                  // getPosition={getPosition}
+                  // darkSquareStyle={darkSquareStyle}
+                />
+              )}
+            </HumanVsHuman>
+          </div> */}
+          {/* <div style={boardDescriptions}>
               With move validation and rough.js
             </div>
-          </div>
+          </div> */}
           {/* <div>
             <div style={board}>
               <RandomFEN>
@@ -92,26 +92,24 @@ class Demo extends Component {
               Random positions set via position prop
             </div>
           </div> */}
-          {/* <div>
+          <div>
             <div style={board}>
               <RandomVsRandom>
                 {({ position }) => (
                   <Chessboard
                     // calcWidth={calcWidth}
-                    width={500}
+                    width={600}
                     id="random"
-                    orientation="black"
+                    // orientation="black"
                     position={position}
                     transitionDuration={300}
                     boardStyle={boardStyle}
+                    // pieces={{ wP, bP: wP }}
                   />
                 )}
               </RandomVsRandom>
             </div>
-            <div>
-              <div style={boardDescriptions}>Random vs Random</div>
-            </div>
-          </div> */}
+          </div>
           {/* <div>
             <div style={board}>
               <HumanVsRandom>
@@ -158,23 +156,14 @@ class Demo extends Component {
 
 export default Demo;
 
-const boardsContainer = {
-  display: 'flex',
-  justifyContent: 'space-around',
-  alignItems: 'center',
-  flexWrap: 'wrap',
-  width: '90vw',
-  fontFamily: 'Neuton, serif'
-};
-
-const title = {
-  fontFamily: 'Neuton, serif',
-  fontSize: '5rem',
-  margin: 15,
-  position: 'relative',
-  display: 'flex',
-  width: 'auto'
-};
+// const boardsContainer = {
+//   display: 'flex',
+//   justifyContent: 'space-around',
+//   alignItems: 'center',
+//   flexWrap: 'wrap',
+//   width: '90vw',
+//   fontFamily: 'Neuton, serif'
+// };
 
 const mainContainer = {
   display: 'flex',
@@ -184,16 +173,4 @@ const mainContainer = {
   width: '100vw'
 };
 
-const boardDescriptions = {
-  fontSize: '2rem',
-  textAlign: 'center'
-};
-
 const board = { margin: 30 };
-
-// position={
-//   '2rq1rk1/pb1n1ppN/4p3/1pb5/3P1Pn1/P1NB4/1PQ3PP/R1B2RK1 w - - 1 16'
-// }
-// position={
-//   '2R5/4bppk/1p1p3Q/5R1P/4P3/5P2/r4q1P/7K b - - 6 50'
-// }

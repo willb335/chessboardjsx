@@ -59,7 +59,7 @@ export const renderChessPieces = (
       );
     } else
       return (
-        <svg viewBox={`-3 -2.5 50 50`} style={svgStyles}>
+        <svg viewBox={`-3 -3 50 50`} style={svgStyles}>
           <g>{pieces[piece]}</g>
         </svg>
       );
@@ -69,7 +69,7 @@ export const renderChessPieces = (
 const renderDefaultPieces = ({ piece, defaultPieces }, svgStyles) => {
   if (defaultPieces[piece]) {
     return (
-      <svg viewBox={`-3 -2.5 50 50`} style={svgStyles}>
+      <svg viewBox={`-3 -3 50 50`} style={svgStyles}>
         <g>{defaultPieces[piece]}</g>
       </svg>
     );
@@ -110,10 +110,7 @@ export function renderPieces({
       imgStyles: imgStyles(imgStyleParams, getTranslation),
       svgStyles: {
         ...imgStyles(imgStyleParams, getTranslation),
-        ...{
-          width: width / 8,
-          height: width / 8
-        }
+        ...{ width: width / 8, height: width / 8 }
       }
     }
   );
@@ -140,5 +137,5 @@ const imgStyles = (
     getSquareCoordinates
   }),
   transition: `transform ${transitionDuration}ms`,
-  zIndex: 5
+  zIndex: 100
 });

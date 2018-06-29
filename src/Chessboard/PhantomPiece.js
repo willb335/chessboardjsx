@@ -26,8 +26,8 @@ function PhantomPiece({ pieces, width, defaultPieces, phantomPieceValue }) {
 export default PhantomPiece;
 
 const phantomPieceStyles = width => ({
-  position: 'absolute',
+  position: 'fixed',
   width: width / 8,
   height: width / 8,
-  zIndex: 0
+  outline: `2px solid red`
 });
