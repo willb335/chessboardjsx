@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 
 import Chessboard from './Chessboard';
 // import HumanVsRandom from './integrations/HumanVsRandom';
-import RandomVsRandom from './integrations/RandomVsRandom';
+// import RandomVsRandom from './integrations/RandomVsRandom';
 // import HumanVsHuman from './integrations/HumanVsHuman';
 // import { roughSquare } from './integrations/customRough';
 // import RandomFEN from './integrations/RandomFEN';
-// import wP from './img/kingJames.png';
+import bK from './img/kingJames.png';
 
 // const calcWidth = screenWidth => (screenWidth < 500 ? 150 : 480);
 const boardStyle = {
@@ -18,27 +18,27 @@ class Demo extends Component {
   state = { keep: true };
   render() {
     return (
-      <div style={mainContainer}>
-        {/* <div style={title}>Chessboard.jsx</div>
-        <div style={boardsContainer}>
-          <div>
-            <div style={board}>
-              <Chessboard
-                id="standard"
-                // calcWidth={calcWidth}
-                width={500}
-                position="start"
-                // animationOnDrop="rubberBand"
-                // sparePieces={true}
-                boardStyle={boardStyle}
-                pieces={{ wP }}
-                orientation="black"
-              />
-            </div>
-            <div style={boardDescriptions}>
-              Standard board with spare pieces
-            </div>
-          </div> */}
+      <div style={boardsContainer}>
+        <div>
+          <div style={board}>
+            <Chessboard
+              id="standard"
+              // calcWidth={calcWidth}
+              width={500}
+              // position="start"
+              position={{
+                d6: 'bK',
+                d4: 'wP',
+                e4: 'wK'
+              }}
+              // animationOnDrop="rubberBand"
+              // sparePieces={true}
+              boardStyle={boardStyle}
+              pieces={{ bK }}
+              // orientation="black"
+            />
+          </div>
+        </div>
         <div>
           {/* <div style={board}>
             <HumanVsHuman>
@@ -92,13 +92,13 @@ class Demo extends Component {
               Random positions set via position prop
             </div>
           </div> */}
-          <div>
+          {/* <div>
             <div style={board}>
               <RandomVsRandom>
                 {({ position }) => (
                   <Chessboard
                     // calcWidth={calcWidth}
-                    width={600}
+                    width={500}
                     id="random"
                     // orientation="black"
                     position={position}
@@ -109,7 +109,7 @@ class Demo extends Component {
                 )}
               </RandomVsRandom>
             </div>
-          </div>
+          </div> */}
           {/* <div>
             <div style={board}>
               <HumanVsRandom>
@@ -156,21 +156,13 @@ class Demo extends Component {
 
 export default Demo;
 
-// const boardsContainer = {
-//   display: 'flex',
-//   justifyContent: 'space-around',
-//   alignItems: 'center',
-//   flexWrap: 'wrap',
-//   width: '90vw',
-//   fontFamily: 'Neuton, serif'
-// };
-
-const mainContainer = {
+const boardsContainer = {
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'space-around',
   alignItems: 'center',
-  flexDirection: 'column',
-  width: '100vw'
+  flexWrap: 'wrap',
+  width: '90vw',
+  fontFamily: 'Neuton, serif'
 };
 
 const board = { margin: 30 };

@@ -82,7 +82,6 @@ class Board extends Component {
                         >
                           {this.hasPiece(context.currentPosition, square) ? (
                             <Piece
-                              dropSquare={context.dropSquare}
                               defaultPieces={context.defaultPieces}
                               currentSquare={square}
                               piece={context.currentPosition[square]}
@@ -94,16 +93,14 @@ class Board extends Component {
                               onDrop={context.onDrop}
                               sourceSquare={context.sourceSquare}
                               targetSquare={context.targetSquare}
-                              animationOnDrop={context.animationOnDrop}
                               waitForTransition={context.waitForTransition}
                               transitionDuration={context.transitionDuration}
                               orientation={context.orientation}
-                              manualDrop={context.manualDrop}
                               id={context.id}
-                              setAnimation={context.setAnimation}
                               setTouchState={context.setTouchState}
                               renderPieces={context.renderPieces}
                               pieces={context.pieces}
+                              wasManuallyDropped={context.wasManuallyDropped}
                             />
                           ) : null}
 

@@ -60,7 +60,7 @@ export default DragLayer(collect)(CustomDragLayer);
 const layerStyles = {
   position: 'fixed',
   pointerEvents: 'none',
-  zIndex: 500,
+  zIndex: 10,
   left: 0,
   top: 0
 };

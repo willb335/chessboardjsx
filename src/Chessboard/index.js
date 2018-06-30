@@ -54,10 +54,6 @@ class Chessboard extends Component {
      */
     dropOffBoard: PropTypes.oneOf(['snapback', 'trash']),
     /**
-     * The css animation performed on drop.
-     */
-    animationOnDrop: PropTypes.oneOf(['', 'pulse', 'swing', 'rubberBand']),
-    /**
      * The logic to be performed after the drop.  This is where to check if moves are legal with
      * a library like chess.js.
      *
@@ -158,7 +154,6 @@ class Chessboard extends Component {
     draggable: true,
     dropOffBoard: 'snapback',
     defaultPieces,
-    animationOnDrop: '',
     onDrop: false,
     transitionDuration: 300,
     boardStyle: {},
@@ -171,7 +166,7 @@ class Chessboard extends Component {
     selectedSquares: [],
     onMouseOverSquare: false,
     onMouseOutSquare: false,
-    onHoverSquareStyle: { boxShadow: `inset 0 0 1px 3px yellow` },
+    onHoverSquareStyle: { boxShadow: `inset 0 0 1px 4px yellow` },
     selectedSquareStyle: {
       background: `radial-gradient(circle, #fffc00 36%, transparent 40%)`,
       borderRadius: `50%`
@@ -189,7 +184,6 @@ class Chessboard extends Component {
     sourcePiece: '',
     waitForTransition: false,
     phantomPiece: null,
-    dropSquare: null,
     wasPieceTouched: false,
     manualDrop: false
   };
@@ -211,34 +205,17 @@ class Chessboard extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const {
-      position,
-      transitionDuration,
-      animationOnDrop,
-      getPosition
-    } = this.props;
-    const { waitForTransition, manualDrop } = this.state;
+    const { position, transitionDuration, getPosition } = this.props;
+    const { waitForTransition } = this.state;
     const positionFromProps = getPositionObject(position);
     const previousPositionFromProps = getPositionObject(prevProps.position);
 
     // Check if there is a new position coming from props
     if (!isEqual(positionFromProps, previousPositionFromProps)) {
       this.setState({ previousPositionFromProps });
-      // get board position for parent component
+      // get board position for user
       getPosition && getPosition(positionFromProps);
 
-      // If piece was dropped manually then give some time for the drop animation
-      if (manualDrop) {
-        setTimeout(
-          () =>
-            this.setState({
-              manualDrop: false,
-              currentPosition: positionFromProps
-            }),
-          animationOnDrop ? 500 : 0
-        );
-        return;
-      }
       // Give piece time to transition.
       if (waitForTransition) {
         return new Promise(resolve => {
@@ -258,12 +235,12 @@ class Chessboard extends Component {
     }
   }
 
-  // Changes state when there is a new position from props
   static getDerivedStateFromProps(props, state) {
     const { position } = props;
     const { currentPosition, previousPositionFromProps, manualDrop } = state;
     let positionFromProps = getPositionObject(position);
 
+    // If positionFromProps is a new position then execute, else null
     if (
       previousPositionFromProps &&
       !isEqual(positionFromProps, previousPositionFromProps) &&
@@ -277,7 +254,6 @@ class Chessboard extends Component {
         squaresAffected
       } = constructPositionAttributes(currentPosition, positionFromProps);
 
-      // If the position comes from the onDrop prop then allow for drop animation
       if (manualDrop) {
         return {
           sourceSquare,
@@ -285,7 +261,7 @@ class Chessboard extends Component {
           sourcePiece,
           currentPosition: positionFromProps,
           waitForTransition: false,
-          manualDrop: true
+          manualDrop: false
         };
       }
 
@@ -295,7 +271,6 @@ class Chessboard extends Component {
         return {
           currentPosition: positionFromProps,
           waitForTransition: false,
-          dropSquare: null,
           manualDrop: false
         };
       }
@@ -314,7 +289,6 @@ class Chessboard extends Component {
           waitForTransition: true,
           // Create a phantom piece as a stand in
           phantomPiece: { [targetSquare]: currentPosition[targetSquare] },
-          dropSquare: null,
           manualDrop: false
         };
       }
@@ -325,16 +299,13 @@ class Chessboard extends Component {
         sourcePiece,
         currentPosition: positionFromProps,
         waitForTransition: true,
-        dropSquare: null,
         manualDrop: false
       };
     }
     return null;
   }
 
-  // Called on every piece drop
-  setAnimation = targetSquare =>
-    this.setState({ dropSquare: targetSquare, manualDrop: true });
+  wasManuallyDropped = bool => this.setState({ manualDrop: bool });
 
   /* Called on drop if there is no onDrop prop.  This is what executes when a position does not
    change through the position prop, i.e., simple drag and drop operations on the pieces.*/
@@ -347,10 +318,8 @@ class Chessboard extends Component {
       let newPosition = currentPosition;
       delete newPosition[sourceSquare];
       this.setState({ currentPosition: newPosition });
-      // get board position for parent component
-      getPosition && getPosition(currentPosition);
-
-      return;
+      // get board position for user
+      return getPosition && getPosition(currentPosition);
     }
 
     let newPosition = currentPosition;
@@ -358,7 +327,7 @@ class Chessboard extends Component {
     newPosition[targetSquare] = piece;
 
     this.setState(() => ({ currentPosition: newPosition }));
-    // get board position for parent component
+    // get board position for user
     getPosition && getPosition(currentPosition);
   };
 
@@ -382,7 +351,6 @@ class Chessboard extends Component {
       sourcePiece,
       waitForTransition,
       phantomPiece,
-      dropSquare,
       wasPieceTouched,
       currentPosition,
       manualDrop,
@@ -410,12 +378,11 @@ class Chessboard extends Component {
               phantomPiece,
               setPosition: this.setPosition,
               manualDrop,
-              dropSquare,
-              setAnimation: this.setAnimation,
               setTouchState: this.setTouchState,
               currentPosition,
               screenWidth,
-              screenHeight
+              screenHeight,
+              wasManuallyDropped: this.wasManuallyDropped
             }
           }}
         >

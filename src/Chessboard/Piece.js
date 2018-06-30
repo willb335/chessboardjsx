@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
 import { DragSource } from 'react-dnd';
 import PropTypes from 'prop-types';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { ItemTypes } from './helpers';
-import './styles/animations.css';
 
 class Piece extends Component {
   static propTypes = {
@@ -18,14 +17,11 @@ class Piece extends Component {
     dropOffBoard: PropTypes.string,
     getSquareCoordinates: PropTypes.func,
     onDrop: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
-    animationOnDrop: PropTypes.string,
     transitionDuration: PropTypes.number,
     defaultPieces: PropTypes.objectOf(PropTypes.object),
     sourceSquare: PropTypes.string,
     targetSquare: PropTypes.string,
     waitForTransition: PropTypes.bool,
-    manualDrop: PropTypes.bool,
-    dropSquare: PropTypes.string,
     setTouchState: PropTypes.func,
     renderPieces: PropTypes.func,
     pieces: PropTypes.object
@@ -57,37 +53,24 @@ class Piece extends Component {
       isDragging,
       connectDragSource,
       renderPieces,
-      manualDrop,
-      dropSquare,
-      animationOnDrop,
       sourceSquare
     } = this.props;
 
     return connectDragSource(
-      <div
-        data-testid={`${piece}-${currentSquare}`}
-        className={getClassNames({
-          manualDrop,
+      renderPieces &&
+        renderPieces({
           currentSquare,
-          dropSquare,
-          animationOnDrop
-        })}
-      >
-        {renderPieces &&
-          renderPieces({
-            currentSquare,
-            targetSquare,
-            waitForTransition,
-            getSquareCoordinates,
-            pieces,
-            piece,
-            width,
-            defaultPieces,
-            transitionDuration,
-            isDragging,
-            sourceSquare
-          })}
-      </div>
+          targetSquare,
+          waitForTransition,
+          getSquareCoordinates,
+          pieces,
+          piece,
+          width,
+          defaultPieces,
+          transitionDuration,
+          isDragging,
+          sourceSquare
+        })
     );
   }
 }
@@ -104,25 +87,35 @@ const pieceSource = {
     };
   },
   endDrag(props, monitor) {
+    const {
+      setPosition,
+      dropOffBoard,
+      piece,
+      currentSquare,
+      onDrop,
+      wasManuallyDropped
+    } = props;
     const dropResults = monitor.getDropResult();
     const didDrop = monitor.didDrop();
 
-    if (!didDrop && props.dropOffBoard === 'trash') {
-      props.setPosition(props.piece, props.currentSquare);
-      return;
+    // trash piece when dropped off board
+    if (!didDrop && dropOffBoard === 'trash') {
+      return setPosition(piece, currentSquare);
     }
 
     const board = monitor.getItem().board;
     const dropBoard = dropResults && dropResults.board;
 
+    // check if target board is source board
     if (board === dropBoard && didDrop) {
-      if (props.onDrop) {
-        props.setAnimation(dropResults.target);
-        props.onDrop(props.currentSquare, dropResults.target);
-        return;
+      if (onDrop) {
+        wasManuallyDropped(true);
+        // execute user's logic
+        return onDrop(props.currentSquare, dropResults.target);
       }
-      props.setAnimation(dropResults.target);
-      props.setPosition(props.piece, props.currentSquare, dropResults.target);
+      wasManuallyDropped(true);
+      // set new position
+      setPosition(piece, currentSquare, dropResults.target);
     }
   }
 };
@@ -136,12 +129,3 @@ function collect(connect, monitor) {
 }
 
 export default DragSource(ItemTypes.PIECE, pieceSource, collect)(Piece);
-
-const getClassNames = ({
-  manualDrop,
-  currentSquare,
-  dropSquare,
-  animationOnDrop
-}) => {
-  return manualDrop && currentSquare === dropSquare ? animationOnDrop : '';
-};

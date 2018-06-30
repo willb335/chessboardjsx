@@ -43,35 +43,46 @@ const areCustomPieces = (pieces, piece) =>
   Object.keys(pieces).length && Object.keys(pieces).includes(piece);
 
 export const renderChessPieces = (
-  { pieces, piece, width, defaultPieces },
+  { currentSquare, pieces, piece, width, defaultPieces },
   { imgStyles = {}, svgStyles = {} } = {}
 ) => {
   if (areCustomPieces(pieces, piece)) {
     if (isImage(pieces[piece], ['png', 'jpg', 'jpeg'])) {
       return (
-        <div style={imgStyles}>
+        <div data-testid={`${piece}-${currentSquare}`} style={imgStyles}>
           <img
             style={{ width: width / 8, height: width / 8 }}
             src={pieces[piece]}
-            alt=""
+            alt={`${piece}`}
           />
         </div>
       );
     } else
       return (
-        <svg viewBox={`-3 -3 50 50`} style={svgStyles}>
-          <g>{pieces[piece]}</g>
-        </svg>
+        <div data-testid={`${piece}-${currentSquare}`} style={svgStyles}>
+          <svg viewBox={`-3 -3 50 50`}>
+            <g>{pieces[piece]}</g>
+          </svg>
+        </div>
       );
-  } else return renderDefaultPieces({ piece, defaultPieces }, svgStyles);
+  } else
+    return renderDefaultPieces(
+      { currentSquare, piece, defaultPieces },
+      svgStyles
+    );
 };
 
-const renderDefaultPieces = ({ piece, defaultPieces }, svgStyles) => {
+const renderDefaultPieces = (
+  { currentSquare, piece, defaultPieces },
+  svgStyles
+) => {
   if (defaultPieces[piece]) {
     return (
-      <svg viewBox={`-3 -3 50 50`} style={svgStyles}>
-        <g>{defaultPieces[piece]}</g>
-      </svg>
+      <div data-testid={`${piece}-${currentSquare}`} style={svgStyles}>
+        <svg viewBox={`1 1 42 42`}>
+          <g>{defaultPieces[piece]}</g>
+        </svg>
+      </div>
     );
   } else return null;
 };
@@ -101,6 +112,7 @@ export function renderPieces({
 
   return renderChessPieces(
     {
+      currentSquare,
       pieces,
       piece,
       defaultPieces,
@@ -137,5 +149,5 @@ const imgStyles = (
     getSquareCoordinates
   }),
   transition: `transform ${transitionDuration}ms`,
-  zIndex: 100
+  zIndex: 5
 });

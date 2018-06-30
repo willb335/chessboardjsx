@@ -83,7 +83,7 @@ class Square extends Component {
         >
           {roughSquare ? (
             <div style={center}>
-              <div style={{ zIndex: 2 }}>{children}</div>
+              {children}
               <svg
                 style={{
                   ...size(width),

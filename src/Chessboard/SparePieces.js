@@ -51,15 +51,13 @@ class SparePieces extends Component {
                     sourceSquare={context.sourceSquare}
                     targetSquare={context.targetSquare}
                     sourcePiece={context.sourcePiece}
-                    animationOnDrop={context.animationOnDrop}
                     orientation={context.orientation}
                     manualDrop={context.manualDrop}
-                    dropSquare={context.dropSquare}
                     id={context.id}
-                    setAnimation={context.setAnimation}
                     setTransition={context.setTransition}
                     pieces={context.pieces}
                     renderPieces={context.renderPieces}
+                    wasManuallyDropped={context.wasManuallyDropped}
                   />
                 </div>
               ))}
