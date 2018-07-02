@@ -15,10 +15,10 @@ class Square extends Component {
     setSquareCoordinates: PropTypes.func,
     lightSquareStyle: PropTypes.object,
     darkSquareStyle: PropTypes.object,
-    roughSquare: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+    roughSquare: PropTypes.func,
     selectedSquares: PropTypes.array,
-    onMouseOverSquare: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
-    onMouseOutSquare: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+    onMouseOverSquare: PropTypes.func,
+    onMouseOutSquare: PropTypes.func,
     onHoverSquareStyle: PropTypes.object,
     selectedSquareStyle: PropTypes.object,
     screenWidth: PropTypes.number,
@@ -27,7 +27,7 @@ class Square extends Component {
 
   componentDidMount() {
     const { square, setSquareCoordinates, width, roughSquare } = this.props;
-    roughSquare && roughSquare(this.roughSquareSvg, width / 8);
+    roughSquare(this.roughSquareSvg, width / 8);
 
     const { x, y } = this[square].getBoundingClientRect();
     setSquareCoordinates(x, y, square);
@@ -70,8 +70,8 @@ class Square extends Component {
         data-testid={`${squareColor}-square`}
         ref={ref => (this[square] = ref)}
         style={squareStyles(this.props)}
-        onMouseOver={() => onMouseOverSquare && onMouseOverSquare(square)}
-        onMouseOut={() => onMouseOutSquare && onMouseOutSquare(square)}
+        onMouseOver={() => onMouseOverSquare(square)}
+        onMouseOut={() => onMouseOutSquare(square)}
       >
         <div
           style={highlightStyles({

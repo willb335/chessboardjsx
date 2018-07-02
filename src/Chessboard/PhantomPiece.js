@@ -6,16 +6,12 @@ import { renderChessPieces } from './RenderPieces';
 PhantomPiece.propTypes = {
   width: PropTypes.number,
   phantomPieceValue: PropTypes.string,
-  defaultPieces: PropTypes.object,
   pieces: PropTypes.object
 };
 
-function PhantomPiece({ pieces, width, defaultPieces, phantomPieceValue }) {
+function PhantomPiece({ width, pieces, phantomPieceValue }) {
   return renderChessPieces(
-    {
-      ...{ pieces, width, defaultPieces },
-      ...{ piece: phantomPieceValue }
-    },
+    { width, pieces, piece: phantomPieceValue },
     {
       imgStyles: phantomPieceStyles(width),
       svgStyles: phantomPieceStyles(width)

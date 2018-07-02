@@ -18,13 +18,12 @@ class Piece extends Component {
     getSquareCoordinates: PropTypes.func,
     onDrop: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
     transitionDuration: PropTypes.number,
-    defaultPieces: PropTypes.objectOf(PropTypes.object),
+    pieces: PropTypes.object,
     sourceSquare: PropTypes.string,
     targetSquare: PropTypes.string,
     waitForTransition: PropTypes.bool,
     setTouchState: PropTypes.func,
-    renderPieces: PropTypes.func,
-    pieces: PropTypes.object
+    renderPieces: PropTypes.func
   };
 
   componentDidMount() {
@@ -45,10 +44,9 @@ class Piece extends Component {
       targetSquare,
       waitForTransition,
       getSquareCoordinates,
-      pieces,
       piece,
       width,
-      defaultPieces,
+      pieces,
       transitionDuration,
       isDragging,
       connectDragSource,
@@ -63,10 +61,9 @@ class Piece extends Component {
           targetSquare,
           waitForTransition,
           getSquareCoordinates,
-          pieces,
           piece,
           width,
-          defaultPieces,
+          pieces,
           transitionDuration,
           isDragging,
           sourceSquare
@@ -108,7 +105,8 @@ const pieceSource = {
 
     // check if target board is source board
     if (board === dropBoard && didDrop) {
-      if (onDrop) {
+      if (onDrop.length) {
+        console.log('ondrop length', onDrop.length);
         wasManuallyDropped(true);
         // execute user's logic
         return onDrop(props.currentSquare, dropResults.target);

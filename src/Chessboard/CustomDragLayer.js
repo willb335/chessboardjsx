@@ -13,10 +13,9 @@ class CustomDragLayer extends Component {
     }),
     isDragging: PropTypes.bool.isRequired,
     width: PropTypes.number,
-    defaultPieces: PropTypes.object,
+    pieces: PropTypes.object,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    wasPieceTouched: PropTypes.bool,
-    pieces: PropTypes.object
+    wasPieceTouched: PropTypes.bool
   };
 
   render() {
@@ -24,7 +23,6 @@ class CustomDragLayer extends Component {
       isDragging,
       width,
       item,
-      defaultPieces,
       id,
       currentOffset,
       wasPieceTouched,
@@ -35,10 +33,7 @@ class CustomDragLayer extends Component {
       <div style={layerStyles}>
         <div style={getItemStyles(currentOffset, wasPieceTouched)}>
           {renderChessPieces(
-            {
-              ...{ pieces, width, defaultPieces },
-              ...{ piece: this.props.item.piece }
-            },
+            { width, pieces, piece: item.piece },
             { svgStyles: { width: width / 8, height: width / 8 } }
           )}
         </div>

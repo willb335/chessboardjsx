@@ -82,7 +82,7 @@ class Board extends Component {
                         >
                           {this.hasPiece(context.currentPosition, square) ? (
                             <Piece
-                              defaultPieces={context.defaultPieces}
+                              pieces={context.pieces}
                               currentSquare={square}
                               piece={context.currentPosition[square]}
                               width={context.width}
@@ -99,7 +99,6 @@ class Board extends Component {
                               id={context.id}
                               setTouchState={context.setTouchState}
                               renderPieces={context.renderPieces}
-                              pieces={context.pieces}
                               wasManuallyDropped={context.wasManuallyDropped}
                             />
                           ) : null}
@@ -114,7 +113,6 @@ class Board extends Component {
                               phantomPieceValue={
                                 context.phantomPiece[context.targetSquare]
                               }
-                              defaultPieces={context.defaultPieces}
                               pieces={context.pieces}
                             />
                           )}

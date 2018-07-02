@@ -59,7 +59,7 @@ class Chessboard extends Component {
      *
      * Signature: function(sourceSquare: string, targetSquare: string) => void
      */
-    onDrop: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    onDrop: PropTypes.func,
     /**
      * If false, the pieces will not be draggable
      */
@@ -98,7 +98,7 @@ class Chessboard extends Component {
      * Signature: function(node, squareWidth: number) => void
      * node: the underlying dom node for the square
      */
-    roughSquare: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    roughSquare: PropTypes.func,
     /**
      * A collection of squares, useful for legal move highlighting
      */
@@ -113,13 +113,13 @@ class Chessboard extends Component {
      *
      * Signature: function(square: string) => void
      */
-    onMouseOverSquare: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    onMouseOverSquare: PropTypes.func,
     /**
      * A function to call when the mouse has left the square.
      *
      * Signature: function() => void
      */
-    onMouseOutSquare: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    onMouseOutSquare: PropTypes.func,
     /**
      * The style object for the hovered square.
      */
@@ -135,18 +135,18 @@ class Chessboard extends Component {
      *
      * Signature: function(screenWidth: number, screenHeight: number) => void
      */
-    calcWidth: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    calcWidth: PropTypes.func,
     /**
-     * A function that returns the current position object.
+     * A function that gives access to the current position object.
      *
      * Signature: function(currentPosition: object) => void
      */
-    getPosition: PropTypes.oneOfType([PropTypes.func, PropTypes.bool])
+    getPosition: PropTypes.func
   };
 
   static defaultProps = {
     width: 560,
-    calcWidth: false,
+    calcWidth: () => {},
     orientation: 'white',
     showNotation: true,
     position: '',
@@ -154,7 +154,7 @@ class Chessboard extends Component {
     draggable: true,
     dropOffBoard: 'snapback',
     defaultPieces,
-    onDrop: false,
+    onDrop: () => {},
     transitionDuration: 300,
     boardStyle: {},
     id: '0',
@@ -162,16 +162,16 @@ class Chessboard extends Component {
     pieces: {},
     lightSquareStyle: { backgroundColor: 'rgb(240, 217, 181)' },
     darkSquareStyle: { backgroundColor: 'rgb(181, 136, 99)' },
-    roughSquare: false,
+    roughSquare: () => {},
     selectedSquares: [],
-    onMouseOverSquare: false,
-    onMouseOutSquare: false,
+    onMouseOverSquare: () => {},
+    onMouseOutSquare: () => {},
     onHoverSquareStyle: { boxShadow: `inset 0 0 1px 4px yellow` },
     selectedSquareStyle: {
       background: `radial-gradient(circle, #fffc00 36%, transparent 40%)`,
       borderRadius: `50%`
     },
-    getPosition: false
+    getPosition: () => {}
   };
 
   static Consumer = ChessboardContext.Consumer;
@@ -185,10 +185,14 @@ class Chessboard extends Component {
     waitForTransition: false,
     phantomPiece: null,
     wasPieceTouched: false,
-    manualDrop: false
+    manualDrop: false,
+    pieces: {}
   };
 
   componentDidMount() {
+    this.setState({
+      pieces: { ...this.props.defaultPieces, ...this.props.pieces }
+    });
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
   }
@@ -214,7 +218,7 @@ class Chessboard extends Component {
     if (!isEqual(positionFromProps, previousPositionFromProps)) {
       this.setState({ previousPositionFromProps });
       // get board position for user
-      getPosition && getPosition(positionFromProps);
+      getPosition(positionFromProps);
 
       // Give piece time to transition.
       if (waitForTransition) {
@@ -319,7 +323,7 @@ class Chessboard extends Component {
       delete newPosition[sourceSquare];
       this.setState({ currentPosition: newPosition });
       // get board position for user
-      return getPosition && getPosition(currentPosition);
+      return getPosition(currentPosition);
     }
 
     let newPosition = currentPosition;
@@ -328,7 +332,7 @@ class Chessboard extends Component {
 
     this.setState(() => ({ currentPosition: newPosition }));
     // get board position for user
-    getPosition && getPosition(currentPosition);
+    getPosition(currentPosition);
   };
 
   // Allows for touch drag and drop
@@ -338,9 +342,7 @@ class Chessboard extends Component {
     const {
       sparePieces,
       width,
-      defaultPieces,
       id,
-      pieces,
       calcWidth,
       orientation,
       dropOffBoard
@@ -355,21 +357,20 @@ class Chessboard extends Component {
       currentPosition,
       manualDrop,
       screenWidth,
-      screenHeight
+      screenHeight,
+      pieces
     } = this.state;
-
     return (
       <ErrorBoundary>
         <ChessboardContext.Provider
           value={{
             ...this.props,
+            pieces: Object.keys(pieces).length ? pieces : defaultPieces,
             orientation: orientation.toLowerCase(),
             dropOffBoard: dropOffBoard.toLowerCase(),
             ...{
-              width: calcWidth
+              width: calcWidth(screenWidth, screenHeight)
                 ? calcWidth(screenWidth, screenHeight)
-                  ? calcWidth(screenWidth, screenHeight)
-                  : width
                 : width,
               sourceSquare,
               targetSquare,
@@ -392,11 +393,14 @@ class Chessboard extends Component {
             {sparePieces && <SparePieces.Bottom />}
           </div>
           <CustomDragLayer
-            width={calcWidth ? calcWidth(screenWidth, screenHeight) : width}
-            defaultPieces={defaultPieces}
+            width={
+              calcWidth(screenWidth, screenHeight)
+                ? calcWidth(screenWidth, screenHeight)
+                : width
+            }
+            pieces={Object.keys(pieces).length ? pieces : defaultPieces}
             id={id}
             wasPieceTouched={wasPieceTouched}
-            pieces={pieces}
           />
         </ChessboardContext.Provider>
       </ErrorBoundary>

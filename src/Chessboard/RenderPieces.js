@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React from 'react';
 
 const isActivePiece = (currentSquare, targetSquare) =>
@@ -35,56 +36,33 @@ const getTranslation = ({
 
 const isImage = (url, imageFormats) => {
   return imageFormats.find(format => {
-    return url.includes(format) && typeof url === 'string';
+    return typeof url === 'string' && url.includes(format);
   });
 };
 
-const areCustomPieces = (pieces, piece) =>
-  Object.keys(pieces).length && Object.keys(pieces).includes(piece);
-
 export const renderChessPieces = (
-  { currentSquare, pieces, piece, width, defaultPieces },
+  { currentSquare, piece, width, pieces },
   { imgStyles = {}, svgStyles = {} } = {}
 ) => {
-  if (areCustomPieces(pieces, piece)) {
-    if (isImage(pieces[piece], ['png', 'jpg', 'jpeg'])) {
-      return (
-        <div data-testid={`${piece}-${currentSquare}`} style={imgStyles}>
-          <img
-            style={{ width: width / 8, height: width / 8 }}
-            src={pieces[piece]}
-            alt={`${piece}`}
-          />
-        </div>
-      );
-    } else
-      return (
-        <div data-testid={`${piece}-${currentSquare}`} style={svgStyles}>
-          <svg viewBox={`-3 -3 50 50`}>
-            <g>{pieces[piece]}</g>
-          </svg>
-        </div>
-      );
-  } else
-    return renderDefaultPieces(
-      { currentSquare, piece, defaultPieces },
-      svgStyles
-    );
-};
-
-const renderDefaultPieces = (
-  { currentSquare, piece, defaultPieces },
-  svgStyles
-) => {
-  if (defaultPieces[piece]) {
+  if (isImage(pieces[piece], ['png', 'jpg', 'jpeg'])) {
     return (
-      <div data-testid={`${piece}-${currentSquare}`} style={svgStyles}>
-        <svg viewBox={`1 1 42 42`}>
-          <g>{defaultPieces[piece]}</g>
-        </svg>
+      <div data-testid={`${piece}-${currentSquare}`} style={imgStyles}>
+        <img
+          style={{ width: width / 8, height: width / 8 }}
+          src={pieces[piece]}
+          alt={`${piece}`}
+        />
       </div>
     );
-  } else return null;
+  }
+
+  return (
+    <div data-testid={`${piece}-${currentSquare}`} style={svgStyles}>
+      <svg viewBox={`1 1 43 43`}>
+        <g>{pieces[piece]}</g>
+      </svg>
+    </div>
+  );
 };
 
 export function renderPieces({
@@ -92,10 +70,9 @@ export function renderPieces({
   targetSquare,
   waitForTransition,
   getSquareCoordinates,
-  pieces,
   piece,
   width,
-  defaultPieces,
+  pieces,
   transitionDuration,
   isDragging,
   sourceSquare
@@ -111,13 +88,7 @@ export function renderPieces({
   };
 
   return renderChessPieces(
-    {
-      currentSquare,
-      pieces,
-      piece,
-      defaultPieces,
-      width
-    },
+    { currentSquare, piece, pieces, width },
     {
       imgStyles: imgStyles(imgStyleParams, getTranslation),
       svgStyles: {
