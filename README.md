@@ -29,10 +29,10 @@ npm install --save chessboardjsx
 
 ## Usage
 
-* [Props](http://www.espn.com/): get started with Chessboard.jsx
-* [Custom](http://www.espn.com/): customize the board and pieces
-* [With move validation](http://www.espn.com/): how to integrate [chess.js](https://github.com/jhlywa/chess.js)
-* [Integrating with chess engines](http://www.espn.com/): how to integrate with Stockfish, the ~~world's strongest~~ [world's second strongest](https://www.chess.com/news/view/google-s-alphazero-destroys-stockfish-in-100-game-match) chess engine
+* [Props](https://www.chessboardjsx.com/props): get started with Chessboard.jsx
+* [With move validation](https://www.chessboardjsx.com/integrations/move-validation): how to integrate [chess.js](https://github.com/jhlywa/chess.js)
+* [Integrating with chess engines](https://www.chessboardjsx.com/integrations/stockfish): how to integrate with Stockfish, the ~~world's strongest~~ [world's second strongest](https://www.chess.com/news/view/google-s-alphazero-destroys-stockfish-in-100-game-match) chess engine
+* [Custom](https://www.chessboardjsx.com/custom): customize the board and pieces
 
 ## Contributing
 
