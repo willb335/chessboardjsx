@@ -68,11 +68,9 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-
 <!-- prettier-ignore -->
-| [<img src="https://avatars2.githubusercontent.com/u/10157307?v=4" width="100px;"/><br /><sub><b>Will</b></sub>](https://github.com/willb335)<br />[💻](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Code") [📖](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Documentation") [💡](#example-willb335 "Examples") [⚠️](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Tests") |
-| :---: |
-
+| [<img src="https://avatars2.githubusercontent.com/u/10157307?v=4" width="100px;"/><br /><sub><b>Will</b></sub>](https://github.com/willb335)<br />[💻](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Code") [📖](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Documentation") [💡](#example-willb335 "Examples") [⚠️](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Tests") | [<img src="https://avatars3.githubusercontent.com/u/146082?v=4" width="100px;"/><br /><sub><b>Andrew Bashelor</b></sub>](https://github.com/a-bash)<br />[📖](https://github.com/willb335/chessboardjsx/commits?author=a-bash "Documentation") |
+| :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## LICENSE

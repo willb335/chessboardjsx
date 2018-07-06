@@ -20,6 +20,15 @@
         "example",
         "test"
       ]
+    },
+    {
+      "login": "a-bash",
+      "name": "Andrew Bashelor",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/146082?v=4",
+      "profile": "https://github.com/a-bash",
+      "contributions": [
+        "doc"
+      ]
     }
   ]
 }
