@@ -33,10 +33,12 @@ class Chessboard extends Component {
   static propTypes = {
     /**
      * The position to display on the board.  Can be either a FEN string or a position object.
+     * See https://www.chessboardjsx.com/basics/fen and https://www.chessboardjsx.com/basics/position-object
+     * for examples.
      */
     position: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     /**
-     * If 'black' then row 8 will be the bottom row, if 'white' row 1 will be the bottom row.
+     * Orientation of the board.
      */
     orientation: PropTypes.oneOf(['white', 'black']),
     /**
@@ -54,8 +56,7 @@ class Chessboard extends Component {
      */
     dropOffBoard: PropTypes.oneOf(['snapback', 'trash']),
     /**
-     * The logic to be performed after the drop.  This is where to check if moves are legal with
-     * a library like chess.js.
+     * The logic to be performed on piece drop. See chessboardjsx.com/integrations for examples.
      *
      * Signature: function(sourceSquare: string, targetSquare: string) => void
      */
@@ -65,13 +66,12 @@ class Chessboard extends Component {
      */
     draggable: PropTypes.bool,
     /**
-     * The time it takes for a piece to slide to the target square.  This is only used
-     * when the next position comes from the position prop.  If the next position comes in before
-     * the transition is complete, then the animation will appear glitchey.
+     * The time it takes for a piece to slide to the target square.  Only used
+     * when the next position comes from the position prop. See chessboardjsx.com/integrations/random for an example
      */
     transitionDuration: PropTypes.number,
     /**
-     * If false, no notation will be shown on the board.
+     * If false, notation will not be shown on the board.
      */
     showNotation: PropTypes.bool,
     /**
@@ -87,20 +87,22 @@ class Chessboard extends Component {
      */
     boardStyle: PropTypes.object,
     /**
-     * The id is necessary if more than one board is mounted.
-     * This is needed to identify the correct dropzone for the piece.
+     * The id prop is necessary if more than one board is mounted.
+     * Drag and drop will not work as expected if not provided.
      */
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     /**
-     * A function that gives access to the underlying square element.  This
-     * allows for more customizations with rough.js.
+     * A function that gives access to the underlying square element.  It
+     * allows for customizations with rough.js. See chessboardjsx.com/custom for an
+     * example.
      *
      * Signature: function(node, squareWidth: number) => void
      * node: the underlying dom node for the square
      */
     roughSquare: PropTypes.func,
     /**
-     * A collection of squares, useful for legal move highlighting
+     * A collection of squares, useful for legal move highlighting.
+     * See chessboardjsx.com/integrations/move-validation for an example.
      */
     selectedSquares: PropTypes.array,
     /**
@@ -108,14 +110,15 @@ class Chessboard extends Component {
      */
     selectedSquareStyle: PropTypes.object,
     /**
-     * A function to call when the mouse is over the square.  It takes one argument, the square
-     * that the mouse is over (onMouseOverSquare(square)).  Not compatable with touch devices.
+     *  A function to call when the mouse is over a square.
+     *  See chessboardjsx.com/integrations/move-validation for an example.
      *
-     * Signature: function(square: string) => void
+     *  Signature: function(square: string) => void
      */
     onMouseOverSquare: PropTypes.func,
     /**
      * A function to call when the mouse has left the square.
+     * See chessboardjsx.com/integrations/move-validation for an example.
      *
      * Signature: function() => void
      */
@@ -127,17 +130,21 @@ class Chessboard extends Component {
     renderPieces: PropTypes.func,
     /**
      * An object containing custom pieces.  The values can be imported images or
-     * svg objects.
+     * svg objects. See chessboardjsx/custom for an example.
+     *
+     * Signature: { bP: 'imported black pawn', bK: <svg><path/></svg>,
+     * wN: 'imported white knight' }
      */
     pieces: PropTypes.object,
     /**
-     * A function for responsive width control, returns width.
+     * A function for responsive size control, returns the width of the board.
      *
      * Signature: function(screenWidth: number, screenHeight: number) => void
      */
     calcWidth: PropTypes.func,
     /**
      * A function that gives access to the current position object.
+     * For example, getPosition = position => this.setState({ myPosition: position }).
      *
      * Signature: function(currentPosition: object) => void
      */
@@ -166,10 +173,10 @@ class Chessboard extends Component {
     selectedSquares: [],
     onMouseOverSquare: () => {},
     onMouseOutSquare: () => {},
-    onHoverSquareStyle: { boxShadow: `inset 0 0 1px 4px yellow` },
+    onHoverSquareStyle: { boxShadow: 'inset 0 0 1px 4px yellow' },
     selectedSquareStyle: {
-      background: `radial-gradient(circle, #fffc00 36%, transparent 40%)`,
-      borderRadius: `50%`
+      background: 'radial-gradient(circle, #fffc00 36%, transparent 40%)',
+      borderRadius: '50%'
     },
     getPosition: () => {}
   };
