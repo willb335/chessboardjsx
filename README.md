@@ -57,9 +57,9 @@ Here is a list of things that Chessboard.jsx is **not**:
 * A legal move validator
 * A PGN parser
 
-Chessboard.jsx is designed to work well with any of those things, but the idea
-behind Chessboard.jsx is that the logic that controls the board should be
-independent of those other problems.
+Chessboard.jsx is designed to work well with any of those software components, but the idea
+behind the library is that the logic that controls the board should be
+independent of those other domains.
 
 ## Contributors
 
