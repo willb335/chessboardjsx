@@ -23,9 +23,7 @@ should be installed as one of your project's `dependencies`:
 ```
 npm install --save chessboardjsx
 ```
-
-> This package also depends on `react`. Please make sure you
-> have that installed as well.
+The package also depends on [React](https://reactjs.org/). Make sure you have that installed as well.
 
 ## Usage
 
