@@ -328,7 +328,12 @@ class Chessboard extends Component {
     if (dropOffBoard === 'trash' && !targetSquare) {
       let newPosition = currentPosition;
       delete newPosition[sourceSquare];
-      this.setState({ currentPosition: newPosition });
+      this.setState({
+        currentPosition: newPosition,
+        sourceSquare,
+        targetSquare,
+        manualDrop: true
+      });
       // get board position for user
       return getPosition(currentPosition);
     }
@@ -337,7 +342,12 @@ class Chessboard extends Component {
     sourceSquare !== 'spare' && delete newPosition[sourceSquare];
     newPosition[targetSquare] = piece;
 
-    this.setState(() => ({ currentPosition: newPosition }));
+    this.setState(() => ({
+      currentPosition: newPosition,
+      sourceSquare,
+      targetSquare,
+      manualDrop: true
+    }));
     // get board position for user
     getPosition(currentPosition);
   };
@@ -345,15 +355,16 @@ class Chessboard extends Component {
   // Allows for touch drag and drop
   setTouchState = e => this.setState({ wasPieceTouched: e.isTrusted });
 
+  getWidth = () => {
+    const { calcWidth, width } = this.props;
+    const { screenWidth, screenHeight } = this.state;
+    return calcWidth(screenWidth, screenHeight)
+      ? calcWidth(screenWidth, screenHeight)
+      : width;
+  };
+
   render() {
-    const {
-      sparePieces,
-      width,
-      id,
-      calcWidth,
-      orientation,
-      dropOffBoard
-    } = this.props;
+    const { sparePieces, id, orientation, dropOffBoard } = this.props;
     const {
       sourceSquare,
       targetSquare,
@@ -376,9 +387,7 @@ class Chessboard extends Component {
             orientation: orientation.toLowerCase(),
             dropOffBoard: dropOffBoard.toLowerCase(),
             ...{
-              width: calcWidth(screenWidth, screenHeight)
-                ? calcWidth(screenWidth, screenHeight)
-                : width,
+              width: this.getWidth(),
               sourceSquare,
               targetSquare,
               sourcePiece,
@@ -396,15 +405,11 @@ class Chessboard extends Component {
         >
           <div>
             {sparePieces && <SparePieces.Top />}
-            <Board {...this.props} />
+            {screenWidth && screenHeight && <Board />}
             {sparePieces && <SparePieces.Bottom />}
           </div>
           <CustomDragLayer
-            width={
-              calcWidth(screenWidth, screenHeight)
-                ? calcWidth(screenWidth, screenHeight)
-                : width
-            }
+            width={this.getWidth()}
             pieces={Object.keys(pieces).length ? pieces : defaultPieces}
             id={id}
             wasPieceTouched={wasPieceTouched}

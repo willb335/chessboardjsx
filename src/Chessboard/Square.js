@@ -81,7 +81,7 @@ class Square extends Component {
             width
           })}
         >
-          {roughSquare ? (
+          {roughSquare.length ? (
             <div style={center}>
               {children}
               <svg

@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 
 import Chessboard from './Chessboard';
 // import HumanVsRandom from './integrations/HumanVsRandom';
-import RandomVsRandom from './integrations/RandomVsRandom';
-import HumanVsHuman from './integrations/HumanVsHuman';
-import { roughSquare } from './integrations/customRough';
+// import RandomVsRandom from './integrations/RandomVsRandom';
+// import HumanVsHuman from './integrations/HumanVsHuman';
+// import { roughSquare } from './integrations/customRough';
 // import RandomFEN from './integrations/RandomFEN';
 import bK from './img/kingJames.png';
 
-const calcWidth = screenWidth => (screenWidth < 500 ? 150 : 480);
+// const calcWidth = screenWidth => (screenWidth < 500 ? 150 : 480);
 const boardStyle = {
   borderRadius: '5px',
   boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
@@ -25,12 +25,12 @@ class Demo extends Component {
               id="standard"
               // calcWidth={calcWidth}
               width={500}
-              // position="start"
-              position={{
-                d6: 'bK',
-                d4: 'wP',
-                e4: 'wK'
-              }}
+              position="start"
+              // position={{
+              //   d6: 'bK',
+              //   d4: 'wP',
+              //   e4: 'wK'
+              // }}
               // animationOnDrop="rubberBand"
               // sparePieces={true}
               boardStyle={boardStyle}
@@ -40,7 +40,7 @@ class Demo extends Component {
           </div>
         </div>
         <div>
-          <div style={board}>
+          {/* <div style={board}>
             <HumanVsHuman>
               {({
                 position,
@@ -60,16 +60,16 @@ class Demo extends Component {
                   onDrop={onDrop}
                   onMouseOverSquare={onMouseOverSquare}
                   onMouseOutSquare={onMouseOutSquare}
-                  roughSquare={roughSquare}
+                  // roughSquare={roughSquare}
                   boardStyle={boardStyle}
                   showNotation={true}
                   orientation="black"
-                  getPosition={getPosition}
-                  darkSquareStyle={darkSquareStyle}
+                  // getPosition={getPosition}
+                  // darkSquareStyle={darkSquareStyle}
                 />
               )}
             </HumanVsHuman>
-          </div>
+          </div> */}
           {/* <div style={boardDescriptions}>
               With move validation and rough.js
             </div>
@@ -92,7 +92,7 @@ class Demo extends Component {
               Random positions set via position prop
             </div>
           </div> */}
-          <div>
+          {/* <div>
             <div style={board}>
               <RandomVsRandom>
                 {({ position }) => (
@@ -109,7 +109,7 @@ class Demo extends Component {
                 )}
               </RandomVsRandom>
             </div>
-          </div>
+          </div> */}
           {/* <div>
             <div style={board}>
               <HumanVsRandom>
@@ -118,18 +118,13 @@ class Demo extends Component {
                     calcWidth={calcWidth}
                     id="humanVsRandom"
                     position={position}
-                    transitionDuration={300}
                     onDrop={onDrop}
-                    animationOnDrop="pulse"
                     boardStyle={boardStyle}
                     darkSquareStyle={darkSquareStyle}
                     getPosition={getPosition}
                   />
                 )}
               </HumanVsRandom>
-            </div>
-            <div>
-              <div style={boardDescriptions}>Human vs Random</div>
             </div>
           </div> */}
           {/* <div>

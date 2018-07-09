@@ -16,7 +16,7 @@ module.exports = merge(common, {
   devServer: { contentBase: path.resolve(__dirname, 'dist') },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: './src/index.html',
       filename: 'index.html'
     })
   ]
