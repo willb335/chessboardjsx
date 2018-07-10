@@ -3,8 +3,8 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const common = require('./webpack.common.js');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+//   .BundleAnalyzerPlugin;
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = merge(common, {
@@ -31,8 +31,5 @@ module.exports = merge(common, {
     })
     // new BundleAnalyzerPlugin()
   ],
-  externals: {
-    react: 'react',
-    'react-dom': 'react-dom'
-  }
+  externals: { react: 'react', 'react-dom': 'react-dom' }
 });

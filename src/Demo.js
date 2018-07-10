@@ -3,16 +3,11 @@ import React, { Component } from 'react';
 import Chessboard from './Chessboard';
 // import HumanVsRandom from './integrations/HumanVsRandom';
 // import RandomVsRandom from './integrations/RandomVsRandom';
-// import HumanVsHuman from './integrations/HumanVsHuman';
-// import { roughSquare } from './integrations/customRough';
+import HumanVsHuman from './integrations/HumanVsHuman';
 // import RandomFEN from './integrations/RandomFEN';
+// import Stockfish from './integrations/Stockfish';
+// import { roughSquare } from './integrations/customRough';
 import bK from './img/kingJames.png';
-
-// const calcWidth = screenWidth => (screenWidth < 500 ? 150 : 480);
-const boardStyle = {
-  borderRadius: '5px',
-  boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
-};
 
 class Demo extends Component {
   state = { keep: true };
@@ -23,24 +18,15 @@ class Demo extends Component {
           <div style={board}>
             <Chessboard
               id="standard"
-              // calcWidth={calcWidth}
-              width={500}
+              calcWidth={calcWidth}
               position="start"
-              // position={{
-              //   d6: 'bK',
-              //   d4: 'wP',
-              //   e4: 'wK'
-              // }}
-              // animationOnDrop="rubberBand"
-              // sparePieces={true}
               boardStyle={boardStyle}
               pieces={{ bK }}
-              // orientation="black"
             />
           </div>
         </div>
         <div>
-          {/* <div style={board}>
+          <div style={board}>
             <HumanVsHuman>
               {({
                 position,
@@ -53,27 +39,21 @@ class Demo extends Component {
               }) => (
                 <Chessboard
                   id="humanVsHuman"
-                  // width={500}
                   calcWidth={calcWidth}
                   position={position}
                   selectedSquares={selectedSquares}
                   onDrop={onDrop}
                   onMouseOverSquare={onMouseOverSquare}
                   onMouseOutSquare={onMouseOutSquare}
-                  // roughSquare={roughSquare}
                   boardStyle={boardStyle}
-                  showNotation={true}
                   orientation="black"
-                  // getPosition={getPosition}
-                  // darkSquareStyle={darkSquareStyle}
+                  getPosition={getPosition}
+                  darkSquareStyle={darkSquareStyle}
+                  lightSquareStyle={{ backgroundColor: 'white' }}
                 />
               )}
             </HumanVsHuman>
-          </div> */}
-          {/* <div style={boardDescriptions}>
-              With move validation and rough.js
-            </div>
-          </div> */}
+          </div>
           {/* <div>
             <div style={board}>
               <RandomFEN>
@@ -97,14 +77,11 @@ class Demo extends Component {
               <RandomVsRandom>
                 {({ position }) => (
                   <Chessboard
-                    // calcWidth={calcWidth}
                     width={500}
                     id="random"
-                    // orientation="black"
                     position={position}
                     transitionDuration={300}
                     boardStyle={boardStyle}
-                    pieces={{ bP: bK }}
                   />
                 )}
               </RandomVsRandom>
@@ -127,22 +104,6 @@ class Demo extends Component {
               </HumanVsRandom>
             </div>
           </div> */}
-          {/* <div>
-            <div style={board}>
-              <Engine>
-                {({ position, onDrop }) => (
-                  <Chessboard
-                    id="stockfish"
-                    position={position}
-                    width={350}
-                    onDrop={onDrop}
-                    // imageFormat="png"
-                  />
-                )}
-              </Engine>
-            </div>
-            <div style={boardDescriptions}>Play Stockfish</div>
-          </div>*/}
         </div>
       </div>
     );
@@ -161,3 +122,9 @@ const boardsContainer = {
 };
 
 const board = { margin: 30 };
+
+const calcWidth = screenWidth => (screenWidth < 500 ? 150 : 480);
+const boardStyle = {
+  borderRadius: '5px',
+  boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
+};

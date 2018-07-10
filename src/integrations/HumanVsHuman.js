@@ -70,9 +70,11 @@ class HumanVsHuman extends Component {
       onMouseOutSquare: this.onMouseOutSquare,
       onDrop: this.onDrop,
       getPosition: this.getPosition,
-      darkSquareStyle: Object.keys(myPosition).includes('e4')
-        ? { backgroundColor: 'orange' }
-        : { backgroundColor: '#10a8c8' }
+      darkSquareStyle:
+        Object.keys(myPosition).includes('e4') ||
+        Object.keys(myPosition).includes('d4')
+          ? { backgroundColor: 'tomato' }
+          : { backgroundColor: 'lightskyblue' }
     });
   }
 }
