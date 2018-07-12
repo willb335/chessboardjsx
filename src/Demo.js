@@ -10,7 +10,6 @@ import HumanVsHuman from './integrations/HumanVsHuman';
 import bK from './img/kingJames.png';
 
 class Demo extends Component {
-  state = { keep: true };
   render() {
     return (
       <div style={boardsContainer}>
@@ -22,6 +21,7 @@ class Demo extends Component {
               position="start"
               boardStyle={boardStyle}
               pieces={{ bK }}
+              sparePieces={true}
             />
           </div>
         </div>

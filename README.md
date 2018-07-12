@@ -23,6 +23,7 @@ should be installed as one of your project's `dependencies`:
 ```
 npm install --save chessboardjsx
 ```
+
 The package also depends on [React](https://reactjs.org/). Make sure you have that installed as well.
 
 ## Usage
@@ -38,7 +39,7 @@ Please take a look at CONTRIBUTING.md to find out how to contribute.
 
 ## What is Chessboard.jsx?
 
-Chessboard.jsx is a React component with a flexible "just a board" API modeled from [chessboard.js](https://github.com/oakmac/chessboardjs). It's compatable with touch as well as standard HTML5 drag and drop.
+Chessboard.jsx is a React component with a flexible "just a board" API modeled from [chessboard.js](https://github.com/oakmac/chessboardjs). It's compatible with touch as well as standard HTML5 drag and drop.
 
 ## What can Chessboard.jsx **not** do?
 
@@ -68,9 +69,11 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
 <!-- prettier-ignore -->
 | [<img src="https://avatars2.githubusercontent.com/u/10157307?v=4" width="100px;"/><br /><sub><b>Will</b></sub>](https://github.com/willb335)<br />[💻](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Code") [📖](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Documentation") [💡](#example-willb335 "Examples") [⚠️](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Tests") | [<img src="https://avatars3.githubusercontent.com/u/146082?v=4" width="100px;"/><br /><sub><b>Andrew Bashelor</b></sub>](https://github.com/a-bash)<br />[📖](https://github.com/willb335/chessboardjsx/commits?author=a-bash "Documentation") |
 | :---: | :---: |
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## LICENSE

@@ -96,8 +96,7 @@ class Chessboard extends Component {
      * allows for customizations with rough.js. See chessboardjsx.com/custom for an
      * example.
      *
-     * Signature: function(node, squareWidth: number) => void
-     * node: the underlying dom node for the square
+     * Signature: function(squareElement, squareWidth: number) => void
      */
     roughSquare: PropTypes.func,
     /**
@@ -193,13 +192,10 @@ class Chessboard extends Component {
     phantomPiece: null,
     wasPieceTouched: false,
     manualDrop: false,
-    pieces: {}
+    pieces: { ...this.props.defaultPieces, ...this.props.pieces }
   };
 
   componentDidMount() {
-    this.setState({
-      pieces: { ...this.props.defaultPieces, ...this.props.pieces }
-    });
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
   }
@@ -383,7 +379,7 @@ class Chessboard extends Component {
         <ChessboardContext.Provider
           value={{
             ...this.props,
-            pieces: Object.keys(pieces).length ? pieces : defaultPieces,
+            pieces,
             orientation: orientation.toLowerCase(),
             dropOffBoard: dropOffBoard.toLowerCase(),
             ...{
@@ -410,7 +406,7 @@ class Chessboard extends Component {
           </div>
           <CustomDragLayer
             width={this.getWidth()}
-            pieces={Object.keys(pieces).length ? pieces : defaultPieces}
+            pieces={pieces}
             id={id}
             wasPieceTouched={wasPieceTouched}
           />
