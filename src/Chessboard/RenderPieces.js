@@ -56,6 +56,10 @@ export const renderChessPieces = (
     );
   }
 
+  if (typeof pieces[piece] === 'function') {
+    return pieces[piece]({ width: width / 8, height: width / 8, piece });
+  }
+
   return (
     <div data-testid={`${piece}-${currentSquare}`} style={svgStyles}>
       <svg viewBox={`1 1 43 43`}>
