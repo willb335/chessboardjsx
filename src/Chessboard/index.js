@@ -15,7 +15,6 @@ import {
 } from './helpers';
 import CustomDragLayer from './CustomDragLayer';
 import defaultPieces from './svg/chesspieces/standard';
-import { renderPieces } from './RenderPieces';
 import ErrorBoundary from './ErrorBoundary';
 
 const ChessboardContext = React.createContext();
@@ -49,7 +48,6 @@ class Chessboard extends Component {
      * The width in pixels.  For a responsive width, use calcWidth.
      */
     width: PropTypes.number,
-    defaultPieces: PropTypes.objectOf(PropTypes.object),
     /**
      * The behavior of the piece when dropped off the board. 'snapback' brings the piece
      * back to it's original square and 'trash' deletes the piece from the board
@@ -126,13 +124,10 @@ class Chessboard extends Component {
      * The style object for the hovered square.
      */
     onHoverSquareStyle: PropTypes.object,
-    renderPieces: PropTypes.func,
     /**
-     * An object containing custom pieces.  The values can be imported images or
-     * svg objects. See chessboardjsx/custom for an example.
-     *
-     * Signature: { bP: 'imported black pawn', bK: <svg><path/></svg>,
-     * wN: 'imported white knight' }
+     * An object containing custom pieces.  The piece values are functions that render jsx.
+     * See chessboardjsx.com/custom for an example
+     * Signature: {bK: function(squareWidth: number) => jsx object}
      */
     pieces: PropTypes.object,
     /**
@@ -159,12 +154,10 @@ class Chessboard extends Component {
     sparePieces: false,
     draggable: true,
     dropOffBoard: 'snapback',
-    defaultPieces,
     onDrop: () => {},
     transitionDuration: 300,
     boardStyle: {},
     id: '0',
-    renderPieces,
     pieces: {},
     lightSquareStyle: { backgroundColor: 'rgb(240, 217, 181)' },
     darkSquareStyle: { backgroundColor: 'rgb(181, 136, 99)' },
@@ -192,7 +185,7 @@ class Chessboard extends Component {
     phantomPiece: null,
     wasPieceTouched: false,
     manualDrop: false,
-    pieces: { ...this.props.defaultPieces, ...this.props.pieces }
+    pieces: { ...defaultPieces, ...this.props.pieces }
   };
 
   componentDidMount() {
@@ -317,6 +310,7 @@ class Chessboard extends Component {
   /* Called on drop if there is no onDrop prop.  This is what executes when a position does not
    change through the position prop, i.e., simple drag and drop operations on the pieces.*/
   setPosition = (piece, sourceSquare, targetSquare = null) => {
+    console.log('sq', sourceSquare, 'ts', targetSquare);
     const { currentPosition } = this.state;
     const { getPosition, dropOffBoard } = this.props;
     if (sourceSquare === targetSquare) return;
@@ -409,6 +403,7 @@ class Chessboard extends Component {
             pieces={pieces}
             id={id}
             wasPieceTouched={wasPieceTouched}
+            sourceSquare={targetSquare}
           />
         </ChessboardContext.Provider>
       </ErrorBoundary>

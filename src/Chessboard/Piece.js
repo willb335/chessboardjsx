@@ -1,9 +1,65 @@
-import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
+import React, { Component } from 'react';
 import { DragSource } from 'react-dnd';
 import PropTypes from 'prop-types';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { ItemTypes } from './helpers';
+
+/* eslint react/prop-types: 0 */
+export const renderChessPiece = ({
+  currentSquare,
+  targetSquare,
+  waitForTransition,
+  getSquareCoordinates,
+  piece,
+  width,
+  pieces,
+  transitionDuration,
+  isDragging,
+  sourceSquare,
+  customDragLayerStyles = {},
+  phantomPieceStyles = {}
+}) => {
+  const renderChessPieceArgs = {
+    // set the width and height to the square's width and height
+    width: width / 8,
+    height: width / 8,
+    isDragging,
+    // undefined when dragging
+    currentSquare,
+    sourceSquare
+  };
+
+  return (
+    <div
+      data-testid={`${piece}-${currentSquare}`}
+      style={{
+        ...pieceStyles(
+          {
+            isDragging,
+            transitionDuration,
+            waitForTransition,
+            currentSquare,
+            targetSquare,
+            sourceSquare,
+            getSquareCoordinates
+          },
+          getTranslation
+        ),
+        ...phantomPieceStyles,
+        ...customDragLayerStyles
+      }}
+    >
+      {typeof pieces[piece] === 'function' ? (
+        pieces[piece](renderChessPieceArgs)
+      ) : (
+        <svg viewBox={`1 1 43 43`} width={width / 8} height={width / 8}>
+          <g>{pieces[piece]}</g>
+        </svg>
+      )}
+    </div>
+  );
+};
 
 class Piece extends Component {
   static propTypes = {
@@ -22,8 +78,7 @@ class Piece extends Component {
     sourceSquare: PropTypes.string,
     targetSquare: PropTypes.string,
     waitForTransition: PropTypes.bool,
-    setTouchState: PropTypes.func,
-    renderPieces: PropTypes.func
+    setTouchState: PropTypes.func
   };
 
   componentDidMount() {
@@ -50,24 +105,22 @@ class Piece extends Component {
       transitionDuration,
       isDragging,
       connectDragSource,
-      renderPieces,
       sourceSquare
     } = this.props;
 
     return connectDragSource(
-      renderPieces &&
-        renderPieces({
-          currentSquare,
-          targetSquare,
-          waitForTransition,
-          getSquareCoordinates,
-          piece,
-          width,
-          pieces,
-          transitionDuration,
-          isDragging,
-          sourceSquare
-        })
+      renderChessPiece({
+        currentSquare,
+        targetSquare,
+        waitForTransition,
+        getSquareCoordinates,
+        piece,
+        width,
+        pieces,
+        transitionDuration,
+        isDragging,
+        sourceSquare
+      })
     );
   }
 }
@@ -111,10 +164,12 @@ const pieceSource = {
         return onDrop(props.currentSquare, dropResults.target);
       }
       // set new position
+
       setPosition(piece, currentSquare, dropResults.target);
     }
   }
 };
+
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
@@ -125,3 +180,60 @@ function collect(connect, monitor) {
 }
 
 export default DragSource(ItemTypes.PIECE, pieceSource, collect)(Piece);
+
+const isActivePiece = (currentSquare, targetSquare) =>
+  targetSquare && targetSquare === currentSquare;
+
+const getTransitionCoordinates = ({
+  getSquareCoordinates,
+  sourceSq,
+  targetSq
+}) => {
+  const transitionCoordinates = getSquareCoordinates(sourceSq, targetSq);
+  const { sourceSquare, targetSquare } = transitionCoordinates;
+
+  return `translate(${sourceSquare.x - targetSquare.x}px, ${sourceSquare.y -
+    targetSquare.y}px)`;
+};
+
+const getTranslation = ({
+  waitForTransition,
+  currentSquare,
+  targetSquare,
+  sourceSquare,
+  getSquareCoordinates
+}) => {
+  return (
+    isActivePiece(currentSquare, targetSquare) &&
+    waitForTransition &&
+    getTransitionCoordinates({
+      getSquareCoordinates,
+      sourceSq: sourceSquare,
+      targetSq: targetSquare
+    })
+  );
+};
+
+const pieceStyles = (
+  {
+    isDragging,
+    transitionDuration,
+    waitForTransition,
+    currentSquare,
+    targetSquare,
+    sourceSquare,
+    getSquareCoordinates
+  },
+  getTranslation
+) => ({
+  opacity: isDragging ? 0 : 1,
+  transform: getTranslation({
+    waitForTransition,
+    currentSquare,
+    targetSquare,
+    sourceSquare,
+    getSquareCoordinates
+  }),
+  transition: `transform ${transitionDuration}ms`,
+  zIndex: 5
+});

@@ -81,7 +81,6 @@ class Board extends Component {
                           orientation={context.orientation}
                           id={context.id}
                           setTouchState={context.setTouchState}
-                          renderPieces={context.renderPieces}
                           wasManuallyDropped={context.wasManuallyDropped}
                         />
                       ) : null}

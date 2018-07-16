@@ -56,7 +56,6 @@ class SparePieces extends Component {
                     id={context.id}
                     setTransition={context.setTransition}
                     pieces={context.pieces}
-                    renderPieces={context.renderPieces}
                     wasManuallyDropped={context.wasManuallyDropped}
                   />
                 </div>

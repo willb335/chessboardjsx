@@ -3,11 +3,13 @@ import React, { Component } from 'react';
 import Chessboard from './Chessboard';
 // import HumanVsRandom from './integrations/HumanVsRandom';
 // import RandomVsRandom from './integrations/RandomVsRandom';
-import HumanVsHuman from './integrations/HumanVsHuman';
+// import HumanVsHuman from './integrations/HumanVsHuman';
 // import RandomFEN from './integrations/RandomFEN';
 // import Stockfish from './integrations/Stockfish';
 // import { roughSquare } from './integrations/customRough';
-import bK from './img/kingJames.png';
+import lebronJames from './img/kingJames.png';
+import elvis from './img/elvis.png';
+// import defaultPieces from './Chessboard/svg/chesspieces/standard';
 
 class Demo extends Component {
   render() {
@@ -20,13 +22,33 @@ class Demo extends Component {
               calcWidth={calcWidth}
               position="start"
               boardStyle={boardStyle}
-              pieces={{ bK }}
+              pieces={{
+                bK: ({
+                  width,
+                  height,
+                  // isDragging,
+                  currentSquare,
+                  sourceSquare
+                }) =>
+                  console.log('cs', currentSquare, 'sq', sourceSquare) ||
+                  currentSquare === 'f4' ||
+                  (sourceSquare === 'f4' && !currentSquare) ||
+                  (sourceSquare === 'a2' && currentSquare !== 'spare') ? (
+                    <img style={{ width, height }} src={elvis} alt={'elvis'} />
+                  ) : (
+                    <img
+                      style={{ width, height }}
+                      src={lebronJames}
+                      alt={'lebron'}
+                    />
+                  )
+              }}
               sparePieces={true}
             />
           </div>
         </div>
         <div>
-          <div style={board}>
+          {/* <div style={board}>
             <HumanVsHuman>
               {({
                 position,
@@ -53,7 +75,7 @@ class Demo extends Component {
                 />
               )}
             </HumanVsHuman>
-          </div>
+          </div> */}
           {/* <div>
             <div style={board}>
               <RandomFEN>
@@ -82,6 +104,17 @@ class Demo extends Component {
                     position={position}
                     transitionDuration={300}
                     boardStyle={boardStyle}
+                    pieces={{
+                      bP: ({ width, height }) => (
+                        <div>
+                          <img
+                            style={{ width, height }}
+                            src={lebronJames}
+                            alt={'lebron'}
+                          />
+                        </div>
+                      )
+                    }}
                   />
                 )}
               </RandomVsRandom>
