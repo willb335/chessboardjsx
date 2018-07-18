@@ -161,7 +161,7 @@ const pieceSource = {
       if (onDrop.length) {
         wasManuallyDropped(true);
         // execute user's logic
-        return onDrop(props.currentSquare, dropResults.target);
+        return onDrop(props.currentSquare, dropResults.target, piece);
       }
       // set new position
 
@@ -174,8 +174,8 @@ function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
-    isDragging: monitor.isDragging(),
-    dropTarget: monitor.getDropResult()
+    isDragging: monitor.isDragging()
+    // dropTarget: monitor.getDropResult()
   };
 }
 

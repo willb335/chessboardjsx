@@ -3,19 +3,19 @@ import React, { Component } from 'react';
 import Chessboard from './Chessboard';
 // import HumanVsRandom from './integrations/HumanVsRandom';
 // import RandomVsRandom from './integrations/RandomVsRandom';
-// import HumanVsHuman from './integrations/HumanVsHuman';
+import HumanVsHuman from './integrations/HumanVsHuman';
 // import RandomFEN from './integrations/RandomFEN';
 // import Stockfish from './integrations/Stockfish';
 // import { roughSquare } from './integrations/customRough';
-import lebronJames from './img/kingJames.png';
-import elvis from './img/elvis.png';
+// import lebronJames from './img/kingJames.png';
+// import elvis from './img/elvis.png';
 // import defaultPieces from './Chessboard/svg/chesspieces/standard';
 
 class Demo extends Component {
   render() {
     return (
       <div style={boardsContainer}>
-        <div>
+        {/* <div>
           <div style={board}>
             <Chessboard
               id="standard"
@@ -30,7 +30,6 @@ class Demo extends Component {
                   currentSquare,
                   sourceSquare
                 }) =>
-                  console.log('cs', currentSquare, 'sq', sourceSquare) ||
                   currentSquare === 'f4' ||
                   (sourceSquare === 'f4' && !currentSquare) ||
                   (sourceSquare === 'a2' && currentSquare !== 'spare') ? (
@@ -46,9 +45,9 @@ class Demo extends Component {
               sparePieces={true}
             />
           </div>
-        </div>
+        </div> */}
         <div>
-          {/* <div style={board}>
+          <div style={board}>
             <HumanVsHuman>
               {({
                 position,
@@ -72,10 +71,11 @@ class Demo extends Component {
                   getPosition={getPosition}
                   darkSquareStyle={darkSquareStyle}
                   lightSquareStyle={{ backgroundColor: 'white' }}
+                  sparePieces={true}
                 />
               )}
             </HumanVsHuman>
-          </div> */}
+          </div>
           {/* <div>
             <div style={board}>
               <RandomFEN>

@@ -310,7 +310,6 @@ class Chessboard extends Component {
   /* Called on drop if there is no onDrop prop.  This is what executes when a position does not
    change through the position prop, i.e., simple drag and drop operations on the pieces.*/
   setPosition = (piece, sourceSquare, targetSquare = null) => {
-    console.log('sq', sourceSquare, 'ts', targetSquare);
     const { currentPosition } = this.state;
     const { getPosition, dropOffBoard } = this.props;
     if (sourceSquare === targetSquare) return;

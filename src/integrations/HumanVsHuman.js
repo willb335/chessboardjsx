@@ -21,7 +21,8 @@ class HumanVsHuman extends Component {
 
   getPosition = position => this.setState({ myPosition: position });
 
-  onDrop = (source, target) => {
+  onDrop = (source, target, piece) => {
+    console.log('source', source, 'target', target, 'piece', piece);
     this.removeHighlightSquare();
 
     // see if the move is legal
