@@ -7,7 +7,8 @@ import { ItemTypes } from './helpers';
 
 /* eslint react/prop-types: 0 */
 export const renderChessPiece = ({
-  currentSquare,
+  dropTarget,
+  square,
   targetSquare,
   waitForTransition,
   getSquareCoordinates,
@@ -21,31 +22,27 @@ export const renderChessPiece = ({
   phantomPieceStyles = {}
 }) => {
   const renderChessPieceArgs = {
-    // set the width and height to the square's width and height
-    width: width / 8,
-    height: width / 8,
+    squareWidth: width / 8,
     isDragging,
-    // undefined when dragging
-    currentSquare,
-    sourceSquare
+    piece: dropTarget && dropTarget.piece,
+    targetSquare: dropTarget && dropTarget.target,
+    sourceSquare: dropTarget && dropTarget.source
   };
 
   return (
     <div
-      data-testid={`${piece}-${currentSquare}`}
+      data-testid={`${piece}-${square}`}
       style={{
-        ...pieceStyles(
-          {
-            isDragging,
-            transitionDuration,
-            waitForTransition,
-            currentSquare,
-            targetSquare,
-            sourceSquare,
-            getSquareCoordinates
-          },
+        ...pieceStyles({
+          isDragging,
+          transitionDuration,
+          waitForTransition,
+          square,
+          targetSquare,
+          sourceSquare,
+          getSquareCoordinates,
           getTranslation
-        ),
+        }),
         ...phantomPieceStyles,
         ...customDragLayerStyles
       }}
@@ -64,7 +61,7 @@ export const renderChessPiece = ({
 class Piece extends Component {
   static propTypes = {
     piece: PropTypes.string,
-    currentSquare: PropTypes.string,
+    square: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.number,
     connectDragSource: PropTypes.func,
@@ -81,6 +78,23 @@ class Piece extends Component {
     setTouchState: PropTypes.func
   };
 
+  shouldComponentUpdate(nextProps) {
+    const shouldPieceUpdate =
+      nextProps.dropTarget !== null ||
+      nextProps.isDragging ||
+      this.props.isDragging ||
+      // if the position comes from the position prop, check if it is a different position
+      this.props.sourceSquare !== nextProps.sourceSquare ||
+      this.props.waitForTransition !== nextProps.waitForTransition ||
+      // if the screen size changes then update
+      this.props.width !== nextProps.width;
+
+    if (shouldPieceUpdate) {
+      return true;
+    }
+    return false;
+  }
+
   componentDidMount() {
     window.addEventListener('touchstart', this.props.setTouchState);
 
@@ -95,7 +109,7 @@ class Piece extends Component {
 
   render() {
     const {
-      currentSquare,
+      square,
       targetSquare,
       waitForTransition,
       getSquareCoordinates,
@@ -105,12 +119,13 @@ class Piece extends Component {
       transitionDuration,
       isDragging,
       connectDragSource,
-      sourceSquare
+      sourceSquare,
+      dropTarget
     } = this.props;
 
     return connectDragSource(
       renderChessPiece({
-        currentSquare,
+        square,
         targetSquare,
         waitForTransition,
         getSquareCoordinates,
@@ -119,7 +134,8 @@ class Piece extends Component {
         pieces,
         transitionDuration,
         isDragging,
-        sourceSquare
+        sourceSquare,
+        dropTarget
       })
     );
   }
@@ -132,7 +148,7 @@ const pieceSource = {
   beginDrag(props) {
     return {
       piece: props.piece,
-      sourceSquare: props.currentSquare,
+      source: props.square,
       board: props.id
     };
   },
@@ -141,7 +157,7 @@ const pieceSource = {
       setPosition,
       dropOffBoard,
       piece,
-      currentSquare,
+      square,
       onDrop,
       wasManuallyDropped
     } = props;
@@ -150,7 +166,7 @@ const pieceSource = {
 
     // trash piece when dropped off board
     if (!didDrop && dropOffBoard === 'trash') {
-      return setPosition(piece, currentSquare);
+      return setPosition({ sourceSquare: square, piece });
     }
 
     const board = monitor.getItem().board;
@@ -161,11 +177,18 @@ const pieceSource = {
       if (onDrop.length) {
         wasManuallyDropped(true);
         // execute user's logic
-        return onDrop(props.currentSquare, dropResults.target, piece);
+        return onDrop({
+          sourceSquare: square,
+          targetSquare: dropResults.target,
+          piece
+        });
       }
       // set new position
-
-      setPosition(piece, currentSquare, dropResults.target);
+      setPosition({
+        sourceSquare: square,
+        targetSquare: dropResults.target,
+        piece
+      });
     }
   }
 };
@@ -174,15 +197,15 @@ function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
-    isDragging: monitor.isDragging()
-    // dropTarget: monitor.getDropResult()
+    isDragging: monitor.isDragging(),
+    dropTarget: monitor.getDropResult()
   };
 }
 
 export default DragSource(ItemTypes.PIECE, pieceSource, collect)(Piece);
 
-const isActivePiece = (currentSquare, targetSquare) =>
-  targetSquare && targetSquare === currentSquare;
+const isActivePiece = (square, targetSquare) =>
+  targetSquare && targetSquare === square;
 
 const getTransitionCoordinates = ({
   getSquareCoordinates,
@@ -198,13 +221,13 @@ const getTransitionCoordinates = ({
 
 const getTranslation = ({
   waitForTransition,
-  currentSquare,
+  square,
   targetSquare,
   sourceSquare,
   getSquareCoordinates
 }) => {
   return (
-    isActivePiece(currentSquare, targetSquare) &&
+    isActivePiece(square, targetSquare) &&
     waitForTransition &&
     getTransitionCoordinates({
       getSquareCoordinates,
@@ -214,22 +237,20 @@ const getTranslation = ({
   );
 };
 
-const pieceStyles = (
-  {
-    isDragging,
-    transitionDuration,
-    waitForTransition,
-    currentSquare,
-    targetSquare,
-    sourceSquare,
-    getSquareCoordinates
-  },
+const pieceStyles = ({
+  isDragging,
+  transitionDuration,
+  waitForTransition,
+  square,
+  targetSquare,
+  sourceSquare,
+  getSquareCoordinates,
   getTranslation
-) => ({
+}) => ({
   opacity: isDragging ? 0 : 1,
   transform: getTranslation({
     waitForTransition,
-    currentSquare,
+    square,
     targetSquare,
     sourceSquare,
     getSquareCoordinates

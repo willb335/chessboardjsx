@@ -22,21 +22,38 @@ class Demo extends Component {
               calcWidth={calcWidth}
               position="start"
               boardStyle={boardStyle}
+              dropOffBoard="trash"
               pieces={{
                 bK: ({
-                  width,
-                  height,
+                  squareWidth,
+                  piece,
                   // isDragging,
-                  currentSquare,
-                  sourceSquare
+                  targetSquare
+                  // sourceSquare
                 }) =>
-                  currentSquare === 'f4' ||
-                  (sourceSquare === 'f4' && !currentSquare) ||
-                  (sourceSquare === 'a2' && currentSquare !== 'spare') ? (
-                    <img style={{ width, height }} src={elvis} alt={'elvis'} />
+                  // console.log(
+                  //   'piece',
+                  //   piece,
+                  //   'targetSquare',
+                  //   targetSquare,
+                  //   'sourceSquare',
+                  //   sourceSquare
+                  // ) ||
+                  targetSquare === 'e4' && piece === 'wN' ? (
+                    <img
+                      style={{
+                        width: squareWidth,
+                        height: squareWidth
+                      }}
+                      src={elvis}
+                      alt={'elvis'}
+                    />
                   ) : (
                     <img
-                      style={{ width, height }}
+                      style={{
+                        width: squareWidth,
+                        height: squareWidth
+                      }}
                       src={lebronJames}
                       alt={'lebron'}
                     />
@@ -51,27 +68,21 @@ class Demo extends Component {
             <HumanVsHuman>
               {({
                 position,
-                selectedSquares,
                 onDrop,
                 onMouseOverSquare,
                 onMouseOutSquare,
-                getPosition,
-                darkSquareStyle
+                squareStyles
               }) => (
                 <Chessboard
                   id="humanVsHuman"
                   calcWidth={calcWidth}
                   position={position}
-                  selectedSquares={selectedSquares}
                   onDrop={onDrop}
                   onMouseOverSquare={onMouseOverSquare}
                   onMouseOutSquare={onMouseOutSquare}
                   boardStyle={boardStyle}
-                  orientation="black"
-                  getPosition={getPosition}
-                  darkSquareStyle={darkSquareStyle}
-                  lightSquareStyle={{ backgroundColor: 'white' }}
                   sparePieces={true}
+                  squareStyles={squareStyles}
                 />
               )}
             </HumanVsHuman>
@@ -105,10 +116,10 @@ class Demo extends Component {
                     transitionDuration={300}
                     boardStyle={boardStyle}
                     pieces={{
-                      bP: ({ width, height }) => (
+                      bP: ({ squareWidth }) => (
                         <div>
                           <img
-                            style={{ width, height }}
+                            style={{ width: squareWidth, height: squareWidth }}
                             src={lebronJames}
                             alt={'lebron'}
                           />
@@ -156,7 +167,7 @@ const boardsContainer = {
 
 const board = { margin: 30 };
 
-const calcWidth = screenWidth => (screenWidth < 500 ? 150 : 480);
+const calcWidth = screenWidth => (screenWidth < 500 ? 350 : 480);
 const boardStyle = {
   borderRadius: '5px',
   boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`

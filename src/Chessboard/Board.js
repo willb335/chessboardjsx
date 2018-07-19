@@ -54,19 +54,18 @@ class Board extends Component {
                       lightSquareStyle={context.lightSquareStyle}
                       darkSquareStyle={context.darkSquareStyle}
                       roughSquare={context.roughSquare}
-                      selectedSquares={context.selectedSquares}
                       onMouseOverSquare={context.onMouseOverSquare}
                       onMouseOutSquare={context.onMouseOutSquare}
                       onHoverSquareStyle={context.onHoverSquareStyle}
-                      selectedSquareStyle={context.selectedSquareStyle}
                       id={context.id}
                       screenWidth={context.screenWidth}
                       screenHeight={context.screenHeight}
+                      squareStyles={context.squareStyles}
                     >
                       {this.hasPiece(context.currentPosition, square) ? (
                         <Piece
                           pieces={context.pieces}
-                          currentSquare={square}
+                          square={square}
                           piece={context.currentPosition[square]}
                           width={context.width}
                           setPosition={context.setPosition}
@@ -82,6 +81,7 @@ class Board extends Component {
                           id={context.id}
                           setTouchState={context.setTouchState}
                           wasManuallyDropped={context.wasManuallyDropped}
+                          phantomPiece={context.phantomPiece}
                         />
                       ) : null}
 

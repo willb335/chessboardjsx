@@ -21,14 +21,14 @@ class HumanVsHuman extends Component {
 
   getPosition = position => this.setState({ myPosition: position });
 
-  onDrop = (source, target, piece) => {
-    console.log('source', source, 'target', target, 'piece', piece);
+  onDrop = ({ sourceSquare, targetSquare, piece }) => {
+    console.log('source', sourceSquare, 'target', targetSquare, 'piece', piece);
     this.removeHighlightSquare();
 
     // see if the move is legal
     var move = game.move({
-      from: source,
-      to: target,
+      from: sourceSquare,
+      to: targetSquare,
       promotion: 'q' // NOTE: always promote to a queen for example simplicity
     });
 
@@ -62,20 +62,26 @@ class HumanVsHuman extends Component {
   };
 
   render() {
-    const { fen, selectedSquares, myPosition } = this.state;
+    const { fen, selectedSquares } = this.state;
+
+    const squareStyles = selectedSquares.reduce((a, c) => {
+      return {
+        ...a,
+        ...{
+          [c]: {
+            background: 'radial-gradient(circle, #fffc00 36%, transparent 40%)',
+            borderRadius: '50%'
+          }
+        }
+      };
+    }, {});
 
     return this.props.children({
+      squareStyles,
       position: fen,
-      selectedSquares,
       onMouseOverSquare: this.onMouseOverSquare,
       onMouseOutSquare: this.onMouseOutSquare,
-      onDrop: this.onDrop,
-      getPosition: this.getPosition,
-      darkSquareStyle:
-        Object.keys(myPosition).includes('e4') ||
-        Object.keys(myPosition).includes('d4')
-          ? { backgroundColor: 'tomato' }
-          : { backgroundColor: 'lightskyblue' }
+      onDrop: this.onDrop
     });
   }
 }

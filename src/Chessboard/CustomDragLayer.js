@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { DragLayer } from 'react-dnd';
 
 import { renderChessPiece } from './Piece';
 
-class CustomDragLayer extends Component {
+class CustomDragLayer extends PureComponent {
   static propTypes = {
     item: PropTypes.object,
     currentOffset: PropTypes.shape({
@@ -49,6 +49,15 @@ class CustomDragLayer extends Component {
 }
 
 function collect(monitor) {
+  // let updates = 0;
+  //
+  // if (updates++ % 2 === 0) {
+  //   return {
+  //     item: monitor.getItem(),
+  //     currentOffset: monitor.getSourceClientOffset(),
+  //     isDragging: monitor.isDragging()
+  //   };
+  // }
   return {
     item: monitor.getItem(),
     currentOffset: monitor.getSourceClientOffset(),

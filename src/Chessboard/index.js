@@ -98,15 +98,6 @@ class Chessboard extends Component {
      */
     roughSquare: PropTypes.func,
     /**
-     * A collection of squares, useful for legal move highlighting.
-     * See chessboardjsx.com/integrations/move-validation for an example.
-     */
-    selectedSquares: PropTypes.array,
-    /**
-     * The style object for the selected squares.
-     */
-    selectedSquareStyle: PropTypes.object,
-    /**
      *  A function to call when the mouse is over a square.
      *  See chessboardjsx.com/integrations/move-validation for an example.
      *
@@ -142,7 +133,12 @@ class Chessboard extends Component {
      *
      * Signature: function(currentPosition: object) => void
      */
-    getPosition: PropTypes.func
+    getPosition: PropTypes.func,
+    /**
+     * An object containing custom styles for squares.  For example {'e4': {backgroundColor: 'orange'},
+     * 'd4': {backgroundColor: 'blue'}}.  See chessboardjsx.com/integrations/move-validation for an example
+     */
+    squareStyles: PropTypes.object
   };
 
   static defaultProps = {
@@ -162,15 +158,11 @@ class Chessboard extends Component {
     lightSquareStyle: { backgroundColor: 'rgb(240, 217, 181)' },
     darkSquareStyle: { backgroundColor: 'rgb(181, 136, 99)' },
     roughSquare: () => {},
-    selectedSquares: [],
     onMouseOverSquare: () => {},
     onMouseOutSquare: () => {},
     onHoverSquareStyle: { boxShadow: 'inset 0 0 1px 4px yellow' },
-    selectedSquareStyle: {
-      background: 'radial-gradient(circle, #fffc00 36%, transparent 40%)',
-      borderRadius: '50%'
-    },
-    getPosition: () => {}
+    getPosition: () => {},
+    squareStyles: {}
   };
 
   static Consumer = ChessboardContext.Consumer;
@@ -309,20 +301,16 @@ class Chessboard extends Component {
 
   /* Called on drop if there is no onDrop prop.  This is what executes when a position does not
    change through the position prop, i.e., simple drag and drop operations on the pieces.*/
-  setPosition = (piece, sourceSquare, targetSquare = null) => {
+  setPosition = ({ sourceSquare, targetSquare, piece }) => {
     const { currentPosition } = this.state;
     const { getPosition, dropOffBoard } = this.props;
+
     if (sourceSquare === targetSquare) return;
 
     if (dropOffBoard === 'trash' && !targetSquare) {
       let newPosition = currentPosition;
       delete newPosition[sourceSquare];
-      this.setState({
-        currentPosition: newPosition,
-        sourceSquare,
-        targetSquare,
-        manualDrop: true
-      });
+      this.setState({ currentPosition: newPosition, manualDrop: true });
       // get board position for user
       return getPosition(currentPosition);
     }
@@ -331,12 +319,7 @@ class Chessboard extends Component {
     sourceSquare !== 'spare' && delete newPosition[sourceSquare];
     newPosition[targetSquare] = piece;
 
-    this.setState(() => ({
-      currentPosition: newPosition,
-      sourceSquare,
-      targetSquare,
-      manualDrop: true
-    }));
+    this.setState({ currentPosition: newPosition, manualDrop: true });
     // get board position for user
     getPosition(currentPosition);
   };
@@ -367,6 +350,9 @@ class Chessboard extends Component {
       screenHeight,
       pieces
     } = this.state;
+
+    const getScreenDimensions = screenWidth && screenHeight;
+
     return (
       <ErrorBoundary>
         <ChessboardContext.Provider
@@ -393,9 +379,9 @@ class Chessboard extends Component {
           }}
         >
           <div>
-            {sparePieces && <SparePieces.Top />}
-            {screenWidth && screenHeight && <Board />}
-            {sparePieces && <SparePieces.Bottom />}
+            {getScreenDimensions && sparePieces && <SparePieces.Top />}
+            {getScreenDimensions && <Board />}
+            {getScreenDimensions && sparePieces && <SparePieces.Bottom />}
           </div>
           <CustomDragLayer
             width={this.getWidth()}
