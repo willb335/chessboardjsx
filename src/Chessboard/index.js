@@ -15,7 +15,6 @@ import {
 } from './helpers';
 import CustomDragLayer from './CustomDragLayer';
 import defaultPieces from './svg/chesspieces/standard';
-import { renderPieces } from './RenderPieces';
 import ErrorBoundary from './ErrorBoundary';
 
 const ChessboardContext = React.createContext();
@@ -49,7 +48,6 @@ class Chessboard extends Component {
      * The width in pixels.  For a responsive width, use calcWidth.
      */
     width: PropTypes.number,
-    defaultPieces: PropTypes.objectOf(PropTypes.object),
     /**
      * The behavior of the piece when dropped off the board. 'snapback' brings the piece
      * back to it's original square and 'trash' deletes the piece from the board
@@ -100,15 +98,6 @@ class Chessboard extends Component {
      */
     roughSquare: PropTypes.func,
     /**
-     * A collection of squares, useful for legal move highlighting.
-     * See chessboardjsx.com/integrations/move-validation for an example.
-     */
-    selectedSquares: PropTypes.array,
-    /**
-     * The style object for the selected squares.
-     */
-    selectedSquareStyle: PropTypes.object,
-    /**
      *  A function to call when the mouse is over a square.
      *  See chessboardjsx.com/integrations/move-validation for an example.
      *
@@ -123,16 +112,12 @@ class Chessboard extends Component {
      */
     onMouseOutSquare: PropTypes.func,
     /**
-     * The style object for the hovered square.
+     * The style object for the current drop square.
      */
-    onHoverSquareStyle: PropTypes.object,
-    renderPieces: PropTypes.func,
+    dropSquareStyle: PropTypes.object,
     /**
-     * An object containing custom pieces.  The values can be imported images or
-     * svg objects. See chessboardjsx/custom for an example.
-     *
-     * Signature: { bP: 'imported black pawn', bK: <svg><path/></svg>,
-     * wN: 'imported white knight' }
+     * An object with functions returning jsx as values. Signature: { wK:
+     * function({ isDragging, squareWidth, droppedPiece, targetSquare, sourceSquare }) => jsx }
      */
     pieces: PropTypes.object,
     /**
@@ -147,7 +132,30 @@ class Chessboard extends Component {
      *
      * Signature: function(currentPosition: object) => void
      */
-    getPosition: PropTypes.func
+    getPosition: PropTypes.func,
+    /**
+     * An object containing custom styles for squares.  For example {'e4': {backgroundColor: 'orange'},
+     * 'd4': {backgroundColor: 'blue'}}.  See chessboardjsx.com/integrations/move-validation for an example
+     */
+    squareStyles: PropTypes.object,
+    /**
+     * A function to call when a piece is dragged over a specific square.
+     *
+     * Signature: function(square: string) => void
+     */
+    onDragOverSquare: PropTypes.func,
+    /**
+     * A function to call when a piece is clicked.
+     *
+     * Signature: function(piece: string) => void
+     */
+    onPieceClick: PropTypes.func,
+    /**
+     * A function to call when a square is clicked.
+     *
+     * Signature: function(square: string) => void
+     */
+    onSquareClick: PropTypes.func
   };
 
   static defaultProps = {
@@ -159,25 +167,22 @@ class Chessboard extends Component {
     sparePieces: false,
     draggable: true,
     dropOffBoard: 'snapback',
-    defaultPieces,
     onDrop: () => {},
     transitionDuration: 300,
     boardStyle: {},
     id: '0',
-    renderPieces,
     pieces: {},
     lightSquareStyle: { backgroundColor: 'rgb(240, 217, 181)' },
     darkSquareStyle: { backgroundColor: 'rgb(181, 136, 99)' },
     roughSquare: () => {},
-    selectedSquares: [],
     onMouseOverSquare: () => {},
     onMouseOutSquare: () => {},
-    onHoverSquareStyle: { boxShadow: 'inset 0 0 1px 4px yellow' },
-    selectedSquareStyle: {
-      background: 'radial-gradient(circle, #fffc00 36%, transparent 40%)',
-      borderRadius: '50%'
-    },
-    getPosition: () => {}
+    dropSquareStyle: { boxShadow: 'inset 0 0 1px 4px yellow' },
+    getPosition: () => {},
+    squareStyles: {},
+    onDragOverSquare: () => {},
+    onSquareClick: () => {},
+    onPieceClick: () => {}
   };
 
   static Consumer = ChessboardContext.Consumer;
@@ -192,7 +197,8 @@ class Chessboard extends Component {
     phantomPiece: null,
     wasPieceTouched: false,
     manualDrop: false,
-    pieces: { ...this.props.defaultPieces, ...this.props.pieces }
+    squareClicked: false,
+    pieces: { ...defaultPieces, ...this.props.pieces }
   };
 
   componentDidMount() {
@@ -244,10 +250,15 @@ class Chessboard extends Component {
 
   static getDerivedStateFromProps(props, state) {
     const { position } = props;
-    const { currentPosition, previousPositionFromProps, manualDrop } = state;
+    const {
+      currentPosition,
+      previousPositionFromProps,
+      manualDrop,
+      squareClicked
+    } = state;
     let positionFromProps = getPositionObject(position);
 
-    // If positionFromProps is a new position then execute, else null
+    // If positionFromProps is a new position then execute, else return null
     if (
       previousPositionFromProps &&
       !isEqual(positionFromProps, previousPositionFromProps) &&
@@ -293,10 +304,13 @@ class Chessboard extends Component {
           sourcePiece,
           // Set the current position to the new position minus the targetSquare
           currentPosition: positionFromProps,
-          waitForTransition: true,
-          // Create a phantom piece as a stand in
-          phantomPiece: { [targetSquare]: currentPosition[targetSquare] },
-          manualDrop: false
+          // If setting pieces via square clicks then there is no transition
+          waitForTransition: squareClicked ? false : true,
+          phantomPiece: squareClicked
+            ? null
+            : { [targetSquare]: currentPosition[targetSquare] },
+          manualDrop: false,
+          squareClicked: false
         };
       }
 
@@ -305,31 +319,30 @@ class Chessboard extends Component {
         targetSquare,
         sourcePiece,
         currentPosition: positionFromProps,
-        waitForTransition: true,
-        manualDrop: false
+        // If setting pieces via square clicks then there is no transition
+        waitForTransition: squareClicked ? false : true,
+        manualDrop: false,
+        squareClicked: false
       };
     }
     return null;
   }
 
   wasManuallyDropped = bool => this.setState({ manualDrop: bool });
+  wasSquareClicked = bool => this.setState({ squareClicked: bool });
 
   /* Called on drop if there is no onDrop prop.  This is what executes when a position does not
    change through the position prop, i.e., simple drag and drop operations on the pieces.*/
-  setPosition = (piece, sourceSquare, targetSquare = null) => {
+  setPosition = ({ sourceSquare, targetSquare, piece }) => {
     const { currentPosition } = this.state;
     const { getPosition, dropOffBoard } = this.props;
+
     if (sourceSquare === targetSquare) return;
 
     if (dropOffBoard === 'trash' && !targetSquare) {
       let newPosition = currentPosition;
       delete newPosition[sourceSquare];
-      this.setState({
-        currentPosition: newPosition,
-        sourceSquare,
-        targetSquare,
-        manualDrop: true
-      });
+      this.setState({ currentPosition: newPosition, manualDrop: true });
       // get board position for user
       return getPosition(currentPosition);
     }
@@ -338,12 +351,7 @@ class Chessboard extends Component {
     sourceSquare !== 'spare' && delete newPosition[sourceSquare];
     newPosition[targetSquare] = piece;
 
-    this.setState(() => ({
-      currentPosition: newPosition,
-      sourceSquare,
-      targetSquare,
-      manualDrop: true
-    }));
+    this.setState({ currentPosition: newPosition, manualDrop: true });
     // get board position for user
     getPosition(currentPosition);
   };
@@ -374,6 +382,9 @@ class Chessboard extends Component {
       screenHeight,
       pieces
     } = this.state;
+
+    const getScreenDimensions = screenWidth && screenHeight;
+
     return (
       <ErrorBoundary>
         <ChessboardContext.Provider
@@ -395,20 +406,22 @@ class Chessboard extends Component {
               currentPosition,
               screenWidth,
               screenHeight,
-              wasManuallyDropped: this.wasManuallyDropped
+              wasManuallyDropped: this.wasManuallyDropped,
+              wasSquareClicked: this.wasSquareClicked
             }
           }}
         >
           <div>
-            {sparePieces && <SparePieces.Top />}
-            {screenWidth && screenHeight && <Board />}
-            {sparePieces && <SparePieces.Bottom />}
+            {getScreenDimensions && sparePieces && <SparePieces.Top />}
+            {getScreenDimensions && <Board />}
+            {getScreenDimensions && sparePieces && <SparePieces.Bottom />}
           </div>
           <CustomDragLayer
             width={this.getWidth()}
             pieces={pieces}
             id={id}
             wasPieceTouched={wasPieceTouched}
+            sourceSquare={targetSquare}
           />
         </ChessboardContext.Provider>
       </ErrorBoundary>

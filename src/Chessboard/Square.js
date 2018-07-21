@@ -16,13 +16,15 @@ class Square extends Component {
     lightSquareStyle: PropTypes.object,
     darkSquareStyle: PropTypes.object,
     roughSquare: PropTypes.func,
-    selectedSquares: PropTypes.array,
     onMouseOverSquare: PropTypes.func,
     onMouseOutSquare: PropTypes.func,
-    onHoverSquareStyle: PropTypes.object,
-    selectedSquareStyle: PropTypes.object,
+    dropSquareStyle: PropTypes.object,
     screenWidth: PropTypes.number,
-    screenHeight: PropTypes.number
+    screenHeight: PropTypes.number,
+    squareStyles: PropTypes.object,
+    onDragOverSquare: PropTypes.func,
+    onSquareClick: PropTypes.func,
+    wasSquareClicked: PropTypes.func
   };
 
   componentDidMount() {
@@ -51,6 +53,11 @@ class Square extends Component {
     }
   }
 
+  onClick = () => {
+    this.props.wasSquareClicked(true);
+    this.props.onSquareClick(this.props.square);
+  };
+
   render() {
     const {
       connectDropTarget,
@@ -61,25 +68,26 @@ class Square extends Component {
       roughSquare,
       onMouseOverSquare,
       onMouseOutSquare,
-      selectedSquares,
-      selectedSquareStyle
+      squareStyles,
+      onDragOverSquare
     } = this.props;
 
     return connectDropTarget(
       <div
         data-testid={`${squareColor}-square`}
         ref={ref => (this[square] = ref)}
-        style={squareStyles(this.props)}
+        style={defaultSquareStyle(this.props)}
         onMouseOver={() => onMouseOverSquare(square)}
         onMouseOut={() => onMouseOutSquare(square)}
+        onDragEnter={() => onDragOverSquare(square)}
+        onClick={() => this.onClick()}
       >
         <div
-          style={highlightStyles({
-            selectedSquares,
-            square,
-            selectedSquareStyle,
-            width
-          })}
+          style={{
+            ...size(width),
+            ...center,
+            ...(squareStyles[square] && squareStyles[square])
+          }}
         >
           {roughSquare.length ? (
             <div style={center}>
@@ -103,8 +111,13 @@ class Square extends Component {
 }
 
 const squareTarget = {
-  drop(props) {
-    return { target: props.square, board: props.id };
+  drop(props, monitor) {
+    return {
+      target: props.square,
+      board: props.id,
+      piece: monitor.getItem().piece,
+      source: monitor.getItem().source
+    };
   }
 };
 
@@ -117,14 +130,14 @@ function collect(connect, monitor) {
 
 export default DropTarget(ItemTypes.PIECE, squareTarget, collect)(Square);
 
-const squareStyles = props => {
+const defaultSquareStyle = props => {
   const {
     width,
     squareColor,
     isOver,
     darkSquareStyle,
     lightSquareStyle,
-    onHoverSquareStyle
+    dropSquareStyle
   } = props;
 
   return {
@@ -132,27 +145,9 @@ const squareStyles = props => {
       ...size(width),
       ...center,
       ...(squareColor === 'black' ? darkSquareStyle : lightSquareStyle),
-      ...(isOver && onHoverSquareStyle)
+      ...(isOver && dropSquareStyle)
     }
   };
-};
-
-const highlightStyles = ({
-  selectedSquares,
-  square,
-  selectedSquareStyle,
-  width
-}) => {
-  return selectedSquares.length && selectedSquares.includes(square)
-    ? {
-        ...center,
-        ...size(width),
-        ...selectedSquareStyle
-      }
-    : {
-        ...center,
-        ...size(width)
-      };
 };
 
 const center = {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragLayer } from 'react-dnd';
 
-import { renderChessPieces } from './RenderPieces';
+import { renderChessPiece } from './Piece';
 
 class CustomDragLayer extends Component {
   static propTypes = {
@@ -15,7 +15,8 @@ class CustomDragLayer extends Component {
     width: PropTypes.number,
     pieces: PropTypes.object,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    wasPieceTouched: PropTypes.bool
+    wasPieceTouched: PropTypes.bool,
+    sourceSquare: PropTypes.string
   };
 
   render() {
@@ -26,16 +27,21 @@ class CustomDragLayer extends Component {
       id,
       currentOffset,
       wasPieceTouched,
-      pieces
+      pieces,
+      sourceSquare
     } = this.props;
 
     return isDragging && item.board === id ? (
       <div style={layerStyles}>
-        <div style={getItemStyles(currentOffset, wasPieceTouched)}>
-          {renderChessPieces(
-            { width, pieces, piece: item.piece },
-            { svgStyles: { width: width / 8, height: width / 8 } }
-          )}
+        <div style={getItemStyle(currentOffset, wasPieceTouched)}>
+          {renderChessPiece({
+            width,
+            pieces,
+            piece: item.piece,
+            isDragging,
+            customDragLayerStyles: { opacity: 1 },
+            sourceSquare
+          })}
         </div>
       </div>
     ) : null;
@@ -60,7 +66,7 @@ const layerStyles = {
   top: 0
 };
 
-const getItemStyles = (currentOffset, wasPieceTouched) => {
+const getItemStyle = (currentOffset, wasPieceTouched) => {
   if (!currentOffset) return { display: 'none' };
 
   let { x, y } = currentOffset;
