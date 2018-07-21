@@ -37,14 +37,13 @@ class SparePieces extends Component {
 
           return (
             <div style={spareStyles(context.width)}>
-              {spares.map((p, i) => (
-                <div data-testid={`spare-${p}`} key={i.toString()}>
+              {spares.map(p => (
+                <div data-testid={`spare-${p}`} key={p}>
                   <Piece
                     piece={p}
                     width={context.width}
                     setPosition={context.setPosition}
-                    defaultPieces={context.defaultPieces}
-                    currentSquare={'spare'}
+                    square={'spare'}
                     dropOffBoard={context.dropOffBoard}
                     draggable={true}
                     onDrop={context.onDrop}
@@ -54,7 +53,6 @@ class SparePieces extends Component {
                     orientation={context.orientation}
                     manualDrop={context.manualDrop}
                     id={context.id}
-                    setTransition={context.setTransition}
                     pieces={context.pieces}
                     wasManuallyDropped={context.wasManuallyDropped}
                   />

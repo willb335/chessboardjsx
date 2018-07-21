@@ -18,10 +18,13 @@ class Square extends Component {
     roughSquare: PropTypes.func,
     onMouseOverSquare: PropTypes.func,
     onMouseOutSquare: PropTypes.func,
-    onHoverSquareStyle: PropTypes.object,
+    dropSquareStyle: PropTypes.object,
     screenWidth: PropTypes.number,
     screenHeight: PropTypes.number,
-    squareStyles: PropTypes.object
+    squareStyles: PropTypes.object,
+    onDragOverSquare: PropTypes.func,
+    onSquareClick: PropTypes.func,
+    wasSquareClicked: PropTypes.func
   };
 
   componentDidMount() {
@@ -50,6 +53,11 @@ class Square extends Component {
     }
   }
 
+  onClick = () => {
+    this.props.wasSquareClicked(true);
+    this.props.onSquareClick(this.props.square);
+  };
+
   render() {
     const {
       connectDropTarget,
@@ -60,7 +68,8 @@ class Square extends Component {
       roughSquare,
       onMouseOverSquare,
       onMouseOutSquare,
-      squareStyles
+      squareStyles,
+      onDragOverSquare
     } = this.props;
 
     return connectDropTarget(
@@ -70,6 +79,8 @@ class Square extends Component {
         style={defaultSquareStyle(this.props)}
         onMouseOver={() => onMouseOverSquare(square)}
         onMouseOut={() => onMouseOutSquare(square)}
+        onDragEnter={() => onDragOverSquare(square)}
+        onClick={() => this.onClick()}
       >
         <div
           style={{
@@ -126,7 +137,7 @@ const defaultSquareStyle = props => {
     isOver,
     darkSquareStyle,
     lightSquareStyle,
-    onHoverSquareStyle
+    dropSquareStyle
   } = props;
 
   return {
@@ -134,7 +145,7 @@ const defaultSquareStyle = props => {
       ...size(width),
       ...center,
       ...(squareColor === 'black' ? darkSquareStyle : lightSquareStyle),
-      ...(isOver && onHoverSquareStyle)
+      ...(isOver && dropSquareStyle)
     }
   };
 };

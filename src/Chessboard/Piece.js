@@ -18,13 +18,14 @@ export const renderChessPiece = ({
   transitionDuration,
   isDragging,
   sourceSquare,
+  onPieceClick,
   customDragLayerStyles = {},
   phantomPieceStyles = {}
 }) => {
   const renderChessPieceArgs = {
     squareWidth: width / 8,
     isDragging,
-    piece: dropTarget && dropTarget.piece,
+    droppedPiece: dropTarget && dropTarget.piece,
     targetSquare: dropTarget && dropTarget.target,
     sourceSquare: dropTarget && dropTarget.source
   };
@@ -32,6 +33,7 @@ export const renderChessPiece = ({
   return (
     <div
       data-testid={`${piece}-${square}`}
+      onClick={() => onPieceClick(piece)}
       style={{
         ...pieceStyles({
           isDragging,
@@ -75,7 +77,9 @@ class Piece extends Component {
     sourceSquare: PropTypes.string,
     targetSquare: PropTypes.string,
     waitForTransition: PropTypes.bool,
-    setTouchState: PropTypes.func
+    setTouchState: PropTypes.func,
+    onPieceClick: PropTypes.func,
+    wasSquareClicked: PropTypes.func
   };
 
   shouldComponentUpdate(nextProps) {
@@ -120,7 +124,8 @@ class Piece extends Component {
       isDragging,
       connectDragSource,
       sourceSquare,
-      dropTarget
+      dropTarget,
+      onPieceClick
     } = this.props;
 
     return connectDragSource(
@@ -135,7 +140,8 @@ class Piece extends Component {
         transitionDuration,
         isDragging,
         sourceSquare,
-        dropTarget
+        dropTarget,
+        onPieceClick
       })
     );
   }
@@ -159,7 +165,8 @@ const pieceSource = {
       piece,
       square,
       onDrop,
-      wasManuallyDropped
+      wasManuallyDropped,
+      wasSquareClicked
     } = props;
     const dropResults = monitor.getDropResult();
     const didDrop = monitor.didDrop();
@@ -175,6 +182,7 @@ const pieceSource = {
     // check if target board is source board
     if (board === dropBoard && didDrop) {
       if (onDrop.length) {
+        wasSquareClicked(false);
         wasManuallyDropped(true);
         // execute user's logic
         return onDrop({
@@ -256,5 +264,6 @@ const pieceStyles = ({
     getSquareCoordinates
   }),
   transition: `transform ${transitionDuration}ms`,
-  zIndex: 5
+  zIndex: 5,
+  cursor: isDragging ? '-webkit-grabbing' : '-webkit-grab'
 });
