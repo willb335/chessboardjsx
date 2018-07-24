@@ -22,9 +22,7 @@ class Notation extends PureComponent {
     const {
       row,
       col,
-      alpha,
       orientation,
-      width,
       lightSquareStyle,
       darkSquareStyle
     } = this.props;
@@ -39,35 +37,18 @@ class Notation extends PureComponent {
     const isBottomLeftSquare = isRow && isColumn;
 
     if (isBottomLeftSquare) {
-      return renderBottomLeft({
-        orientation,
-        row,
-        width,
-        alpha,
-        col,
-        whiteColor
-      });
+      return renderBottomLeft(this.props, { whiteColor });
     }
 
     if (isColumn) {
-      return renderLetters({
-        orientation,
-        row,
-        width,
-        alpha,
-        col,
+      return renderLetters(this.props, {
         whiteColor,
         blackColor
       });
     }
 
     if (isRow) {
-      return renderNumbers({
-        orientation,
-        row,
-        width,
-        alpha,
-        col,
+      return renderNumbers(this.props, {
         whiteColor,
         blackColor,
         isRow,
@@ -82,7 +63,10 @@ class Notation extends PureComponent {
 export default Notation;
 
 /* eslint react/prop-types: 0 */
-function renderBottomLeft({ orientation, row, width, alpha, col, whiteColor }) {
+function renderBottomLeft(
+  { orientation, row, width, alpha, col },
+  { whiteColor }
+) {
   return (
     <Fragment>
       <div
@@ -109,14 +93,10 @@ function renderBottomLeft({ orientation, row, width, alpha, col, whiteColor }) {
   );
 }
 
-function renderLetters({
-  orientation,
-  width,
-  alpha,
-  col,
-  whiteColor,
-  blackColor
-}) {
+function renderLetters(
+  { orientation, width, alpha, col },
+  { whiteColor, blackColor }
+) {
   return (
     <div
       data-testid={`column-${getColumn(orientation, alpha, col)}`}
@@ -131,15 +111,10 @@ function renderLetters({
   );
 }
 
-function renderNumbers({
-  orientation,
-  row,
-  width,
-  whiteColor,
-  blackColor,
-  isRow,
-  isBottomLeftSquare
-}) {
+function renderNumbers(
+  { orientation, row, width },
+  { whiteColor, blackColor, isRow, isBottomLeftSquare }
+) {
   return (
     <div
       style={{

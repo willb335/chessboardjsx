@@ -12,6 +12,7 @@
 [![version][version-badge]][package]
 [![MIT License][license-badge]][license]
 [![Commitizen friendly][commitzen-badge]][commitzen]
+[![semantic-release][semantic-release-badge]][semantic-release]
 
 </div>
 
@@ -69,11 +70,9 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-
 <!-- prettier-ignore -->
-| [<img src="https://avatars2.githubusercontent.com/u/10157307?v=4" width="100px;"/><br /><sub><b>Will</b></sub>](https://github.com/willb335)<br />[💻](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Code") [📖](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Documentation") [💡](#example-willb335 "Examples") [⚠️](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Tests") | [<img src="https://avatars3.githubusercontent.com/u/146082?v=4" width="100px;"/><br /><sub><b>Andrew Bashelor</b></sub>](https://github.com/a-bash)<br />[📖](https://github.com/willb335/chessboardjsx/commits?author=a-bash "Documentation") |
-| :---: | :---: |
-
+| [<img src="https://avatars2.githubusercontent.com/u/10157307?v=4" width="100px;"/><br /><sub><b>Will</b></sub>](https://github.com/willb335)<br />[💻](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Code") [📖](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Documentation") [💡](#example-willb335 "Examples") [⚠️](https://github.com/willb335/chessboardjsx/commits?author=willb335 "Tests") | [<img src="https://avatars3.githubusercontent.com/u/146082?v=4" width="100px;"/><br /><sub><b>Andrew Bashelor</b></sub>](https://github.com/a-bash)<br />[📖](https://github.com/willb335/chessboardjsx/commits?author=a-bash "Documentation") | [<img src="https://avatars3.githubusercontent.com/u/25490975?v=4" width="100px;"/><br /><sub><b>yougotgotyo</b></sub>](https://chadburg.com/)<br />[🤔](#ideas-yougotgotyo "Ideas, Planning, & Feedback") | [<img src="https://avatars0.githubusercontent.com/u/385366?v=4" width="100px;"/><br /><sub><b>Roger Knapp</b></sub>](http://csharptest.net)<br />[🤔](#ideas-csharptest "Ideas, Planning, & Feedback") |
+| :---: | :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## LICENSE
@@ -94,3 +93,5 @@ MIT
 [license]: https://github.com/willb335/chessboardjsx/blob/master/LICENSE
 [commitzen-badge]: https://img.shields.io/badge/commitizen-friendly-brightgreen.svg
 [commitzen]: http://commitizen.github.io/cz-cli/
+[semantic-release-badge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+[semantic-release]: https://github.com/semantic-release/semantic-release

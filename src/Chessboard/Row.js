@@ -48,7 +48,7 @@ class Row extends Component {
 export default Row;
 
 const boardStyles = width => ({
-  width: width,
+  width,
   height: width,
   cursor: 'default'
 });

@@ -1,7 +1,7 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import PropTypes from 'prop-types';
 
-import { renderChessPieces } from './RenderPieces';
+import { renderChessPiece } from './Piece';
 
 PhantomPiece.propTypes = {
   width: PropTypes.number,
@@ -10,13 +10,12 @@ PhantomPiece.propTypes = {
 };
 
 function PhantomPiece({ width, pieces, phantomPieceValue }) {
-  return renderChessPieces(
-    { width, pieces, piece: phantomPieceValue },
-    {
-      imgStyles: phantomPieceStyles(width),
-      svgStyles: phantomPieceStyles(width)
-    }
-  );
+  return renderChessPiece({
+    width,
+    pieces,
+    piece: phantomPieceValue,
+    phantomPieceStyles: phantomPieceStyles(width)
+  });
 }
 
 export default PhantomPiece;

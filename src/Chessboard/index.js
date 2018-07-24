@@ -15,7 +15,6 @@ import {
 } from './helpers';
 import CustomDragLayer from './CustomDragLayer';
 import defaultPieces from './svg/chesspieces/standard';
-import { renderPieces } from './RenderPieces';
 import ErrorBoundary from './ErrorBoundary';
 
 const ChessboardContext = React.createContext();
@@ -32,48 +31,57 @@ const getPositionObject = position => {
 class Chessboard extends Component {
   static propTypes = {
     /**
+     * The id prop is necessary if more than one board is mounted.
+     * Drag and drop will not work as expected if not provided.
+     */
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    /**
      * The position to display on the board.  Can be either a FEN string or a position object.
      * See https://www.chessboardjsx.com/basics/fen and https://www.chessboardjsx.com/basics/position-object
      * for examples.
      */
     position: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     /**
+     * An object with functions returning jsx as values(render prop).
+     * See https://www.chessboardjsx.com/custom
+     * Signature: { wK:
+     * function({ isDragging, squareWidth, droppedPiece, targetSquare, sourceSquare }) => jsx }
+     */
+    pieces: PropTypes.object,
+    /**
+     * The width in pixels.  For a responsive width, use calcWidth.
+     */
+    width: PropTypes.number,
+    /**
      * Orientation of the board.
      */
     orientation: PropTypes.oneOf(['white', 'black']),
+    /**
+     * If false, notation will not be shown on the board.
+     */
+    showNotation: PropTypes.bool,
     /**
      * If true, spare pieces will appear above and below the board.
      */
     sparePieces: PropTypes.bool,
     /**
-     * The width in pixels.  For a responsive width, use calcWidth.
+     * If false, the pieces will not be draggable
      */
-    width: PropTypes.number,
-    defaultPieces: PropTypes.objectOf(PropTypes.object),
+    draggable: PropTypes.bool,
     /**
      * The behavior of the piece when dropped off the board. 'snapback' brings the piece
      * back to it's original square and 'trash' deletes the piece from the board
      */
     dropOffBoard: PropTypes.oneOf(['snapback', 'trash']),
     /**
-     * The logic to be performed on piece drop. See chessboardjsx.com/integrations for examples.
-     *
-     * Signature: function(sourceSquare: string, targetSquare: string) => void
-     */
-    onDrop: PropTypes.func,
-    /**
-     * If false, the pieces will not be draggable
-     */
-    draggable: PropTypes.bool,
-    /**
      * The time it takes for a piece to slide to the target square.  Only used
      * when the next position comes from the position prop. See chessboardjsx.com/integrations/random for an example
      */
     transitionDuration: PropTypes.number,
     /**
-     * If false, notation will not be shown on the board.
+     * The style object for the board.
      */
-    showNotation: PropTypes.bool,
+    boardStyle: PropTypes.object,
     /**
      * The style object for the light square.
      */
@@ -83,31 +91,28 @@ class Chessboard extends Component {
      */
     darkSquareStyle: PropTypes.object,
     /**
-     * The style object for the board.
+     * An object containing custom styles for squares.  For example {'e4': {backgroundColor: 'orange'},
+     * 'd4': {backgroundColor: 'blue'}}.  See chessboardjsx.com/integrations/move-validation for an example
      */
-    boardStyle: PropTypes.object,
+    squareStyles: PropTypes.object,
     /**
-     * The id prop is necessary if more than one board is mounted.
-     * Drag and drop will not work as expected if not provided.
+     * The style object for the current drop square. { backgroundColor: 'sienna' }
      */
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    dropSquareStyle: PropTypes.object,
+    /**
+     * A function for responsive size control, returns the width of the board.
+     *
+     * Signature: function({ screenWidth: number, screenHeight: number }) => void
+     */
+    calcWidth: PropTypes.func,
     /**
      * A function that gives access to the underlying square element.  It
      * allows for customizations with rough.js. See chessboardjsx.com/custom for an
      * example.
      *
-     * Signature: function(squareElement, squareWidth: number) => void
+     * Signature: function({ squareElement: node, squareWidth: number }) => void
      */
     roughSquare: PropTypes.func,
-    /**
-     * A collection of squares, useful for legal move highlighting.
-     * See chessboardjsx.com/integrations/move-validation for an example.
-     */
-    selectedSquares: PropTypes.array,
-    /**
-     * The style object for the selected squares.
-     */
-    selectedSquareStyle: PropTypes.object,
     /**
      *  A function to call when the mouse is over a square.
      *  See chessboardjsx.com/integrations/move-validation for an example.
@@ -119,65 +124,74 @@ class Chessboard extends Component {
      * A function to call when the mouse has left the square.
      * See chessboardjsx.com/integrations/move-validation for an example.
      *
-     * Signature: function() => void
+     * Signature: function(square: string) => void
      */
     onMouseOutSquare: PropTypes.func,
     /**
-     * The style object for the hovered square.
-     */
-    onHoverSquareStyle: PropTypes.object,
-    renderPieces: PropTypes.func,
-    /**
-     * An object containing custom pieces.  The values can be imported images or
-     * svg objects. See chessboardjsx/custom for an example.
+     * The logic to be performed on piece drop. See chessboardjsx.com/integrations for examples.
      *
-     * Signature: { bP: 'imported black pawn', bK: <svg><path/></svg>,
-     * wN: 'imported white knight' }
+     * Signature: function({ sourceSquare: string, targetSquare: string, piece: string }) => void
      */
-    pieces: PropTypes.object,
-    /**
-     * A function for responsive size control, returns the width of the board.
-     *
-     * Signature: function(screenWidth: number, screenHeight: number) => void
-     */
-    calcWidth: PropTypes.func,
+    onDrop: PropTypes.func,
     /**
      * A function that gives access to the current position object.
      * For example, getPosition = position => this.setState({ myPosition: position }).
      *
      * Signature: function(currentPosition: object) => void
      */
-    getPosition: PropTypes.func
+    getPosition: PropTypes.func,
+    /**
+     * A function to call when a piece is dragged over a specific square.
+     *
+     * Signature: function(square: string) => void
+     */
+    onDragOverSquare: PropTypes.func,
+    /**
+     * A function to call when a square is clicked.
+     *
+     * Signature: function(square: string) => void
+     */
+    onSquareClick: PropTypes.func,
+    /**
+     * A function to call when a piece is clicked.
+     *
+     * Signature: function(piece: string) => void
+     */
+    onPieceClick: PropTypes.func,
+    /**
+     * A function to call when a square is right clicked.
+     *
+     * Signature: function(square: string) => void
+     */
+    onSquareRightClick: PropTypes.func
   };
 
   static defaultProps = {
+    id: '0',
+    position: '',
+    pieces: {},
     width: 560,
-    calcWidth: () => {},
     orientation: 'white',
     showNotation: true,
-    position: '',
     sparePieces: false,
     draggable: true,
     dropOffBoard: 'snapback',
-    defaultPieces,
-    onDrop: () => {},
     transitionDuration: 300,
     boardStyle: {},
-    id: '0',
-    renderPieces,
-    pieces: {},
     lightSquareStyle: { backgroundColor: 'rgb(240, 217, 181)' },
     darkSquareStyle: { backgroundColor: 'rgb(181, 136, 99)' },
+    squareStyles: {},
+    dropSquareStyle: { boxShadow: 'inset 0 0 1px 4px yellow' },
+    calcWidth: () => {},
     roughSquare: () => {},
-    selectedSquares: [],
     onMouseOverSquare: () => {},
     onMouseOutSquare: () => {},
-    onHoverSquareStyle: { boxShadow: 'inset 0 0 1px 4px yellow' },
-    selectedSquareStyle: {
-      background: 'radial-gradient(circle, #fffc00 36%, transparent 40%)',
-      borderRadius: '50%'
-    },
-    getPosition: () => {}
+    onDrop: () => {},
+    getPosition: () => {},
+    onDragOverSquare: () => {},
+    onSquareClick: () => {},
+    onPieceClick: () => {},
+    onSquareRightClick: () => {}
   };
 
   static Consumer = ChessboardContext.Consumer;
@@ -192,7 +206,8 @@ class Chessboard extends Component {
     phantomPiece: null,
     wasPieceTouched: false,
     manualDrop: false,
-    pieces: { ...this.props.defaultPieces, ...this.props.pieces }
+    squareClicked: false,
+    pieces: { ...defaultPieces, ...this.props.pieces }
   };
 
   componentDidMount() {
@@ -244,10 +259,15 @@ class Chessboard extends Component {
 
   static getDerivedStateFromProps(props, state) {
     const { position } = props;
-    const { currentPosition, previousPositionFromProps, manualDrop } = state;
+    const {
+      currentPosition,
+      previousPositionFromProps,
+      manualDrop,
+      squareClicked
+    } = state;
     let positionFromProps = getPositionObject(position);
 
-    // If positionFromProps is a new position then execute, else null
+    // If positionFromProps is a new position then execute, else return null
     if (
       previousPositionFromProps &&
       !isEqual(positionFromProps, previousPositionFromProps) &&
@@ -293,10 +313,13 @@ class Chessboard extends Component {
           sourcePiece,
           // Set the current position to the new position minus the targetSquare
           currentPosition: positionFromProps,
-          waitForTransition: true,
-          // Create a phantom piece as a stand in
-          phantomPiece: { [targetSquare]: currentPosition[targetSquare] },
-          manualDrop: false
+          // If setting pieces via square clicks then there is no transition
+          waitForTransition: squareClicked ? false : true,
+          phantomPiece: squareClicked
+            ? null
+            : { [targetSquare]: currentPosition[targetSquare] },
+          manualDrop: false,
+          squareClicked: false
         };
       }
 
@@ -305,31 +328,30 @@ class Chessboard extends Component {
         targetSquare,
         sourcePiece,
         currentPosition: positionFromProps,
-        waitForTransition: true,
-        manualDrop: false
+        // If setting pieces via square clicks then there is no transition
+        waitForTransition: squareClicked ? false : true,
+        manualDrop: false,
+        squareClicked: false
       };
     }
     return null;
   }
 
   wasManuallyDropped = bool => this.setState({ manualDrop: bool });
+  wasSquareClicked = bool => this.setState({ squareClicked: bool });
 
   /* Called on drop if there is no onDrop prop.  This is what executes when a position does not
    change through the position prop, i.e., simple drag and drop operations on the pieces.*/
-  setPosition = (piece, sourceSquare, targetSquare = null) => {
+  setPosition = ({ sourceSquare, targetSquare, piece }) => {
     const { currentPosition } = this.state;
     const { getPosition, dropOffBoard } = this.props;
+
     if (sourceSquare === targetSquare) return;
 
     if (dropOffBoard === 'trash' && !targetSquare) {
       let newPosition = currentPosition;
       delete newPosition[sourceSquare];
-      this.setState({
-        currentPosition: newPosition,
-        sourceSquare,
-        targetSquare,
-        manualDrop: true
-      });
+      this.setState({ currentPosition: newPosition, manualDrop: true });
       // get board position for user
       return getPosition(currentPosition);
     }
@@ -338,12 +360,7 @@ class Chessboard extends Component {
     sourceSquare !== 'spare' && delete newPosition[sourceSquare];
     newPosition[targetSquare] = piece;
 
-    this.setState(() => ({
-      currentPosition: newPosition,
-      sourceSquare,
-      targetSquare,
-      manualDrop: true
-    }));
+    this.setState({ currentPosition: newPosition, manualDrop: true });
     // get board position for user
     getPosition(currentPosition);
   };
@@ -354,8 +371,8 @@ class Chessboard extends Component {
   getWidth = () => {
     const { calcWidth, width } = this.props;
     const { screenWidth, screenHeight } = this.state;
-    return calcWidth(screenWidth, screenHeight)
-      ? calcWidth(screenWidth, screenHeight)
+    return calcWidth({ screenWidth, screenHeight })
+      ? calcWidth({ screenWidth, screenHeight })
       : width;
   };
 
@@ -374,6 +391,9 @@ class Chessboard extends Component {
       screenHeight,
       pieces
     } = this.state;
+
+    const getScreenDimensions = screenWidth && screenHeight;
+
     return (
       <ErrorBoundary>
         <ChessboardContext.Provider
@@ -395,20 +415,22 @@ class Chessboard extends Component {
               currentPosition,
               screenWidth,
               screenHeight,
-              wasManuallyDropped: this.wasManuallyDropped
+              wasManuallyDropped: this.wasManuallyDropped,
+              wasSquareClicked: this.wasSquareClicked
             }
           }}
         >
           <div>
-            {sparePieces && <SparePieces.Top />}
-            {screenWidth && screenHeight && <Board />}
-            {sparePieces && <SparePieces.Bottom />}
+            {getScreenDimensions && sparePieces && <SparePieces.Top />}
+            {getScreenDimensions && <Board />}
+            {getScreenDimensions && sparePieces && <SparePieces.Bottom />}
           </div>
           <CustomDragLayer
             width={this.getWidth()}
             pieces={pieces}
             id={id}
             wasPieceTouched={wasPieceTouched}
+            sourceSquare={targetSquare}
           />
         </ChessboardContext.Provider>
       </ErrorBoundary>
