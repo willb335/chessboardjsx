@@ -87,6 +87,7 @@ class Board extends Component {
                         phantomPiece={context.phantomPiece}
                         onPieceClick={context.onPieceClick}
                         wasSquareClicked={context.wasSquareClicked}
+                        allowDrag={context.allowDrag}
                       />
                     ) : null}
 
