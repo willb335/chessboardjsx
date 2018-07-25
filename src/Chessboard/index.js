@@ -163,7 +163,14 @@ class Chessboard extends Component {
      *
      * Signature: function(square: string) => void
      */
-    onSquareRightClick: PropTypes.func
+    onSquareRightClick: PropTypes.func,
+    /**
+     * A function to call when a piece is being picked up.  Returns true if the piece is draggable,
+     * false if not.
+     *
+     * Signature: function( { piece: string, sourceSquare: string } ) => bool
+     */
+    allowDrag: PropTypes.func
   };
 
   static defaultProps = {
@@ -191,7 +198,8 @@ class Chessboard extends Component {
     onDragOverSquare: () => {},
     onSquareClick: () => {},
     onPieceClick: () => {},
-    onSquareRightClick: () => {}
+    onSquareRightClick: () => {},
+    allowDrag: () => true
   };
 
   static Consumer = ChessboardContext.Consumer;

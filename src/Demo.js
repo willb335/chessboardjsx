@@ -4,13 +4,15 @@ import WithMoveValidation from './integrations/WithMoveValidation';
 import PlayRandomMoveEngine from './integrations/PlayRandomMoveEngine';
 import RandomVsRandomGame from './integrations/RandomVsRandomGame';
 import CustomizedBoard from './integrations/CustomizedBoard';
+import AllowDragFeature from './integrations/AllowDrag';
 
 class Demo extends Component {
   state = {
     showCustomizedBoard: false,
     showWithMoveValidation: false,
     showRandomVsRandomGame: false,
-    showPlayRandomMoveEngine: false
+    showPlayRandomMoveEngine: false,
+    showAllowDragFeature: false
   };
   render() {
     return (
@@ -22,7 +24,8 @@ class Demo extends Component {
                 showCustomizedBoard: true,
                 showWithMoveValidation: false,
                 showRandomVsRandomGame: false,
-                showPlayRandomMoveEngine: false
+                showPlayRandomMoveEngine: false,
+                showAllowDragFeature: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'orange' } }}
@@ -35,7 +38,8 @@ class Demo extends Component {
                 showCustomizedBoard: false,
                 showWithMoveValidation: true,
                 showRandomVsRandomGame: false,
-                showPlayRandomMoveEngine: false
+                showPlayRandomMoveEngine: false,
+                showAllowDragFeature: false
               })
             }
             style={{
@@ -51,7 +55,8 @@ class Demo extends Component {
                 showCustomizedBoard: false,
                 showWithMoveValidation: false,
                 showRandomVsRandomGame: true,
-                showPlayRandomMoveEngine: false
+                showPlayRandomMoveEngine: false,
+                showAllowDragFeature: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'gold' } }}
@@ -64,12 +69,27 @@ class Demo extends Component {
                 showCustomizedBoard: false,
                 showWithMoveValidation: false,
                 showRandomVsRandomGame: false,
-                showPlayRandomMoveEngine: true
+                showPlayRandomMoveEngine: true,
+                showAllowDragFeature: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'silver' } }}
           >
             Play a Random Move Engine
+          </button>
+          <button
+            onClick={() =>
+              this.setState({
+                showCustomizedBoard: false,
+                showWithMoveValidation: false,
+                showRandomVsRandomGame: false,
+                showPlayRandomMoveEngine: false,
+                showAllowDragFeature: true
+              })
+            }
+            style={{ ...buttonStyle, ...{ backgroundColor: 'aqua' } }}
+          >
+            Conditionally Disable Drag
           </button>
         </div>
         <div style={boardsContainer}>
@@ -77,6 +97,7 @@ class Demo extends Component {
           {this.state.showWithMoveValidation && <WithMoveValidation />}
           {this.state.showRandomVsRandomGame && <RandomVsRandomGame />}
           {this.state.showPlayRandomMoveEngine && <PlayRandomMoveEngine />}
+          {this.state.showAllowDragFeature && <AllowDragFeature />}
         </div>
       </div>
     );

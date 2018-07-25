@@ -79,7 +79,8 @@ class Piece extends Component {
     waitForTransition: PropTypes.bool,
     setTouchState: PropTypes.func,
     onPieceClick: PropTypes.func,
-    wasSquareClicked: PropTypes.func
+    wasSquareClicked: PropTypes.func,
+    allowDrag: PropTypes.func
   };
 
   shouldComponentUpdate(nextProps) {
@@ -149,7 +150,10 @@ class Piece extends Component {
 
 const pieceSource = {
   canDrag(props) {
-    return props.draggable;
+    return (
+      props.draggable &&
+      props.allowDrag({ piece: props.piece, sourceSquare: props.square })
+    );
   },
   beginDrag(props) {
     return {
