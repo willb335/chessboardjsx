@@ -6,15 +6,17 @@ import { renderChessPiece } from './Piece';
 PhantomPiece.propTypes = {
   width: PropTypes.number,
   phantomPieceValue: PropTypes.string,
-  pieces: PropTypes.object
+  pieces: PropTypes.object,
+  allowDrag: PropTypes.func
 };
 
-function PhantomPiece({ width, pieces, phantomPieceValue }) {
+function PhantomPiece({ width, pieces, phantomPieceValue, allowDrag }) {
   return renderChessPiece({
     width,
     pieces,
     piece: phantomPieceValue,
-    phantomPieceStyles: phantomPieceStyles(width)
+    phantomPieceStyles: phantomPieceStyles(width),
+    allowDrag
   });
 }
 

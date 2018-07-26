@@ -163,7 +163,21 @@ class Chessboard extends Component {
      *
      * Signature: function(square: string) => void
      */
-    onSquareRightClick: PropTypes.func
+    onSquareRightClick: PropTypes.func,
+    /**
+     * A function to call when a piece drag is initiated.  Returns true if the piece is draggable,
+     * false if not.
+     *
+     * Signature: function( { piece: string, sourceSquare: string } ) => bool
+     */
+    allowDrag: PropTypes.func,
+    /**
+     * A function to call when a piece drag is initiated.  Returns true if the piece is draggable,
+     * false if not.
+     *
+     * Signature: function( { piece: string, sourceSquare: string } ) => bool
+     */
+    computerMove: PropTypes.bool
   };
 
   static defaultProps = {
@@ -191,13 +205,15 @@ class Chessboard extends Component {
     onDragOverSquare: () => {},
     onSquareClick: () => {},
     onPieceClick: () => {},
-    onSquareRightClick: () => {}
+    onSquareRightClick: () => {},
+    allowDrag: () => true,
+    computerMove: false
   };
 
   static Consumer = ChessboardContext.Consumer;
 
   state = {
-    previousPositionFromProps: null,
+    previousPositionFromProps: getPositionObject(this.props.position),
     currentPosition: getPositionObject(this.props.position),
     sourceSquare: '',
     targetSquare: '',
@@ -207,6 +223,7 @@ class Chessboard extends Component {
     wasPieceTouched: false,
     manualDrop: false,
     squareClicked: false,
+    firstMove: false,
     pieces: { ...defaultPieces, ...this.props.pieces }
   };
 
@@ -269,7 +286,6 @@ class Chessboard extends Component {
 
     // If positionFromProps is a new position then execute, else return null
     if (
-      previousPositionFromProps &&
       !isEqual(positionFromProps, previousPositionFromProps) &&
       !isEqual(positionFromProps, currentPosition)
     ) {
