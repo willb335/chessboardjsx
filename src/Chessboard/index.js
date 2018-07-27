@@ -314,7 +314,10 @@ class Chessboard extends Component {
         return {
           currentPosition: positionFromProps,
           waitForTransition: false,
-          manualDrop: false
+          manualDrop: false,
+          sourceSquare,
+          targetSquare,
+          sourcePiece
         };
       }
 
