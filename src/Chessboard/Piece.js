@@ -19,6 +19,7 @@ export const renderChessPiece = ({
   isDragging,
   sourceSquare,
   onPieceClick,
+  allowDrag,
   customDragLayerStyles = {},
   phantomPieceStyles = {}
 }) => {
@@ -43,7 +44,9 @@ export const renderChessPiece = ({
           targetSquare,
           sourceSquare,
           getSquareCoordinates,
-          getTranslation
+          getTranslation,
+          piece,
+          allowDrag
         }),
         ...phantomPieceStyles,
         ...customDragLayerStyles
@@ -79,7 +82,8 @@ class Piece extends Component {
     waitForTransition: PropTypes.bool,
     setTouchState: PropTypes.func,
     onPieceClick: PropTypes.func,
-    wasSquareClicked: PropTypes.func
+    wasSquareClicked: PropTypes.func,
+    allowDrag: PropTypes.func
   };
 
   shouldComponentUpdate(nextProps) {
@@ -125,7 +129,8 @@ class Piece extends Component {
       connectDragSource,
       sourceSquare,
       dropTarget,
-      onPieceClick
+      onPieceClick,
+      allowDrag
     } = this.props;
 
     return connectDragSource(
@@ -141,7 +146,8 @@ class Piece extends Component {
         isDragging,
         sourceSquare,
         dropTarget,
-        onPieceClick
+        onPieceClick,
+        allowDrag
       })
     );
   }
@@ -149,7 +155,10 @@ class Piece extends Component {
 
 const pieceSource = {
   canDrag(props) {
-    return props.draggable;
+    return (
+      props.draggable &&
+      props.allowDrag({ piece: props.piece, sourceSquare: props.square })
+    );
   },
   beginDrag(props) {
     return {
@@ -253,7 +262,9 @@ const pieceStyles = ({
   targetSquare,
   sourceSquare,
   getSquareCoordinates,
-  getTranslation
+  getTranslation,
+  piece,
+  allowDrag
 }) => ({
   opacity: isDragging ? 0 : 1,
   transform: getTranslation({
@@ -265,5 +276,9 @@ const pieceStyles = ({
   }),
   transition: `transform ${transitionDuration}ms`,
   zIndex: 5,
-  cursor: isDragging ? '-webkit-grabbing' : '-webkit-grab'
+  cursor: isDragging
+    ? '-webkit-grabbing'
+    : allowDrag({ piece, sourceSquare: square })
+      ? '-webkit-grab'
+      : 'not-allowed'
 });

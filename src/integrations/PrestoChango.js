@@ -1,41 +1,41 @@
 import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
 import PropTypes from 'prop-types';
-import Chess from 'chess.js';
 
 import Chessboard from '../Chessboard';
 
-class RandomVsRandom extends Component {
+class PrestoChango extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = { fen: 'start' };
 
   componentDidMount() {
-    this.game = new Chess();
-    setTimeout(() => this.makeRandomMove(), 1000);
+    window.setTimeout(this.timer1);
+    window.setTimeout(this.timer2);
+    window.setTimeout(this.timer3);
   }
 
   componentWillUnmount() {
-    window.clearTimeout(this.timer());
+    window.clearTimeout(this.timer1);
+    window.clearTimeout(this.timer2);
+    window.clearTimeout(this.timer3);
   }
 
-  timer = () => window.setTimeout(this.makeRandomMove, 1000);
+  timer1 = () => window.setTimeout(this.onTimer1, 3000);
+  timer2 = () => window.setTimeout(this.onTimer2, 6000);
+  timer3 = () => window.setTimeout(this.onTimer3, 9000);
 
-  makeRandomMove = () => {
-    let possibleMoves = this.game.moves();
+  onTimer1 = () => {
+    this.setState({
+      fen: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 1 1'
+    });
+  };
 
-    // exit if the game is over
-    if (
-      this.game.game_over() === true ||
-      this.game.in_draw() === true ||
-      possibleMoves.length === 0
-    )
-      return;
+  onTimer2 = () => {
+    this.setState({ fen: '4K1k1/4P3/8/8/8/8/r7/1R6 w - - 0 1' });
+  };
 
-    let randomIndex = Math.floor(Math.random() * possibleMoves.length);
-    this.game.move(possibleMoves[randomIndex]);
-    this.setState({ fen: this.game.fen() });
-
-    this.timer();
+  onTimer3 = () => {
+    this.setState({ fen: '4K1k1/4P3/8/8/8/8/r7/6R1 b - - 1 1' });
   };
 
   render() {
@@ -46,14 +46,14 @@ class RandomVsRandom extends Component {
 
 /* eslint react/display-name: 0 */
 /* eslint react/prop-types: 0 */
-export default function RandomVsRandomGame() {
+export default function PrestoChangoExample() {
   return (
     <div>
-      <RandomVsRandom>
+      <PrestoChango>
         {({ position }) => (
           <Chessboard
             calcWidth={({ screenWidth }) => (screenWidth < 500 ? 350 : 480)}
-            id="random"
+            id="presto"
             position={position}
             transitionDuration={300}
             boardStyle={{
@@ -62,7 +62,7 @@ export default function RandomVsRandomGame() {
             }}
           />
         )}
-      </RandomVsRandom>
+      </PrestoChango>
     </div>
   );
 }
