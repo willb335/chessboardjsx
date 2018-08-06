@@ -102,7 +102,7 @@ class Chessboard extends Component {
     /**
      * A function for responsive size control, returns the width of the board.
      *
-     * Signature: function({ screenWidth: number, screenHeight: number }) => void
+     * Signature: function({ screenWidth: number, screenHeight: number }) => number
      */
     calcWidth: PropTypes.func,
     /**
@@ -170,14 +170,7 @@ class Chessboard extends Component {
      *
      * Signature: function( { piece: string, sourceSquare: string } ) => bool
      */
-    allowDrag: PropTypes.func,
-    /**
-     * A function to call when a piece drag is initiated.  Returns true if the piece is draggable,
-     * false if not.
-     *
-     * Signature: function( { piece: string, sourceSquare: string } ) => bool
-     */
-    computerMove: PropTypes.bool
+    allowDrag: PropTypes.func
   };
 
   static defaultProps = {
@@ -206,8 +199,7 @@ class Chessboard extends Component {
     onSquareClick: () => {},
     onPieceClick: () => {},
     onSquareRightClick: () => {},
-    allowDrag: () => true,
-    computerMove: false
+    allowDrag: () => true
   };
 
   static Consumer = ChessboardContext.Consumer;
