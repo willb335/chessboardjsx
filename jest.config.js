@@ -23,5 +23,6 @@ module.exports = {
     '\\.module\\.css$': 'identity-obj-proxy',
     '\\.css$': '<rootDir>/test/style-mock.js'
   },
-  transform: { '^.+\\.js$': 'babel-jest' }
+  transform: { '^.+\\.js$': 'babel-jest' },
+  testURL: 'http://localhost/'
 };

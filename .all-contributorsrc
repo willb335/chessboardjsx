@@ -47,6 +47,25 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "slig",
+      "name": "Tiago Serafim",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/37779?v=4",
+      "profile": "https://github.com/slig",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "furrykef",
+      "name": "Kef Schecter",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/536006?v=4",
+      "profile": "http://www.furrykef.com/",
+      "contributions": [
+        "bug"
+      ]
     }
   ]
 }
