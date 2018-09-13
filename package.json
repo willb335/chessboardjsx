@@ -4,6 +4,7 @@
   "description":
     "Chessboard.jsx is a chessboard for React. Inspired by chessboard.js",
   "main": "dist/chessboard.min.js",
+  "types": "chessboard.d.ts",
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
@@ -19,7 +20,7 @@
     "report-coverage": "cat ./coverage/lcov.info | codecov"
   },
   "keywords": ["react", "chess", "chessboard"],
-  "files": ["dist"],
+  "files": ["chessboard.d.ts", "dist"],
   "repository": {
     "type": "git",
     "url": "https://github.com/willb335/chessboardjsx.git"
