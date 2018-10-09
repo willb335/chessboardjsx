@@ -41,6 +41,7 @@ class Chessboard extends Component {
      * for examples.
      */
     position: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    previousPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     /**
      * An object with functions returning jsx as values(render prop).
      * See https://www.chessboardjsx.com/custom
@@ -176,6 +177,7 @@ class Chessboard extends Component {
   static defaultProps = {
     id: '0',
     position: '',
+    previousPosition: '',
     pieces: {},
     width: 560,
     orientation: 'white',
