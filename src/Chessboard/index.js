@@ -243,6 +243,7 @@ class Chessboard extends Component {
 
     // Check if there is a new position coming from props
     if (!isEqual(positionFromProps, previousPositionFromProps)) {
+      console.log('diff');
       this.setState({ previousPositionFromProps });
       // get board position for user
       getPosition(positionFromProps);
@@ -275,9 +276,6 @@ class Chessboard extends Component {
       squareClicked
     } = state;
     let positionFromProps = getPositionObject(position);
-
-    console.log('positionFromProps is equal to previousPositionFromProps', isEqual(positionFromProps, previousPositionFromProps ));
-
 
     // If positionFromProps is a new position then execute, else return null
     if (
