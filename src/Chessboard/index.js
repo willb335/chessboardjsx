@@ -41,7 +41,6 @@ class Chessboard extends Component {
      * for examples.
      */
     position: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    previousPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     /**
      * An object with functions returning jsx as values(render prop).
      * See https://www.chessboardjsx.com/custom
@@ -177,7 +176,6 @@ class Chessboard extends Component {
   static defaultProps = {
     id: '0',
     position: '',
-    previousPosition: '',
     pieces: {},
     width: 560,
     orientation: 'white',
@@ -245,7 +243,6 @@ class Chessboard extends Component {
 
     // Check if there is a new position coming from props
     if (!isEqual(positionFromProps, previousPositionFromProps)) {
-      console.log('diff');
       this.setState({ previousPositionFromProps });
       // get board position for user
       getPosition(positionFromProps);
@@ -280,8 +277,8 @@ class Chessboard extends Component {
     let positionFromProps = getPositionObject(position);
 
     // If positionFromProps is a new position then execute, else return null
-    console.log(!isEqual(positionFromProps, currentPosition));
-    console.log('!', !isEqual(positionFromProps, previousPositionFromProps));
+    console.log('1', !isEqual(positionFromProps, currentPosition));
+    console.log('2', !isEqual(positionFromProps, previousPositionFromProps));
 
     if (
       !isEqual(positionFromProps, previousPositionFromProps) &&
