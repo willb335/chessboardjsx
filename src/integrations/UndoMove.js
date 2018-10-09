@@ -61,7 +61,7 @@ class HumanVsHuman extends Component {
   };
 
   onDrop = ({ sourceSquare, targetSquare }) => {
-    console.log("fen!", this.game.fen());
+    // console.log("fen!", this.game.fen());
     // see if the move is legal
     let move = this.game.move({
       from: sourceSquare,
@@ -82,9 +82,9 @@ class HumanVsHuman extends Component {
       () =>
         setTimeout(() => {
           this.setState(({ history, pieceSquare }) => {
-            console.log("fen", this.game.fen());
+            // console.log("fen", this.game.fen());
             this.game.undo();
-            console.log("fen after undo", this.game.fen());
+            // console.log("fen after undo", this.game.fen());
 
             return {
               fen: this.game.fen(),
