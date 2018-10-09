@@ -88,6 +88,7 @@ class HumanVsHuman extends Component {
 
             return {
               fen: this.game.fen(),
+              previousPosition: 'hi',
               history: this.game.history({ verbose: true }),
               squareStyles: squareStyling({ pieceSquare, history })
             };

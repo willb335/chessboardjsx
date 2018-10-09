@@ -280,6 +280,9 @@ class Chessboard extends Component {
     let positionFromProps = getPositionObject(position);
 
     // If positionFromProps is a new position then execute, else return null
+    console.log(!isEqual(positionFromProps, currentPosition));
+    console.log('!', !isEqual(positionFromProps, previousPositionFromProps));
+
     if (
       !isEqual(positionFromProps, previousPositionFromProps) &&
       !isEqual(positionFromProps, currentPosition)
