@@ -182,6 +182,7 @@ class Chessboard extends Component {
     showNotation: true,
     sparePieces: false,
     draggable: true,
+    undo: false,
     dropOffBoard: 'snapback',
     transitionDuration: 300,
     boardStyle: {},
@@ -216,7 +217,8 @@ class Chessboard extends Component {
     manualDrop: false,
     squareClicked: false,
     firstMove: false,
-    pieces: { ...defaultPieces, ...this.props.pieces }
+    pieces: { ...defaultPieces, ...this.props.pieces },
+    undo: this.props.undo
   };
 
   componentDidMount() {
@@ -236,10 +238,14 @@ class Chessboard extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const { position, transitionDuration, getPosition } = this.props;
+    const { position, transitionDuration, getPosition, undo } = this.props;
     const { waitForTransition } = this.state;
     const positionFromProps = getPositionObject(position);
     const previousPositionFromProps = getPositionObject(prevProps.position);
+
+    // if (undo) {
+    //   this.setState({ undo: true });
+    // }
 
     // Check if there is a new position coming from props
     if (!isEqual(positionFromProps, previousPositionFromProps)) {
@@ -267,7 +273,7 @@ class Chessboard extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { position } = props;
+    const { position, undo } = props;
     const {
       currentPosition,
       previousPositionFromProps,
@@ -275,6 +281,12 @@ class Chessboard extends Component {
       squareClicked
     } = state;
     let positionFromProps = getPositionObject(position);
+
+    if (undo) {
+      return {
+        currentPosition: positionFromProps
+      };
+    }
 
     // If positionFromProps is a new position then execute, else return null
     if (

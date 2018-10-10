@@ -59,7 +59,7 @@ class HumanVsHuman extends Component {
     }));
   };
 
-  onDrop = ({ sourceSquare, targetSquare }) => {
+  onDrop = ({ sourceSquare, targetSquare, piece }) => {
     // console.log("fen!", this.game.fen());
     // see if the move is legal
     let move = this.game.move({
@@ -81,11 +81,10 @@ class HumanVsHuman extends Component {
       () =>
         setTimeout(() => {
           this.setState(({ history, pieceSquare }) => {
-            // console.log("fen", this.game.fen());
             this.game.undo();
-            // console.log("fen after undo", this.game.fen());
 
             return {
+              undo: piece === 'wN' ? true : false,
               fen: this.game.fen(),
               history: this.game.history({ verbose: true }),
               squareStyles: squareStyling({ pieceSquare, history })
@@ -153,7 +152,7 @@ class HumanVsHuman extends Component {
     });
 
   render() {
-    const { fen, dropSquareStyle, squareStyles } = this.state;
+    const { fen, dropSquareStyle, squareStyles, undo } = this.state;
     return this.props.children({
       squareStyles,
       position: fen,
@@ -163,7 +162,8 @@ class HumanVsHuman extends Component {
       dropSquareStyle,
       onDragOverSquare: this.onDragOverSquare,
       onSquareClick: this.onSquareClick,
-      onSquareRightClick: this.onSquareRightClick
+      onSquareRightClick: this.onSquareRightClick,
+      undo
     });
   }
 }
@@ -181,7 +181,8 @@ export default function WithMoveValidation() {
           dropSquareStyle,
           onDragOverSquare,
           onSquareClick,
-          onSquareRightClick
+          onSquareRightClick,
+          undo
         }) => (
           <Chessboard
             id="humanVsHuman"
@@ -199,6 +200,7 @@ export default function WithMoveValidation() {
             onDragOverSquare={onDragOverSquare}
             onSquareClick={onSquareClick}
             onSquareRightClick={onSquareRightClick}
+            undo={undo}
           />
         )}
       </HumanVsHuman>
