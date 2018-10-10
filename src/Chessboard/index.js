@@ -170,7 +170,8 @@ class Chessboard extends Component {
      *
      * Signature: function( { piece: string, sourceSquare: string } ) => bool
      */
-    allowDrag: PropTypes.func
+    allowDrag: PropTypes.func,
+    undo: PropTypes.bool
   };
 
   static defaultProps = {
@@ -182,6 +183,7 @@ class Chessboard extends Component {
     showNotation: true,
     sparePieces: false,
     draggable: true,
+    undo: false,
     dropOffBoard: 'snapback',
     transitionDuration: 300,
     boardStyle: {},
@@ -216,7 +218,8 @@ class Chessboard extends Component {
     manualDrop: false,
     squareClicked: false,
     firstMove: false,
-    pieces: { ...defaultPieces, ...this.props.pieces }
+    pieces: { ...defaultPieces, ...this.props.pieces },
+    undo: this.props.undo
   };
 
   componentDidMount() {
@@ -272,7 +275,8 @@ class Chessboard extends Component {
       currentPosition,
       previousPositionFromProps,
       manualDrop,
-      squareClicked
+      squareClicked,
+      undo
     } = state;
     let positionFromProps = getPositionObject(position);
 
@@ -282,7 +286,7 @@ class Chessboard extends Component {
 
     if (
       !isEqual(positionFromProps, previousPositionFromProps) &&
-      !isEqual(positionFromProps, currentPosition)
+      (!isEqual(positionFromProps, currentPosition) || undo)
     ) {
       // Get position attributes from the difference between currentPosition and positionFromProps
       const {
@@ -291,6 +295,19 @@ class Chessboard extends Component {
         sourcePiece,
         squaresAffected
       } = constructPositionAttributes(currentPosition, positionFromProps);
+
+      if (undo) {
+        return {
+          sourceSquare,
+          targetSquare,
+          sourcePiece,
+          currentPosition: positionFromProps,
+          waitForTransition: false,
+          manualDrop: false,
+          squareClicked: false,
+          undo: false
+        };
+      }
 
       if (manualDrop) {
         return {
