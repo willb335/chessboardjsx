@@ -18,7 +18,9 @@ class HumanVsHuman extends Component {
     // currently clicked square
     square: '',
     // array of past game moves
-    history: []
+    history: [],
+    // undo previous move
+    undo: false
   };
 
   componentDidMount() {
@@ -85,6 +87,7 @@ class HumanVsHuman extends Component {
 
             return {
               fen: this.game.fen(),
+              undo: true,
               history: this.game.history({ verbose: true }),
               squareStyles: squareStyling({ pieceSquare, history })
             };
@@ -151,7 +154,7 @@ class HumanVsHuman extends Component {
     });
 
   render() {
-    const { fen, dropSquareStyle, squareStyles } = this.state;
+    const { fen, dropSquareStyle, squareStyles, undo } = this.state;
     return this.props.children({
       squareStyles,
       position: fen,
@@ -161,7 +164,8 @@ class HumanVsHuman extends Component {
       dropSquareStyle,
       onDragOverSquare: this.onDragOverSquare,
       onSquareClick: this.onSquareClick,
-      onSquareRightClick: this.onSquareRightClick
+      onSquareRightClick: this.onSquareRightClick,
+      undo
     });
   }
 }
@@ -179,7 +183,8 @@ export default function WithMoveValidation() {
           dropSquareStyle,
           onDragOverSquare,
           onSquareClick,
-          onSquareRightClick
+          onSquareRightClick,
+          undo
         }) => (
           <Chessboard
             id="humanVsHuman"
@@ -197,6 +202,7 @@ export default function WithMoveValidation() {
             onDragOverSquare={onDragOverSquare}
             onSquareClick={onSquareClick}
             onSquareRightClick={onSquareRightClick}
+            undo={undo}
           />
         )}
       </HumanVsHuman>

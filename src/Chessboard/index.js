@@ -248,7 +248,7 @@ class Chessboard extends Component {
     // Check if there is a new position coming from props
     if (!isEqual(positionFromProps, previousPositionFromProps) || undoMove) {
       console.log('componentDidUpdate is updating');
-      this.setState({ previousPositionFromProps });
+      this.setState({ previousPositionFromProps, undoMove: false });
       // get board position for user
       getPosition(positionFromProps);
 
@@ -257,7 +257,7 @@ class Chessboard extends Component {
         return new Promise(resolve => {
           this.setState({ currentPosition: positionFromProps }, () =>
             setTimeout(() => {
-              this.setState({ waitForTransition: false, undoMove: false });
+              this.setState({ waitForTransition: false });
               resolve();
             }, transitionDuration)
           );
