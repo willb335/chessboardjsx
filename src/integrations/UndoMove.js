@@ -81,13 +81,13 @@ class HumanVsHuman extends Component {
       },
       () =>
         setTimeout(() => {
+          const notKnights = piece !== 'wN' && piece !== 'bN';
           this.setState(({ history, pieceSquare }) => {
-            this.game.undo();
-            console.log('undoing');
+            notKnights && this.game.undo();
 
             return {
               fen: this.game.fen(),
-              undo: true,
+              undo: notKnights ? true : false,
               history: this.game.history({ verbose: true }),
               squareStyles: squareStyling({ pieceSquare, history })
             };

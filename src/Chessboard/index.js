@@ -171,6 +171,9 @@ class Chessboard extends Component {
      * Signature: function( { piece: string, sourceSquare: string } ) => bool
      */
     allowDrag: PropTypes.func,
+    /**
+    Needs to be set to true in order to undo move
+     */
     undo: PropTypes.bool
   };
 
@@ -243,12 +246,14 @@ class Chessboard extends Component {
     const { waitForTransition, undoMove } = this.state;
     const positionFromProps = getPositionObject(position);
     const previousPositionFromProps = getPositionObject(prevProps.position);
-    console.log('...checking CDU');
 
-    // Check if there is a new position coming from props
+    // Check if there is a new position coming from props or undo is called
     if (!isEqual(positionFromProps, previousPositionFromProps) || undoMove) {
-      console.log('componentDidUpdate is updating');
-      this.setState({ previousPositionFromProps, undoMove: false });
+      this.setState({
+        previousPositionFromProps: previousPositionFromProps,
+        undoMove: false
+      });
+
       // get board position for user
       getPosition(positionFromProps);
 
@@ -286,7 +291,6 @@ class Chessboard extends Component {
       !isEqual(positionFromProps, previousPositionFromProps) &&
       !isEqual(positionFromProps, currentPosition)
     ) {
-      console.log('deriving state');
       // Get position attributes from the difference between currentPosition and positionFromProps
       const {
         sourceSquare,
@@ -340,6 +344,7 @@ class Chessboard extends Component {
         };
       }
 
+      // allows taking back a move.
       if (undo) {
         return {
           sourceSquare,
@@ -352,8 +357,6 @@ class Chessboard extends Component {
           undoMove: true
         };
       }
-
-      console.log('default return');
 
       return {
         sourceSquare,
