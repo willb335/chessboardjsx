@@ -11,19 +11,5 @@ module.exports = {
   },
   parser: 'babel-eslint', // class properties
   plugins: ['prettier', 'react'],
-  rules: {
-    'no-console': 'off'
-    // 'require-jsdoc': [
-    //   'error',
-    //   {
-    //     require: {
-    //       FunctionDeclaration: true,
-    //       MethodDefinition: true,
-    //       ClassDeclaration: true,
-    //       ArrowFunctionExpression: true,
-    //       FunctionExpression: true
-    //     }
-    //   }
-    // ]
-  }
+  rules: { 'no-console': 'off' }
 };
