@@ -187,7 +187,8 @@ export default function WithMoveValidation() {
           undo
         }) => (
           <Chessboard
-            id="humanVsHuman"
+            id="undo"
+            calcWidth={({ screenWidth }) => (screenWidth < 500 ? 350 : 480)}
             width={320}
             position={position}
             onDrop={onDrop}
