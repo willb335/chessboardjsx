@@ -81,6 +81,7 @@ class HumanVsHuman extends Component {
         setTimeout(() => {
           this.setState(({ history, pieceSquare }) => {
             this.game.undo();
+            console.log('undoing');
 
             return {
               fen: this.game.fen(),
