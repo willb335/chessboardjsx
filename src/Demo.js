@@ -6,6 +6,7 @@ import RandomVsRandomGame from './integrations/RandomVsRandomGame';
 import CustomizedBoard from './integrations/CustomizedBoard';
 import AllowDragFeature from './integrations/AllowDrag';
 import PrestoChangoExample from './integrations/PrestoChango';
+import UndoMove from './integrations/UndoMove';
 
 class Demo extends Component {
   state = {
@@ -14,7 +15,8 @@ class Demo extends Component {
     showRandomVsRandomGame: false,
     showPlayRandomMoveEngine: false,
     showAllowDragFeature: false,
-    showPrestoChango: false
+    showPrestoChango: false,
+    showUndoMove: false
   };
   render() {
     return (
@@ -28,7 +30,8 @@ class Demo extends Component {
                 showRandomVsRandomGame: false,
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: false,
-                showPrestoChango: false
+                showPrestoChango: false,
+                showUndoMove: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'orange' } }}
@@ -43,7 +46,8 @@ class Demo extends Component {
                 showRandomVsRandomGame: false,
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: false,
-                showPrestoChango: false
+                showPrestoChango: false,
+                showUndoMove: false
               })
             }
             style={{
@@ -61,7 +65,8 @@ class Demo extends Component {
                 showRandomVsRandomGame: true,
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: false,
-                showPrestoChango: false
+                showPrestoChango: false,
+                showUndoMove: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'gold' } }}
@@ -76,7 +81,8 @@ class Demo extends Component {
                 showRandomVsRandomGame: false,
                 showPlayRandomMoveEngine: true,
                 showAllowDragFeature: false,
-                showPrestoChango: false
+                showPrestoChango: false,
+                showUndoMove: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'silver' } }}
@@ -91,7 +97,8 @@ class Demo extends Component {
                 showRandomVsRandomGame: false,
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: true,
-                showPrestoChango: false
+                showPrestoChango: false,
+                showUndoMove: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'aqua' } }}
@@ -106,7 +113,8 @@ class Demo extends Component {
                 showRandomVsRandomGame: false,
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: false,
-                showPrestoChango: true
+                showPrestoChango: true,
+                showUndoMove: false
               })
             }
             style={{
@@ -116,6 +124,22 @@ class Demo extends Component {
           >
             Presto Chango
           </button>
+          <button
+            onClick={() =>
+              this.setState({
+                showCustomizedBoard: false,
+                showWithMoveValidation: false,
+                showRandomVsRandomGame: false,
+                showPlayRandomMoveEngine: false,
+                showAllowDragFeature: false,
+                showPrestoChango: false,
+                showUndoMove: true
+              })
+            }
+            style={{ ...buttonStyle, ...{ backgroundColor: 'pink' } }}
+          >
+            Undo Move
+          </button>
         </div>
         <div style={boardsContainer}>
           {this.state.showCustomizedBoard && <CustomizedBoard />}
@@ -124,6 +148,7 @@ class Demo extends Component {
           {this.state.showPlayRandomMoveEngine && <PlayRandomMoveEngine />}
           {this.state.showAllowDragFeature && <AllowDragFeature />}
           {this.state.showPrestoChango && <PrestoChangoExample />}
+          {this.state.showUndoMove && <UndoMove />}
         </div>
       </div>
     );

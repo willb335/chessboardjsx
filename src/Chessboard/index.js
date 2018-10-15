@@ -170,7 +170,11 @@ class Chessboard extends Component {
      *
      * Signature: function( { piece: string, sourceSquare: string } ) => bool
      */
-    allowDrag: PropTypes.func
+    allowDrag: PropTypes.func,
+    /**
+    When set to true it undos previous move
+     */
+    undo: PropTypes.bool
   };
 
   static defaultProps = {
@@ -182,6 +186,7 @@ class Chessboard extends Component {
     showNotation: true,
     sparePieces: false,
     draggable: true,
+    undo: false,
     dropOffBoard: 'snapback',
     transitionDuration: 300,
     boardStyle: {},
@@ -216,7 +221,8 @@ class Chessboard extends Component {
     manualDrop: false,
     squareClicked: false,
     firstMove: false,
-    pieces: { ...defaultPieces, ...this.props.pieces }
+    pieces: { ...defaultPieces, ...this.props.pieces },
+    undoMove: this.props.undo
   };
 
   componentDidMount() {
@@ -237,13 +243,17 @@ class Chessboard extends Component {
 
   componentDidUpdate(prevProps) {
     const { position, transitionDuration, getPosition } = this.props;
-    const { waitForTransition } = this.state;
+    const { waitForTransition, undoMove } = this.state;
     const positionFromProps = getPositionObject(position);
     const previousPositionFromProps = getPositionObject(prevProps.position);
 
-    // Check if there is a new position coming from props
-    if (!isEqual(positionFromProps, previousPositionFromProps)) {
-      this.setState({ previousPositionFromProps });
+    // Check if there is a new position coming from props or undo is called
+    if (!isEqual(positionFromProps, previousPositionFromProps) || undoMove) {
+      this.setState({
+        previousPositionFromProps: previousPositionFromProps,
+        undoMove: false
+      });
+
       // get board position for user
       getPosition(positionFromProps);
 
@@ -267,7 +277,7 @@ class Chessboard extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { position } = props;
+    const { position, undo } = props;
     const {
       currentPosition,
       previousPositionFromProps,
@@ -281,7 +291,7 @@ class Chessboard extends Component {
       !isEqual(positionFromProps, previousPositionFromProps) &&
       !isEqual(positionFromProps, currentPosition)
     ) {
-      // Get position attributes from the difference between currentPosition and positionFromProps
+      // Position attributes from the diff between currentPosition and positionFromProps
       const {
         sourceSquare,
         targetSquare,
@@ -324,7 +334,6 @@ class Chessboard extends Component {
           sourcePiece,
           // Set the current position to the new position minus the targetSquare
           currentPosition: positionFromProps,
-          // If setting pieces via square clicks then there is no transition
           waitForTransition: squareClicked ? false : true,
           phantomPiece: squareClicked
             ? null
@@ -334,17 +343,32 @@ class Chessboard extends Component {
         };
       }
 
+      // allows for taking back a move
+      if (undo) {
+        return {
+          sourceSquare,
+          targetSquare,
+          sourcePiece,
+          currentPosition: positionFromProps,
+          waitForTransition: true,
+          manualDrop: false,
+          squareClicked: false,
+          undoMove: true
+        };
+      }
+
       return {
         sourceSquare,
         targetSquare,
         sourcePiece,
         currentPosition: positionFromProps,
-        // If setting pieces via square clicks then there is no transition
         waitForTransition: squareClicked ? false : true,
         manualDrop: false,
         squareClicked: false
       };
     }
+
+    // default case
     return null;
   }
 
