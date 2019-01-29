@@ -41,6 +41,7 @@ class Board extends Component {
               width={context.width}
               boardStyle={context.boardStyle}
               orientation={context.orientation}
+              boardId={context.id}
             >
               {({ square, squareColor, col, row, alpha }) => {
                 return (
