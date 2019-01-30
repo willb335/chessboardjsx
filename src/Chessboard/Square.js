@@ -77,6 +77,7 @@ class Square extends Component {
     return connectDropTarget(
       <div
         data-testid={`${squareColor}-square`}
+        data-squareid={square}
         ref={ref => (this[square] = ref)}
         style={defaultSquareStyle(this.props)}
         onMouseOver={() => onMouseOverSquare(square)}

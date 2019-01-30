@@ -8,11 +8,12 @@ class Row extends Component {
     width: PropTypes.number,
     orientation: PropTypes.string,
     boardStyle: PropTypes.object,
-    children: PropTypes.func
+    children: PropTypes.func,
+    boardId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
 
   render() {
-    const { width, boardStyle, orientation, children } = this.props;
+    const { width, boardStyle, orientation, children, boardId } = this.props;
     let alpha = COLUMNS;
     let row = 8;
     let squareColor = 'white';
@@ -20,7 +21,10 @@ class Row extends Component {
     if (orientation === 'black') row = 1;
 
     return (
-      <div style={{ ...boardStyles(width), ...boardStyle }}>
+      <div
+        style={{ ...boardStyles(width), ...boardStyle }}
+        data-boardid={boardId}
+      >
         {[...Array(8)].map((_, r) => {
           row = orientation === 'black' ? row + 1 : row - 1;
 
