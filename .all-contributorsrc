@@ -75,6 +75,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "levidurfee",
+      "name": "Levi Durfee",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/10798199?v=4",
+      "profile": "https://levi.lol/",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ]
 }
