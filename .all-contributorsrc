@@ -85,6 +85,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "altruisticsoftware",
+      "name": "Chris",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/12105346?v=4",
+      "profile": "https://github.com/altruisticsoftware",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
