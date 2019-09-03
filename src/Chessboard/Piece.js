@@ -191,8 +191,11 @@ const pieceSource = {
     // check if target board is source board
     if (board === dropBoard && didDrop) {
       if (onDrop.length) {
-        wasSquareClicked(false);
         wasManuallyDropped(true);
+        if (square !== 'spare') {
+          wasSquareClicked(false);
+        }
+
         // execute user's logic
         return onDrop({
           sourceSquare: square,

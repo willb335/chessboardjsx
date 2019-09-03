@@ -7,6 +7,7 @@ import CustomizedBoard from './integrations/CustomizedBoard';
 import AllowDragFeature from './integrations/AllowDrag';
 import PrestoChangoExample from './integrations/PrestoChango';
 import UndoMove from './integrations/UndoMove';
+import SpareOnDrop from './integrations/SpareOnDrop';
 
 class Demo extends Component {
   state = {
@@ -16,7 +17,8 @@ class Demo extends Component {
     showPlayRandomMoveEngine: false,
     showAllowDragFeature: false,
     showPrestoChango: false,
-    showUndoMove: false
+    showUndoMove: false,
+    showSpareOnDrop: false
   };
   render() {
     return (
@@ -31,7 +33,8 @@ class Demo extends Component {
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: false,
                 showPrestoChango: false,
-                showUndoMove: false
+                showUndoMove: false,
+                showSpareOnDrop: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'orange' } }}
@@ -47,7 +50,8 @@ class Demo extends Component {
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: false,
                 showPrestoChango: false,
-                showUndoMove: false
+                showUndoMove: false,
+                showSpareOnDrop: false
               })
             }
             style={{
@@ -66,7 +70,8 @@ class Demo extends Component {
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: false,
                 showPrestoChango: false,
-                showUndoMove: false
+                showUndoMove: false,
+                showSpareOnDrop: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'gold' } }}
@@ -82,7 +87,8 @@ class Demo extends Component {
                 showPlayRandomMoveEngine: true,
                 showAllowDragFeature: false,
                 showPrestoChango: false,
-                showUndoMove: false
+                showUndoMove: false,
+                showSpareOnDrop: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'silver' } }}
@@ -98,7 +104,8 @@ class Demo extends Component {
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: true,
                 showPrestoChango: false,
-                showUndoMove: false
+                showUndoMove: false,
+                showSpareOnDrop: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'aqua' } }}
@@ -114,7 +121,8 @@ class Demo extends Component {
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: false,
                 showPrestoChango: true,
-                showUndoMove: false
+                showUndoMove: false,
+                showSpareOnDrop: false
               })
             }
             style={{
@@ -133,12 +141,30 @@ class Demo extends Component {
                 showPlayRandomMoveEngine: false,
                 showAllowDragFeature: false,
                 showPrestoChango: false,
-                showUndoMove: true
+                showUndoMove: true,
+                showSpareOnDrop: false
               })
             }
             style={{ ...buttonStyle, ...{ backgroundColor: 'pink' } }}
           >
             Undo Move
+          </button>
+          <button
+            onClick={() =>
+              this.setState({
+                showCustomizedBoard: false,
+                showWithMoveValidation: false,
+                showRandomVsRandomGame: false,
+                showPlayRandomMoveEngine: false,
+                showAllowDragFeature: false,
+                showPrestoChango: false,
+                showUndoMove: false,
+                showSpareOnDrop: true
+              })
+            }
+            style={{ ...buttonStyle, ...{ backgroundColor: 'orange' } }}
+          >
+            Show Spare OnDrop
           </button>
         </div>
         <div style={boardsContainer}>
@@ -149,6 +175,7 @@ class Demo extends Component {
           {this.state.showAllowDragFeature && <AllowDragFeature />}
           {this.state.showPrestoChango && <PrestoChangoExample />}
           {this.state.showUndoMove && <UndoMove />}
+          {this.state.showSpareOnDrop && <SpareOnDrop />}
         </div>
       </div>
     );
