@@ -14,7 +14,8 @@ module.exports = merge(common, {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].min.js',
     library: 'chessboardjsx',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
+    globalObject: 'this'
   },
   devtool: 'source-map',
   plugins: [
