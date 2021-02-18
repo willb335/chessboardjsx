@@ -94,6 +94,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "danbockapps",
+      "name": "Dan Bock",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4488712?v=4",
+      "profile": "http://danbock.net",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
