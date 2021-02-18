@@ -134,8 +134,8 @@ class Chessboard extends Component {
      */
     onDrop: PropTypes.func,
     /**
-     * A function that gives access to the current position object.
-     * For example, getPosition = position => this.setState({ myPosition: position }).
+     * A function that gives access to the current position object and FEN.
+     * For example, getPosition = (position, fen) => this.setState({ myPosition: position, myFen: fen }).
      *
      * Signature: function(currentPosition: object) => void
      */
@@ -255,7 +255,7 @@ class Chessboard extends Component {
       });
 
       // get board position for user
-      getPosition(positionFromProps);
+      getPosition(positionFromProps, position);
 
       // Give piece time to transition.
       if (waitForTransition) {

@@ -22,7 +22,7 @@ interface Props {
   draggable?: boolean,
   dropOffBoard?: 'snapback' | 'trash',
   dropSquareStyle?: CSSProperties,
-  getPosition?: (currentPosition: Position) => void,
+  getPosition?: (currentPosition: Position, fen: string) => void,
   id?: string | number,
   lightSquareStyle?: CSSProperties,
   onDragOverSquare?: (square: Square) => void,
