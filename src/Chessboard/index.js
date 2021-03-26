@@ -280,17 +280,13 @@ class Chessboard extends Component {
     const { position, undo } = props;
     const {
       currentPosition,
-      previousPositionFromProps,
       manualDrop,
       squareClicked
     } = state;
     let positionFromProps = getPositionObject(position);
 
     // If positionFromProps is a new position then execute, else return null
-    if (
-      !isEqual(positionFromProps, previousPositionFromProps) &&
-      !isEqual(positionFromProps, currentPosition)
-    ) {
+    if (!isEqual(positionFromProps, currentPosition)) {
       // Position attributes from the diff between currentPosition and positionFromProps
       const {
         sourceSquare,
