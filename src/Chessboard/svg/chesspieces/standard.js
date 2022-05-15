@@ -359,7 +359,7 @@ export default {
       <g
         style={{
           opacity: '1',
-          fill: '000000',
+          fill: '#000000',
           fillOpacity: '1',
           fillRule: 'evenodd',
           stroke: '#000000',
@@ -571,7 +571,7 @@ export default {
       <g
         style={{
           opacity: '1',
-          fill: '000000',
+          fill: '#000000',
           fillOpacity: '1',
           fillRule: 'evenodd',
           stroke: '#000000',
