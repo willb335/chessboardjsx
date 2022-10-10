@@ -44,15 +44,17 @@ class CustomDragLayer extends Component {
 
     if (item && currentOffset && initialOffset) {
       const squareElement = document.querySelector(`[data-squareid=${item.source}]`)
-      const squareElementDOMRect = squareElement.getBoundingClientRect()
-      const squareWidth = width / 8
-
-      let dx = (squareWidth / 2) - (squareElementDOMRect.right - initialOffset.x)
-      let dy = (squareWidth / 2) - (squareElementDOMRect.bottom - initialOffset.y)
-
-      dependOnCursorPosition = {
-        x: currentOffset.x + dx,
-        y: currentOffset.y + dy
+      if (squareElement) {
+        const squareElementDOMRect = squareElement.getBoundingClientRect()
+        const squareWidth = width / 8
+  
+        let dx = (squareWidth / 2) - (squareElementDOMRect.right - initialOffset.x)
+        let dy = (squareWidth / 2) - (squareElementDOMRect.bottom - initialOffset.y)
+  
+        dependOnCursorPosition = {
+          x: currentOffset.x + dx,
+          y: currentOffset.y + dy
+        }
       }
     }
 
