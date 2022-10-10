@@ -11,6 +11,10 @@ class CustomDragLayer extends Component {
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired
     }),
+    initialOffset: PropTypes.shape({
+      x: PropTypes.number.isRequired,
+      y: PropTypes.number.isRequired
+    }),
     isDragging: PropTypes.bool.isRequired,
     width: PropTypes.number,
     pieces: PropTypes.object,
@@ -26,14 +30,37 @@ class CustomDragLayer extends Component {
       item,
       id,
       currentOffset,
+      initialOffset,
       wasPieceTouched,
       pieces,
       sourceSquare
     } = this.props;
 
+    let dependOnCursorPosition = currentOffset ? {
+      x: currentOffset.x,
+      y: currentOffset.y
+    }
+      : null
+
+    if (item && currentOffset && initialOffset) {
+      const squareElement = document.querySelector(`[data-squareid=${item.source}]`)
+      if (squareElement) {
+        const squareElementDOMRect = squareElement.getBoundingClientRect()
+        const squareWidth = width / 8
+  
+        let dx = (squareWidth / 2) - (squareElementDOMRect.right - initialOffset.x)
+        let dy = (squareWidth / 2) - (squareElementDOMRect.bottom - initialOffset.y)
+  
+        dependOnCursorPosition = {
+          x: currentOffset.x + dx,
+          y: currentOffset.y + dy
+        }
+      }
+    }
+
     return isDragging && item.board === id ? (
       <div style={layerStyles}>
-        <div style={getItemStyle(currentOffset, wasPieceTouched)}>
+        <div style={getItemStyle(dependOnCursorPosition, wasPieceTouched)}>
           {renderChessPiece({
             width,
             pieces,
@@ -52,6 +79,7 @@ function collect(monitor) {
   return {
     item: monitor.getItem(),
     currentOffset: monitor.getSourceClientOffset(),
+    initialOffset: monitor.getInitialClientOffset(),
     isDragging: monitor.isDragging()
   };
 }
